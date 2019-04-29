@@ -4,6 +4,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot;
 using CoreBot.Dialogs;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -19,27 +20,30 @@ namespace Microsoft.BotBuilderSamples
     {
         protected readonly IConfiguration _configuration;
         protected readonly ILogger _logger;
+        private readonly IUserService userService;
 
-        public MainDialog(IConfiguration configuration, ILogger<MainDialog> logger)
+        public MainDialog(IConfiguration configuration, ILogger<MainDialog> logger, IScenarioService scenarioService, IUserService userService)
             : base(nameof(MainDialog))
         {
             _configuration = configuration;
             _logger = logger;
-
+            this.userService = userService;
+            AddDialog(new ScenarioDialog(scenarioService, userService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(new BookingDialog());
-            AddDialog(new PicDialog());
-            AddDialog(new ChoiceDialog());
-            AddDialog(new ChoicePrompt("SelectGroupCardDialog") { Style = ListStyle.None });
+            //AddDialog(new BookingDialog());
+            //AddDialog(new PicDialog());
+            //AddDialog(new ChoiceDialog());
+            //AddDialog(new ChoicePrompt("SelectGroupCardDialog") { Style = ListStyle.None });
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                ShowChoiceDialogAsync,
-                ShowPicDialogAsync,
-                PromptWithContentAttachment
+                ScenarioLaunchStepAsync,
+                //ShowChoiceDialogAsync,
+                //ShowPicDialogAsync,
+                //PromptWithContentAttachment
                 //Intro2StepAsync
                 //ActStepAsync,
-                //FinalStepAsync,
+                FinalStepAsync,
             }));
 
             // The initial child Dialog to run.
@@ -47,18 +51,27 @@ namespace Microsoft.BotBuilderSamples
         }
         
 
-        private async Task<DialogTurnResult> PromptWithContentAttachment(WaterfallStepContext stepContext, CancellationToken token)
-        {
-            return await stepContext.PromptAsync("SelectGroupCardDialog",
-                new PromptOptions
-                {
-                    Prompt = (Activity)MessageFactory.ContentUrl("http://www.html5videoplayer.net/videos/toystory.mp4", "video/mp4")
-                },
-                token);
-        }
         
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+
+            var from = stepContext.Context.Activity.From;
+            var user = userService.GetBy(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+            if(user == null)
+            {
+                user = new User()
+                {
+                    ChannelId = stepContext.Context.Activity.ChannelId,
+                    IsCaptain = true,
+                    Name = stepContext.Context.Activity.From.Name,
+                    TeamId = stepContext.Context.Activity.From.Id,
+                    UserId = stepContext.Context.Activity.From.Id
+                };
+                userService.InsertOrMerge(user);
+            }
+
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"{from.Id} {from.Name} {stepContext.Context.Activity.ChannelId}"));
+
             if (string.IsNullOrEmpty(_configuration["LuisAppId"]) || string.IsNullOrEmpty(_configuration["LuisAPIKey"]) || string.IsNullOrEmpty(_configuration["LuisAPIHostName"]))
             {
                 await stepContext.Context.SendActivityAsync(
@@ -72,14 +85,19 @@ namespace Microsoft.BotBuilderSamples
             }
         }
 
-        private async Task<DialogTurnResult> ShowPicDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.BeginDialogAsync(nameof(PicDialog), null, cancellationToken);
-        }
-        
-        private async Task<DialogTurnResult> ShowChoiceDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            return await stepContext.BeginDialogAsync(nameof(ChoiceDialog), null, cancellationToken);
+            var userId = stepContext.Context.Activity.From.Id;
+            var channelId = stepContext.Context.Activity.ChannelId;
+
+            var user = userService.GetBy(channelId, userId);
+            var scenarioDetails = new ScenarioDetails()
+            {
+                ScenarioId = "Scenario1",
+                TeamId = user.TeamId
+            };
+
+            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -101,20 +119,20 @@ namespace Microsoft.BotBuilderSamples
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             // If the child dialog ("BookingDialog") was cancelled or the user failed to confirm, the Result here will be null.
-            if (stepContext.Result != null)
-            {
-                var result = (BookingDetails)stepContext.Result;
+            //if (stepContext.Result != null)
+            //{
+            //    var result = (BookingDetails)stepContext.Result;
 
-                // Now we have all the booking details call the booking service.
+            //    // Now we have all the booking details call the booking service.
 
-                // If the call to the booking service was successful tell the user.
+            //    // If the call to the booking service was successful tell the user.
 
-                var timeProperty = new TimexProperty(result.TravelDate);
-                var travelDateMsg = timeProperty.ToNaturalLanguage(DateTime.Now);
-                var msg = $"I have you booked to {result.Destination} from {result.Origin} on {travelDateMsg}";
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
-            }
-            else
+            //    var timeProperty = new TimexProperty(result.TravelDate);
+            //    var travelDateMsg = timeProperty.ToNaturalLanguage(DateTime.Now);
+            //    var msg = $"I have you booked to {result.Destination} from {result.Origin} on {travelDateMsg}";
+            //    await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
+            //}
+            //else
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("Thank you."), cancellationToken);
             }
