@@ -8,6 +8,7 @@ using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
@@ -61,6 +62,8 @@ namespace Microsoft.BotBuilderSamples
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+            var storageAccount = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
+            services.AddSingleton<CloudStorageAccount>(storageAccount);
 
             services.AddSingleton<ICloudStorage, CloudStorage>();
 

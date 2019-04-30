@@ -9,12 +9,13 @@ namespace CoreBot.Service
     public class CloudStorage: ICloudStorage
     {
         private readonly ILogger<CloudStorage> _logger;
+        private readonly CloudStorageAccount _cloudStorageAccount;
         private readonly string _connectionString;
 
-        public CloudStorage(ILogger<CloudStorage> logger, IConfiguration config)
+        public CloudStorage(ILogger<CloudStorage> logger, CloudStorageAccount cloudStorageAccount)
         {
             _logger = logger;
-            _connectionString = config["StorageConnectionString"];
+            _cloudStorageAccount = cloudStorageAccount;
         }
 
         public async Task<T> InsertOrMergeEntityAsync<T>(CloudTable table, T entity) where T : ITableEntity
@@ -38,8 +39,7 @@ namespace CoreBot.Service
 
         public  CloudTable GetOrCreateTable(string tableName)
         {
-            CloudStorageAccount storageAccount = Common.CreateStorageAccountFromConnectionString(_connectionString);
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
+            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(tableName);
             return table;
         }
