@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using CoreBot;
+using CoreBot.Bots;
+using CoreBot.Dialogs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
