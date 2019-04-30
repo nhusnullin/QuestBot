@@ -4,6 +4,7 @@
 using CoreBot;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
+using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -60,8 +61,12 @@ namespace Microsoft.BotBuilderSamples
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+
+            services.AddSingleton<ICloudStorage, CloudStorage>();
+
             services.AddSingleton<IScenarioService, DummyScenarioService>();
-            services.AddSingleton<IUserService, DummyUserService>();
+            services.AddSingleton<IUserService, UserService>();
+
 
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();

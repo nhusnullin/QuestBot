@@ -35,18 +35,11 @@ namespace CoreBot.Dialogs
             CancellationToken cancellationToken)
         {
             // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
-            var user = _userService.GetBy(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
             if (user == null)
             {
-                user = new User()
-                {
-                    ChannelId = stepContext.Context.Activity.ChannelId,
-                    IsCaptain = true,
-                    Name = stepContext.Context.Activity.From.Name,
-                    TeamId = stepContext.Context.Activity.From.Id,
-                    UserId = stepContext.Context.Activity.From.Id
-                };
-                _userService.InsertOrMerge(user);
+                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id, stepContext.Context.Activity.From.Name);
+                await _userService.InsertOrMergeAsync(user);
             }
 
 //            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"{from.Id} {from.Name} {stepContext.Context.Activity.ChannelId}"));
@@ -61,7 +54,7 @@ namespace CoreBot.Dialogs
             var userId = stepContext.Context.Activity.From.Id;
             var channelId = stepContext.Context.Activity.ChannelId;
 
-            var user = _userService.GetBy(channelId, userId);
+            var user = await _userService.GetByAsync(channelId, userId);
             var scenarioDetails = new ScenarioDetails()
             {
                 ScenarioId = "Scenario1",
