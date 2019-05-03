@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -40,12 +41,12 @@ namespace CoreBot.Dialogs
             var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
             if (user == null)
             {
-                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id, stepContext.Context.Activity.From.Name);
+                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id) {
+                    ChannelData = stepContext.Context.Activity.ChannelData.ToString()
+                };
                 await _userService.InsertOrMergeAsync(user);
             }
-
-//            await stepContext.Context.SendActivityAsync(MessageFactory.Text($"{from.Id} {from.Name} {stepContext.Context.Activity.ChannelId}"));
-
+            
             return await stepContext.PromptAsync(nameof(TextPrompt),
                 new PromptOptions {Prompt = MessageFactory.Text("Hello, my hero! Type anything to get started.")},
                 cancellationToken);

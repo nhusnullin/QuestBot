@@ -14,7 +14,7 @@ namespace CoreBot
 
         }
 
-        public User(string channelId, string userId, string name)
+        public User(string channelId, string userId)
         {
             ChannelId = channelId;
             UserId = userId;
@@ -22,7 +22,6 @@ namespace CoreBot
             PartitionKey = channelId;
             RowKey = userId;
 
-            Name = name;
             TeamId = userId;
             IsCaptain = false;
         }
@@ -30,11 +29,11 @@ namespace CoreBot
         public string UserId { get;  }
         public string ChannelId { get; }
 
-        public string Name { get; set; }
-
         public string TeamId { get; set; }
 
         public bool IsCaptain { get; set; }
+
+        public string ChannelData { get; set; }
     }
     
 }
