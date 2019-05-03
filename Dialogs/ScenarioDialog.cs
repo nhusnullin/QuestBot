@@ -43,8 +43,7 @@ namespace CoreBot.Dialogs
             var puzzleDetails =  (PuzzleDetails)stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
 
-
-            _userService.SetAnswer(scenarioDetails.TeamId, puzzleDetails.ScenarioId, puzzleDetails.PuzzleId, puzzleDetails.ActualAnswer);
+            await _userService.SetAnswer(stepContext.Context.Activity.ChannelId, scenarioDetails.TeamId, puzzleDetails.ScenarioId, puzzleDetails.PuzzleId, scenarioDetails);
 
             if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
             {

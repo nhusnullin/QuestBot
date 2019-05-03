@@ -1,13 +1,35 @@
 using Microsoft.Azure.Cosmos.Table;
+using System;
 
 namespace CoreBot
 {
+    public class Answer : TableEntity
+    {
+        public const string TableName = "answers";
+
+        public Answer()
+        {
+
+        }
+
+        public Answer(string userId, string rowkey)
+        {
+            PartitionKey = userId;
+            RowKey = rowkey;
+        }
+
+        public string ScenarioId { get; set; }
+        public string PuzzleId { get; set; }
+        public string ScenarioDetails { get; set; }
+    }
+
+
     /// <summary>
     /// Данные пользователя для хранения в БД 
     /// </summary>
     public class User: TableEntity
     {
-        public static string TableName = "users";
+        public const string TableName = "users";
 
         public User()
         {
@@ -18,10 +40,10 @@ namespace CoreBot
         {
             ChannelId = channelId;
             UserId = userId;
-            
+
             PartitionKey = channelId;
             RowKey = userId;
-
+        
             TeamId = userId;
             IsCaptain = false;
         }

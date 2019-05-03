@@ -4,7 +4,7 @@ namespace CoreBot
 {
     public interface IUserService
     {
-        void SetAnswer(string userOrTeamId, string scenarioId, string puzzleId, string actualAnswer);
+        Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails);
 
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);

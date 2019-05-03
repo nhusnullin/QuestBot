@@ -37,6 +37,25 @@ namespace CoreBot.Service
             }
         }
 
+        public async Task<T> InsertAsync<T>(CloudTable table, T entity) where T : ITableEntity
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            try
+            {
+                TableOperation insert = TableOperation.Insert(entity);
+                TableResult result = await table.ExecuteAsync(insert);
+                return (T)result.Result;
+            }
+            catch (StorageException e)
+            {
+                throw;
+            }
+        }
+
         public  CloudTable GetOrCreateTable(string tableName)
         {
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
