@@ -15,10 +15,10 @@ namespace CoreBot
         
         public PuzzleDetails(Puzzle puzzle)
         {
-            ScenarioId = puzzle.ScenarioId;
-            PuzzleId = puzzle.PuzzleId;
+            ScenarioId = "1";
+            PuzzleId = puzzle.Id;
             Question = puzzle.Question;
-            ExpectedAnswer = puzzle.ExpectedAnswer;
+            ExpectedAnswer = puzzle.Answer;
             WaitUntilReceiveRightAnswer = puzzle.WaitUntilReceiveRightAnswer;
         }
 
@@ -27,7 +27,7 @@ namespace CoreBot
         public string Question { get; set; }
         public string ExpectedAnswer { get; set; }
         public string ActualAnswer { get; set; }
-        public bool WaitUntilReceiveRightAnswer { get; set; }
+        public bool? WaitUntilReceiveRightAnswer { get; set; }
 
         public bool IsRight => string.Equals(ExpectedAnswer, ActualAnswer, StringComparison.CurrentCultureIgnoreCase);
     }

@@ -33,7 +33,7 @@ namespace CoreBot.Dialogs
             var puzzleDetails = (PuzzleDetails)stepContext.Options;
             puzzleDetails.ActualAnswer = (string)stepContext.Result;
 
-            if (!puzzleDetails.IsRight && puzzleDetails.WaitUntilReceiveRightAnswer)
+            if (!puzzleDetails.IsRight && puzzleDetails.WaitUntilReceiveRightAnswer.HasValue && puzzleDetails.WaitUntilReceiveRightAnswer.Value)
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"The answer is {puzzleDetails.ActualAnswer}. It's wrong answer"), cancellationToken);
                 return await stepContext.ReplaceDialogAsync(nameof(TextPuzzleDialog), puzzleDetails, cancellationToken);

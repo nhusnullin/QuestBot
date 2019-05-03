@@ -11,30 +11,27 @@ namespace CoreBot
             var puz1 = new Puzzle()
             {
                 Question = "That dummy question still appear until system receive proper answer. So, that's the answer? (fyi, the answer is \"yes\")",
-                ExpectedAnswer = "yes",
-                ScenarioId = "Scenario1",
+                Answer = "yes",
                 PuzzleType = PuzzleType.TextPuzzleDialog,
-                PuzzleId = "1",
+                Id = "1",
                 WaitUntilReceiveRightAnswer = true
             };
 
             var puz2 = new Puzzle()
             {
                 Question = "Doesn't matter that answer is, the user will be thrown to the next question depends on his answer",
-                ExpectedAnswer = "yes",
-                ScenarioId = "Scenario1",
+                Answer = "yes",
                 PuzzleType = PuzzleType.TextPuzzleDialog,
-                PuzzleId = "2",
+                Id = "2",
                 WaitUntilReceiveRightAnswer = false
             };
 
             var puz3 = new Puzzle()
             {
                 Question = "bla-bla-bla question?",
-                ExpectedAnswer = "yes",
-                ScenarioId = "Scenario1",
+                Answer = "yes",
                 PuzzleType = PuzzleType.TextPuzzleDialog,
-                PuzzleId = "3",
+                Id = "3",
                 WaitUntilReceiveRightAnswer = false
             };
 
