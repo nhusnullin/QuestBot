@@ -1,11 +1,19 @@
+using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CoreBot
 {
     public class DummyScenarioService : IScenarioService
     {
         public Dictionary<string, string> _store = new Dictionary<string, string>();
-        public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId = "")
+
+        public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId = "", bool? lastWasRight = false)
         {
             _store[teamId] = lastPuzzleId;
             var puz1 = new Puzzle()
@@ -49,9 +57,14 @@ namespace CoreBot
             }
         }
 
-        public bool IsOver(string teamId, string scenarioId)
+        public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)
         {
             return _store[teamId] == "2";
+        }
+        
+        public Scenario Load(string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }

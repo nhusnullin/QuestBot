@@ -28,9 +28,11 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
+            var puzzleDetails = (PuzzleDetails)stepContext.Result;
+
             var userid = stepContext.Context.Activity.From.Id;
 
-            var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId);
+            var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.IsRight);
 
             return await stepContext.BeginDialogAsync(puzzle.PuzzleType.ToString(), new PuzzleDetails(puzzle), cancellationToken);
         }
@@ -39,16 +41,17 @@ namespace CoreBot.Dialogs
 
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
             var puzzleDetails =  (PuzzleDetails)stepContext.Result;
+            scenarioDetails.LastPuzzleDetails = puzzleDetails;
+
 
             _userService.SetAnswer(scenarioDetails.TeamId, puzzleDetails.ScenarioId, puzzleDetails.PuzzleId, puzzleDetails.ActualAnswer);
 
-            if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId))
+            if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
             {
-                scenarioDetails.LastPuzzleDetails = puzzleDetails;
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
             }
 
-            return await stepContext.EndDialogAsync(null, cancellationToken);
+            return await stepContext.EndDialogAsync(scenarioDetails, cancellationToken);
         }
     }
 }

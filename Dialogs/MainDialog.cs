@@ -11,6 +11,7 @@ namespace CoreBot.Dialogs
     {
         protected readonly IConfiguration _configuration;
         protected readonly ILogger _logger;
+        private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
 
         public MainDialog(IConfiguration configuration, ILogger<MainDialog> logger, IScenarioService scenarioService, IUserService userService)
@@ -18,6 +19,7 @@ namespace CoreBot.Dialogs
         {
             _configuration = configuration;
             _logger = logger;
+            this._scenarioService = scenarioService;
             _userService = userService;
             AddDialog(new ScenarioDialog(scenarioService, userService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -57,7 +59,7 @@ namespace CoreBot.Dialogs
             var user = await _userService.GetByAsync(channelId, userId);
             var scenarioDetails = new ScenarioDetails()
             {
-                ScenarioId = "Scenario1",
+                ScenarioId = "scenario1",
                 TeamId = user.TeamId
             };
 

@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using CoreBot;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
 using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
@@ -15,6 +19,8 @@ using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -29,7 +35,8 @@ namespace Microsoft.BotBuilderSamples
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+                ;
 
             Configuration = builder.Build();
         }
@@ -67,7 +74,7 @@ namespace Microsoft.BotBuilderSamples
 
             services.AddSingleton<ICloudStorage, CloudStorage>();
 
-            services.AddSingleton<IScenarioService, DummyScenarioService>();
+            services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
 
 
@@ -77,6 +84,7 @@ namespace Microsoft.BotBuilderSamples
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
 
+            services.AddHostedService<LoadScenarioService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +104,26 @@ namespace Microsoft.BotBuilderSamples
 
             //app.UseHttpsRedirection();
             app.UseMvc();
+        }
+    }
+
+    public class LoadScenarioService : IHostedService
+    {
+        private readonly IScenarioService _scenarioService;
+
+        public LoadScenarioService(IScenarioService scenarioService)
+        {
+            _scenarioService = scenarioService;
+        }
+
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            _scenarioService.Load(@"raw_data\scenario1.json");
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

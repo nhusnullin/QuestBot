@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -5,21 +6,20 @@ namespace CoreBot
 {
     public class Scenario
     {
+        private IList<Puzzle> _collection;
+
         public Scenario()
         {
-            Puzzles = new Dictionary<string, Puzzle>();
-            Collection = new List<Puzzle>();
+            _collection = new List<Puzzle>();
         }
 
-        [JsonIgnoreAttribute]
-        public Dictionary<string, Puzzle> Puzzles { get; set; }
         public string ScenarioId { get; set; }
 
         public IList<Puzzle> Collection { get; set; }
 
         public Puzzle Add(Puzzle puzzle)
         {
-            Puzzles.Add(puzzle.Id, puzzle); Collection.Add(puzzle);
+            Collection.Add(puzzle);
             return puzzle;
         }
     }
@@ -29,10 +29,13 @@ namespace CoreBot
     /// </summary>
     public class Puzzle
     {
+        private const string _gameOverid = "Game over";
+        public const string RootId = "Root";
+
         public Puzzle()
         {
-            GoToYesBranch = "game over";
-            GoToNoBranch = "game over";
+            GoToYesBranch = _gameOverid;
+            GoToNoBranch = _gameOverid;
         }
 
         public Puzzle(string id):this()
@@ -40,6 +43,8 @@ namespace CoreBot
             Id = id;
         }
 
+        public bool IsLastPuzzle => string.Equals(Id, _gameOverid, StringComparison.CurrentCultureIgnoreCase);
+        
         public Puzzle To(Scenario scenario)
         {
             return scenario.Add(this);
