@@ -48,8 +48,9 @@ namespace CoreBot.Dialogs
             var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
             if (user == null)
             {
-                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id) {
-                    ChannelData = stepContext.Context.Activity.ChannelData.ToString()
+                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id)
+                {
+                    ChannelData = stepContext.Context.Activity.ChannelData != null ? stepContext.Context.Activity.ChannelData.ToString() : string.Empty
                 };
                 await _userService.InsertOrMergeAsync(user);
             }
