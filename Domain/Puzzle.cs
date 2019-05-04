@@ -6,11 +6,9 @@ namespace CoreBot
 {
     public class Scenario
     {
-        private IList<Puzzle> _collection;
-
         public Scenario()
         {
-            _collection = new List<Puzzle>();
+            Collection = new List<Puzzle>();
         }
 
         public string ScenarioId { get; set; }

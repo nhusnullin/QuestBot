@@ -1,4 +1,5 @@
 ﻿using CoreBot.Service;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace CoreBot
@@ -28,8 +29,18 @@ namespace CoreBot
         {
         }
 
-        public void SetAnswer(string userOrTeamId, string scenarioId, string puzzleId, string actualAnswer)
+        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
         {
+            var table = _storage.GetOrCreateTable(Answer.TableName);
+
+            var answer = new Answer(userId, $"{scenarioId} {puzzleId}")
+            {
+                ScenarioId = scenarioId,
+                PuzzleId = puzzleId,
+                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails)
+            };
+
+            await _storage.InsertOrMergeEntityAsync(table, answer);
         }
     }
 }

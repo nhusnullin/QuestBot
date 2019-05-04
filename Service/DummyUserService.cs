@@ -24,8 +24,9 @@ namespace CoreBot
         {
         }
 
-        public void SetAnswer(string userOrTeamId, string scenarioId, string puzzleId, string actualAnswer)
+        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
         {
+            return;
         }
     }
 }

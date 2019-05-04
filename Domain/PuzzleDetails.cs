@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace CoreBot
 {
@@ -12,7 +13,7 @@ namespace CoreBot
         {
 
         }
-        
+
         public PuzzleDetails(Puzzle puzzle)
         {
             ScenarioId = "1";
@@ -29,6 +30,44 @@ namespace CoreBot
         public string ActualAnswer { get; set; }
         public bool? WaitUntilReceiveRightAnswer { get; set; }
 
-        public bool IsRight => string.Equals(ExpectedAnswer, ActualAnswer, StringComparison.CurrentCultureIgnoreCase);
+        public bool IsRight
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(ActualAnswer) ||
+                    string.IsNullOrEmpty(ExpectedAnswer))
+                {
+                    return false;
+                }
+
+                var actuals = ActualAnswer.Split(' ')
+                    .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x));
+
+                var expected = ExpectedAnswer.Split(' ')
+                    .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+
+                foreach(var aItem in actuals)
+                {
+                    bool isFound = false;
+                    for(var i = 0; i < expected.Length; i++)
+                    {
+                        var isEqual = String.Equals(expected[i], aItem, StringComparison.CurrentCultureIgnoreCase);
+                        if (isEqual)
+                        {
+                            isFound = true;
+                            expected[i] = null;
+                            break;
+                        }
+                    }
+
+                    if (!isFound)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
     }
 }
