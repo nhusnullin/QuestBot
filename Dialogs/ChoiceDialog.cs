@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
-using Microsoft.BotBuilderSamples;
 
 namespace CoreBot.Dialogs
 {

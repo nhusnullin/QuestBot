@@ -27,8 +27,8 @@ namespace CoreBot
             IsCaptain = false;
         }
 
-        public string UserId { get;  }
-        public string ChannelId { get; }
+        public string UserId { get; set; }
+        public string ChannelId { get; set; }
 
         public string Name { get; set; }
 
