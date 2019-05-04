@@ -31,9 +31,14 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails)stepContext.Options;
-            puzzleDetails.ActualAnswer = (string)stepContext.Result;
+            puzzleDetails.SetAnswer((string)stepContext.Result);
 
-            if (!puzzleDetails.IsRight && puzzleDetails.WaitUntilReceiveRightAnswer.HasValue && puzzleDetails.WaitUntilReceiveRightAnswer.Value)
+            if (puzzleDetails.IsRight)
+            {
+                return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
+            }
+
+            if ( puzzleDetails.WaitUntilReceiveRightAnswer.HasValue && puzzleDetails.WaitUntilReceiveRightAnswer.Value)
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text($"The answer is {puzzleDetails.ActualAnswer}. It's wrong answer"), cancellationToken);
                 return await stepContext.ReplaceDialogAsync(nameof(TextPuzzleDialog), puzzleDetails, cancellationToken);

@@ -14,14 +14,16 @@ namespace CoreBot
 
         }
 
-        public PuzzleDetails(Puzzle puzzle)
+        public PuzzleDetails(Puzzle puzzle, string expectedAnswer)
         {
             ScenarioId = "1";
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
-            ExpectedAnswer = puzzle.Answer;
+            ExpectedAnswer = expectedAnswer;
             WaitUntilReceiveRightAnswer = puzzle.WaitUntilReceiveRightAnswer;
+            NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
         }
+
 
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
@@ -29,6 +31,16 @@ namespace CoreBot
         public string ExpectedAnswer { get; set; }
         public string ActualAnswer { get; set; }
         public bool? WaitUntilReceiveRightAnswer { get; set; }
+
+        /// <summary>
+        /// сколько раз пользователь вводил ответ 
+        /// </summary>
+        public int NumberOfAttempts { get; set; }
+
+        /// <summary>
+        /// сколько раз пользователь может вводить ответ 
+        /// </summary>
+        public int? NumberOfAttemptsLimit { get; set; }
 
         public bool IsRight
         {
@@ -69,5 +81,13 @@ namespace CoreBot
                 return true;
             }
         }
+
+        public void SetAnswer(string answer)
+        {
+            ActualAnswer = answer;
+            NumberOfAttempts++;
+        }
+
+        
     }
 }
