@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
@@ -34,7 +35,10 @@ namespace CoreBot.Dialogs
 
             var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
 
-            return await stepContext.BeginDialogAsync(puzzle.PuzzleType.ToString(), new PuzzleDetails(puzzle, ""), cancellationToken);
+            return await stepContext.BeginDialogAsync(
+                puzzle.PuzzleType.ToString(),
+                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList()),
+                cancellationToken);
         }
 
         private async Task<DialogTurnResult> Check(WaterfallStepContext stepContext, CancellationToken cancellationToken) {
