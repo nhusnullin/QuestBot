@@ -60,6 +60,7 @@ namespace CoreBot.Service
         {
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(tableName);
+            table.CreateIfNotExists();
             return table;
         }
 

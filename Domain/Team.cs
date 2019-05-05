@@ -4,22 +4,28 @@ using System.Collections.Generic;
 
 namespace CoreBot.Domain
 {
-    public class Team : TableEntity
+    public enum TeamType
     {
-        public Team (string id, string leader)
+        SingleUser,
+        MultiUser
+    }
+
+    public class Team
+    {
+        public Team (string id, UserId leader)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Leader = leader ?? throw new ArgumentNullException(nameof(leader));
-            Members = new HashSet<string>
+            Members = new HashSet<UserId>
             {
                 leader
             };
-            AllowJoin = false;
+            TeamType = TeamType.SingleUser;
         }
 
         public string Id { get; }
-        public string Leader { get; }
-        public ISet<string> Members { get; }
-        public bool AllowJoin { get; set; }
+        public UserId Leader { get; }
+        public ISet<UserId> Members { get; }
+        public TeamType TeamType { get; set; }
     }
 }

@@ -1,46 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreBot.Domain;
+using CoreBot.Repositories;
 
 namespace CoreBot.Service
 {
     public class TeamService : ITeamService
     {
-        private readonly List<Team> _teams = new List<Team>();
+        private readonly ITeamRepository _teamRepository;
 
-        public async Task AddMember(Team team, User member)
+        public TeamService(ITeamRepository teamRepository)
         {
-            var foundTeam = await TryGetTeam(team.Id);
-            if (foundTeam == null)
-                throw new InvalidOperationException("Team not found.");
-            foreach (var item in _teams.Where(i => i.Id != team.Id))
-                item.Members.Remove(member.UserId);
+            _teamRepository = teamRepository ?? throw new ArgumentNullException(nameof(teamRepository));
+        }
 
-            if (!team.Members.Contains(member.UserId))
-                team.Members.Add(member.UserId);
-            return;
+        public async Task AddMember(string teamId, User member)
+        {
+            if (TryGetTeamId(member) != null)
+                throw new InvalidOperationException("User is already member of team.");
+            if (!await IsTeamExists(teamId))
+                throw new InvalidOperationException("Team not found.");
+            await _teamRepository.AddMemberAsync(teamId, new UserId(member.ChannelId, member.UserId));
+        }
+
+        public async Task<Team> CreateSingleUserTeam(User user)
+        {
+            var teamId = Guid.NewGuid().ToString("B", CultureInfo.InvariantCulture);
+            return await CreateTeam(teamId, user, TeamType.SingleUser);
         }
 
         public async Task<Team> CreateTeam(string id, User leader)
         {
-            var team = await TryGetTeam(id);
-            if (team != null)
+            return await CreateTeam(id, leader, TeamType.MultiUser);
+        }
+
+        public async Task<Team> CreateTeam(string id, User leader, TeamType type)
+        {
+            if (await IsTeamExists(id))
                 throw new InvalidOperationException("Team already exists.");
-            var result = new Team(id, leader.UserId);
-            _teams.Add(result);
-            return result;
+            var team = new Team(id, new UserId(leader.ChannelId, leader.UserId))
+            {
+                TeamType = type
+            };
+            await _teamRepository.AddTeamAsync(team);
+            return team;
         }
 
-        public async Task<Team> TryGetTeam(string id)
+        public async Task<bool> IsTeamExists(string id)
         {
-            return _teams.SingleOrDefault(i => i.Id == id);
+            return await _teamRepository.IsTeamExists(id);
         }
 
-        public async Task<Team> FindTeamByUser(User member)
+        public string TryGetTeamId(User user)
         {
-            return _teams.Where(i => i.Members.Contains(member.UserId)).SingleOrDefault();
+            return user.TeamId;
         }
     }
 }

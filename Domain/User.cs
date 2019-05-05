@@ -44,7 +44,6 @@ namespace CoreBot
             PartitionKey = channelId;
             RowKey = userId;
         
-            TeamId = userId;
             IsCaptain = false;
         }
 

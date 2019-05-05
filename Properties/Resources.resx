@@ -139,12 +139,12 @@
     <value>You want join to team or create own team?</value>
   </data>
   <data name="SelectTeamTypeText" xml:space="preserve">
-    <value>Choose how you want to play</value>
+    <value>Please, choose how you want to play</value>
   </data>
   <data name="TeamAlreadyExistsMessage" xml:space="preserve">
-    <value>Team '{0}' is alread exits. Please enter another name.</value>
+    <value>Team is already exits. Please enter another name.</value>
   </data>
   <data name="TeamNotFoundMessage" xml:space="preserve">
-    <value>Team '{0}' not found.</value>
+    <value>Team not found. Please enter existing team</value>
   </data>
 </root>

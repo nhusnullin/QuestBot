@@ -14,12 +14,14 @@ namespace CoreBot.Dialogs
     public class SelectTeamDialog : CancelAndHelpDialog
     {
         private readonly ITeamService _teamService;
-
+        private const string newTeamNameDialog = "InputNewTeamNamePromptDialog";
+        private const string existsTeamNameDialog = "InputExistsTeamNamePromptDialog";
         public SelectTeamDialog(ITeamService teamService) : base(nameof(SelectTeamDialog))
         {
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
-            AddDialog(new TextPrompt(nameof(TextPrompt), NewTeamNameValidator));
+            AddDialog(new TextPrompt(newTeamNameDialog, NewTeamNameValidator));
+            AddDialog(new TextPrompt(existsTeamNameDialog, ExistsTeamNameValidator));
             var waterfallStep = new WaterfallStep[]
             {
                 SelectTeamTypeStep,
@@ -54,7 +56,7 @@ namespace CoreBot.Dialogs
             if (choice.Value == Resources.OnePlayerTeam)
             {
                 var user = GetCurrentUser(stepContext);
-                var team = await _teamService.CreateTeam(user.UserId, user);
+                var team = await _teamService.CreateSingleUserTeam(user);
                 return await stepContext.EndDialogAsync(team.Id, cancellationToken);
             }
 
@@ -77,7 +79,7 @@ namespace CoreBot.Dialogs
             stepContext.Values["TeamJoinType"] = choice.Value;
 
             return await stepContext.PromptAsync(
-                nameof(TextPrompt),
+                choice.Value == Resources.CreateTeamText ? newTeamNameDialog : existsTeamNameDialog,
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text(Resources.InputTeamNameMessage),
@@ -99,8 +101,7 @@ namespace CoreBot.Dialogs
             }
             else
             {
-                var team = await _teamService.TryGetTeam(teamId);
-                await _teamService.AddMember(team, user);
+                await _teamService.AddMember(teamId, user);
             }
             return await stepContext.EndDialogAsync(teamId, cancellationToken);
         }
@@ -108,15 +109,13 @@ namespace CoreBot.Dialogs
         private async Task<bool> NewTeamNameValidator(PromptValidatorContext<string> promptContext, CancellationToken cancellationToken)
         {
             var result = promptContext.Recognized.Value;
-            var team = await _teamService.TryGetTeam(result);
-            return team == null;
+            return !await _teamService.IsTeamExists(result);
         }
 
         private async Task<bool> ExistsTeamNameValidator(PromptValidatorContext<string> promptContext, CancellationToken cancellationToken)
         {
             var result = promptContext.Recognized.Value;
-            var team = await _teamService.TryGetTeam(result);
-            return team != null;
+            return await _teamService.IsTeamExists(result);
         }
 
         private User GetCurrentUser(WaterfallStepContext stepContext)

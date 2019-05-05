@@ -124,7 +124,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose how you want to play.
+        ///   Looks up a localized string similar to Please, choose how you want to play.
         /// </summary>
         internal static string SelectTeamTypeText {
             get {
@@ -133,7 +133,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team &apos;{0}&apos; is alread exits. Please enter another name..
+        ///   Looks up a localized string similar to Team is already exits. Please enter another name..
         /// </summary>
         internal static string TeamAlreadyExistsMessage {
             get {
@@ -142,7 +142,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team &apos;{0}&apos; not found..
+        ///   Looks up a localized string similar to Team not found. Please enter existing team.
         /// </summary>
         internal static string TeamNotFoundMessage {
             get {

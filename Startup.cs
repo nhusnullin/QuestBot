@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using CoreBot;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
+using CoreBot.Repositories;
 using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
@@ -77,6 +77,8 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<ITeamService, TeamService>();
+            services.AddSingleton<ITeamRepository, TeamRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
 
             // The Dialog that will be run by the bot.

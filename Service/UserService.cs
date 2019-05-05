@@ -1,4 +1,5 @@
-﻿using CoreBot.Service;
+﻿using CoreBot.Repositories;
+using CoreBot.Service;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
@@ -6,23 +7,22 @@ namespace CoreBot
 {
     public class UserService : IUserService
     {
+        private readonly IUserRepository _userRepository;
         private readonly ICloudStorage _storage;
-
-        public UserService(ICloudStorage storage)
+        public UserService(IUserRepository userRepository, ICloudStorage cloudStorage)
         {
-            _storage = storage;
+            _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
+            _storage = cloudStorage ?? throw new System.ArgumentNullException(nameof(cloudStorage));
         }
 
         public async Task<User> GetByAsync(string channelId, string userId)
         {
-            var table = _storage.GetOrCreateTable(User.TableName);
-            return await _storage.RetrieveEntityByAsync<User>(table, channelId, userId);
+            return await _userRepository.TryGetUserByIdAsync(new Domain.UserId(channelId, userId));
         }
 
         public async Task InsertOrMergeAsync(User user)
         {
-            var table = _storage.GetOrCreateTable(User.TableName);
-            await _storage.InsertOrMergeEntityAsync(table, user);
+            await _userRepository.InsertOrMergeAsync(user);
         }
 
         public void Remove(string channelId, string userId)
