@@ -8,7 +8,7 @@ namespace CoreBot
 {
     public interface IScenarioService
     {
-        Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId = "", bool? lastWasRight = false);
+        Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer);
         Puzzle GetFirstPuzzle(string teamId, string scenarioId);
         bool IsOver(string teamId, string scenarioId, string lastPuzzleId);
 
@@ -25,7 +25,7 @@ namespace CoreBot
             return scenario.Collection.First(x => x.Id == Puzzle.RootId);
         }
 
-        public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId = "", bool? lastWasRight = false)
+        public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
             var scenario = _store[scenarioId];
 
@@ -34,12 +34,10 @@ namespace CoreBot
                 return GetFirstPuzzle(teamId, scenarioId);
             }
 
-            Puzzle puzzle = scenario.Collection.First(x=>x.Id == lastPuzzleId);
-            if (lastWasRight.HasValue && lastWasRight.Value)
-            {
-                return scenario.Collection.First(x => x.Id == puzzle.GoToYesBranch); 
-            }
-            return scenario.Collection.First(x => x.Id == puzzle.GoToNoBranch);
+            var puzzle = scenario.Collection.First(x=>x.Id == lastPuzzleId);
+            var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
+            
+            return scenario.Collection.First(x => x.Id == puzzleId);
         }
 
         public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)

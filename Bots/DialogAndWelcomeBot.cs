@@ -23,7 +23,7 @@ namespace CoreBot.Bots
         {
             await _userService.InsertOrMergeAsync(new User(turnContext.Activity.ChannelId, turnContext.Activity.From.Id)
             {
-                ChannelData = turnContext.Activity.ChannelData != null ? turnContext.Activity.ChannelData.ToString() : string.Empty
+                ChannelData = turnContext.Activity.ChannelData?.ToString()
             });
         }
     }

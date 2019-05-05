@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CoreBot
@@ -11,63 +12,104 @@ namespace CoreBot
         // пустой конструктор необходим для дессериализации bot framework
         public PuzzleDetails()
         {
-
+            PossibleAnswers = new List<string>();
         }
 
-        public PuzzleDetails(Puzzle puzzle)
+        public PuzzleDetails(Puzzle puzzle, List<string> possibleAnswers)
         {
             ScenarioId = "1";
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
-            ExpectedAnswer = puzzle.Answer;
+            PossibleAnswers = possibleAnswers;
             WaitUntilReceiveRightAnswer = puzzle.WaitUntilReceiveRightAnswer;
+            NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
         }
+
 
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
         public string Question { get; set; }
-        public string ExpectedAnswer { get; set; }
+        public IList<string> PossibleAnswers { get; set; }
         public string ActualAnswer { get; set; }
         public bool? WaitUntilReceiveRightAnswer { get; set; }
+
+        /// <summary>
+        /// сколько раз пользователь вводил ответ 
+        /// </summary>
+        public int NumberOfAttempts { get; set; }
+
+        /// <summary>
+        /// сколько раз пользователь может вводить ответ 
+        /// </summary>
+        public int? NumberOfAttemptsLimit { get; set; }
+
+        //public bool IsRight
+        //{
+        //    get
+        //    {
+        //        if(string.IsNullOrEmpty(ActualAnswer) ||
+        //            string.IsNullOrEmpty(PossibleAnswers))
+        //        {
+        //            return false;
+        //        }
+
+        //        var actuals = ActualAnswer.Split(' ')
+        //            .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x));
+
+        //        var expected = PossibleAnswers.Split(' ')
+        //            .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+
+        //        foreach(var aItem in actuals)
+        //        {
+        //            bool isFound = false;
+        //            for(var i = 0; i < expected.Length; i++)
+        //            {
+        //                var isEqual = String.Equals(expected[i], aItem, StringComparison.CurrentCultureIgnoreCase);
+        //                if (isEqual)
+        //                {
+        //                    isFound = true;
+        //                    expected[i] = null;
+        //                    break;
+        //                }
+        //            }
+
+        //            if (!isFound)
+        //            {
+        //                return false;
+        //            }
+        //        }
+
+        //        return true;
+        //    }
+        //}
 
         public bool IsRight
         {
             get
             {
-                if(string.IsNullOrEmpty(ActualAnswer) ||
-                    string.IsNullOrEmpty(ExpectedAnswer))
+                if (PossibleAnswers == null || !PossibleAnswers.Any())
                 {
                     return false;
                 }
 
-                var actuals = ActualAnswer.Split(' ')
-                    .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x));
-
-                var expected = ExpectedAnswer.Split(' ')
-                    .Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
-
-                foreach(var aItem in actuals)
+                foreach (var answer in PossibleAnswers)
                 {
-                    bool isFound = false;
-                    for(var i = 0; i < expected.Length; i++)
+                    if (string.Equals(answer, ActualAnswer, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var isEqual = String.Equals(expected[i], aItem, StringComparison.CurrentCultureIgnoreCase);
-                        if (isEqual)
-                        {
-                            isFound = true;
-                            expected[i] = null;
-                            break;
-                        }
-                    }
-
-                    if (!isFound)
-                    {
-                        return false;
+                        return true;
                     }
                 }
 
-                return true;
+                return false;
             }
         }
+
+        public void SetAnswer(string answer)
+        {
+            ActualAnswer = answer;
+            NumberOfAttempts++;
+        }
+
+        
     }
 }
