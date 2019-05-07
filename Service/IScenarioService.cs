@@ -13,6 +13,7 @@ namespace CoreBot
         bool IsOver(string teamId, string scenarioId, string lastPuzzleId);
 
         Scenario Load(string path);
+        void LoadAll();
     }
 
     public class ScenarioService : IScenarioService
@@ -54,6 +55,12 @@ namespace CoreBot
             var scenario = JsonConvert.DeserializeObject<Scenario>(value);
             _store[scenario.ScenarioId] = scenario;
             return scenario;
+        }
+
+        public void LoadAll()
+        {
+            var dr = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "raw_data"));
+            dr.GetFiles("*.json").Select(x => Load(x.FullName)).ToList();
         }
     }
 }

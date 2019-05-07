@@ -24,6 +24,9 @@
     <Content Update="appsettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="raw_data\nukescenario.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="raw_data\scenario1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

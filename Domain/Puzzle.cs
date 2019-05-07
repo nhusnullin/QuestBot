@@ -75,9 +75,10 @@ namespace CoreBot
 
         public string GetNextPossibleBranchId(string answer)
         {
-            if (string.IsNullOrEmpty(answer))
+            var answerToBranches = PosibleBranches.FirstOrDefault(x => string.Equals(x.Answer, answer, StringComparison.InvariantCultureIgnoreCase));
+            if (answerToBranches != null)
             {
-                return ElseBranch;
+                return answerToBranches.GoToId;
             }
 
             return ElseBranch;

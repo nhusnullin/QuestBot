@@ -60,7 +60,7 @@ namespace CoreBot.Dialogs
             var user = await _userService.GetByAsync(channelId, userId);
             var scenarioDetails = new ScenarioDetails()
             {
-                ScenarioId = "scenario1",
+                ScenarioId = "nukescenario",
                 TeamId = user.TeamId
             };
 
