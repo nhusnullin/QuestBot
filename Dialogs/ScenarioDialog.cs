@@ -11,7 +11,7 @@ namespace CoreBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
 
-        public ScenarioDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ScenarioDialog))
+        public ScenarioDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ScenarioDialog), scenarioService,userService)
         {
             var waterfallStep = new WaterfallStep[]
             {
@@ -19,7 +19,7 @@ namespace CoreBot.Dialogs
                 Check
             };
 
-            AddDialog(new TextPuzzleDialog());
+            AddDialog(new TextPuzzleDialog(scenarioService, userService));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;

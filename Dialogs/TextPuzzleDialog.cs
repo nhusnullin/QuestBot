@@ -8,7 +8,7 @@ namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
-        public TextPuzzleDialog() : base(PuzzleType.TextPuzzleDialog.ToString())
+        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService) : base(PuzzleType.TextPuzzleDialog.ToString(), scenarioService, userService)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 

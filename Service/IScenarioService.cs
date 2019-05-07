@@ -14,6 +14,8 @@ namespace CoreBot
 
         Scenario Load(string path);
         void LoadAll();
+
+        string[] AvailableScenario { get; }
     }
 
     public class ScenarioService : IScenarioService
@@ -25,6 +27,8 @@ namespace CoreBot
             var scenario = _store[scenarioId];
             return scenario.Collection.First(x => x.Id == Puzzle.RootId);
         }
+
+        public string[] AvailableScenario => _store.Select(x => x.Key).ToArray();
 
         public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {

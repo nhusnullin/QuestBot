@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreBot.Dialogs
 {
-    public class MainDialog : ComponentDialog
+    public class MainDialog : CancelAndHelpDialog
     {
         protected readonly IConfiguration _configuration;
         protected readonly ILogger _logger;
@@ -16,12 +16,13 @@ namespace CoreBot.Dialogs
         private readonly IUserService _userService;
 
         public MainDialog(IConfiguration configuration, ILogger<MainDialog> logger, IScenarioService scenarioService, IUserService userService)
-            : base(nameof(MainDialog))
+            : base(nameof(MainDialog), scenarioService, userService)
         {
             _configuration = configuration;
             _logger = logger;
             this._scenarioService = scenarioService;
             _userService = userService;
+            AddDialog(new ChoiceDialog(scenarioService, userService));
             AddDialog(new ScenarioDialog(scenarioService, userService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -64,13 +65,14 @@ namespace CoreBot.Dialogs
                 TeamId = user.TeamId
             };
 
-            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
+            //return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(ChoiceDialog), scenarioDetails, cancellationToken);
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Thank you and Goodbay! Have a nice day and hope to see you soon!"), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
     }

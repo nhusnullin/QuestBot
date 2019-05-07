@@ -10,7 +10,7 @@ namespace CoreBot.Dialogs
 {
     public class ChoiceDialog : CancelAndHelpDialog
     {
-        public ChoiceDialog() : base(nameof(ChoiceDialog))
+        public ChoiceDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ChoiceDialog), scenarioService, userService)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));

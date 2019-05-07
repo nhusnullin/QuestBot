@@ -1,18 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 
-namespace Microsoft.BotBuilderSamples
+namespace CoreBot.Dialogs
 {
     public class CancelAndHelpDialog : ComponentDialog
     {
-        public CancelAndHelpDialog(string id)
+        public CancelAndHelpDialog(string id, IScenarioService scenarioService, IUserService userService)
             : base(id)
         {
+            AddDialog(new ScenarioListDialog(scenarioService, userService));
         }
 
         protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options, CancellationToken cancellationToken)
@@ -41,10 +40,13 @@ namespace Microsoft.BotBuilderSamples
         {
             if (innerDc.Context.Activity.Type == ActivityTypes.Message)
             {
-                var text = innerDc.Context.Activity.Text.ToLowerInvariant();
+                var text = innerDc.Context.Activity.Text.ToLowerInvariant().Replace("/", "");
 
                 switch (text)
                 {
+                    case "scenario":
+                        return await innerDc.BeginDialogAsync(nameof(ScenarioListDialog), null, cancellationToken);
+
                     case "help":
                     case "?":
                         await innerDc.Context.SendActivityAsync($"Show Help...");
@@ -52,8 +54,9 @@ namespace Microsoft.BotBuilderSamples
 
                     case "cancel":
                     case "quit":
-                        await innerDc.Context.SendActivityAsync($"Cancelling");
-                        return await innerDc.CancelAllDialogsAsync();
+                        await innerDc.Context.SendActivityAsync($"Выполнение квеста прервано");
+                        return await innerDc.CancelAllDialogsAsync(cancellationToken);
+
                 }
             }
 

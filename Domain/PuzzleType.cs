@@ -5,6 +5,7 @@ namespace CoreBot
     /// </summary>
     public enum PuzzleType
     {
-        TextPuzzleDialog
+        TextPuzzleDialog,
+
     }
 }
