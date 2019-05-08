@@ -57,6 +57,14 @@
 				{
                     "Answer": "async await",
                     "GoToId": "exit"
+                },
+				{
+                    "Answer": "async\\await",
+                    "GoToId": "exit"
+                },
+				{
+                    "Answer": "async\/await",
+                    "GoToId": "exit"
                 }
             ],
             "ElseBranch": "dotnetru"
@@ -74,7 +82,16 @@
 				{
                     "Answer": "async await",
                     "GoToId": "exit2"
+                },
+				{
+                    "Answer": "async\\await",
+                    "GoToId": "exit"
+                },
+				{
+                    "Answer": "async\/await",
+                    "GoToId": "exit"
                 }
+            ],
             ],
             "ElseBranch": "dotnetru"
         },
@@ -160,20 +177,14 @@
             "ElseBranch": "Game over"
         },
         {
-            "IsLastPuzzle": false,
+            "IsLastPuzzle": true,
             "Id": "win",
             "Question": "Узнав, что ты настоящий знаток своей платформы, охранник лично сопроводил тебя к местному диктатору. Тебя накормили, напоили и выдали самый мощный ноутбук в оазисе. Этот день ты запомнил на всю свою долгую жизнь!",
             "PuzzleType": 0,
-            "PosibleBranches": [
-                {
-                    "Answer": "2014",
-                    "GoToId": "win"
-                }
-            ],
-            "ElseBranch": "Game over"
+            "PosibleBranches": []
         },
         {
-            "IsLastPuzzle": false,
+            "IsLastPuzzle": true,
             "Id": "Game over",
             "Question": "Ты и вправду запомнил этот день на всю оставшуюся жизнь. Жаль что она оказалась такой короткой...",
             "PuzzleType": 0,
