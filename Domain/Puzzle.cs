@@ -35,21 +35,17 @@ namespace CoreBot
     /// </summary>
     public class Puzzle
     {
-        private const string GameOverid = "Game over";
         public const string RootId = "Root";
 
         public Puzzle()
         {
             PosibleBranches = new List<AnswerToBranch>();
-            ElseBranch = GameOverid;
         }
 
         public Puzzle(string id):this()
         {
             Id = id;
         }
-
-        public bool IsLastPuzzle => string.Equals(Id, GameOverid, StringComparison.CurrentCultureIgnoreCase);
         
         public Puzzle To(Scenario scenario)
         {
@@ -158,5 +154,10 @@ namespace CoreBot
         /// ветка развития, когда не подошел ни один из ответов
         /// </summary>
         public string ElseBranch { get; set; }
+
+        /// <summary>
+        /// признак что это последний шаг в квесте
+        /// </summary>
+        public bool IsLastPuzzle { get; set; }
     }
 }
