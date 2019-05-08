@@ -92,7 +92,6 @@
                     "GoToId": "exit"
                 }
             ],
-            ],
             "ElseBranch": "dotnetru"
         },
         {
