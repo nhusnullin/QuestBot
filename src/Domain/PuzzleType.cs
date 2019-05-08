@@ -6,6 +6,6 @@ namespace CoreBot
     public enum PuzzleType
     {
         TextPuzzleDialog,
-
+        WaitTextPuzzleDialog
     }
 }

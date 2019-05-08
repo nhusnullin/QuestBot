@@ -131,11 +131,6 @@ namespace CoreBot
         public PuzzleType PuzzleType { get; set; }
       
         /// <summary>
-        /// надо дождаться пока пользователь ответит правильно на вопрос
-        /// </summary>
-        public bool? WaitUntilReceiveRightAnswer { get; set; }
-
-        /// <summary>
         /// кол-во попыток на получение правильного ответа
         /// </summary>
         public int? NumberOfAttemptsLimit { get; set; }
@@ -143,7 +138,7 @@ namespace CoreBot
         /// <summary>
         /// время ожидания перед тем как можно переходить на след шаг
         /// </summary>
-        public int? WaitnigTime { get; set; }
+        public int? WaitingTime { get; set; }
         
         /// <summary>
         /// ветки развития. key - это ответ пользователя, value - ветка развития

@@ -18,7 +18,7 @@ namespace CoreBot.Dialogs
                 Ask,
                 Check
             };
-
+            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService));
             AddDialog(new TextPuzzleDialog(scenarioService, userService));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
@@ -29,14 +29,14 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
-            var puzzleDetails = (PuzzleDetails)stepContext.Result;
 
             var userid = stepContext.Context.Activity.From.Id;
 
             var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
+            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x=>x.Answer).ToList());
 
             return await stepContext.BeginDialogAsync(
-                puzzle.PuzzleType.ToString(),
+                puzzleDetails.PuzzleType.ToString(),
                 new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList()),
                 cancellationToken);
         }

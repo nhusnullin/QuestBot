@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace CoreBot
         public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
         {
             var scenario = _store[scenarioId];
-            return scenario.Collection.First(x => x.Id == Puzzle.RootId);
+            return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public string[] AvailableScenario => _store.Select(x => x.Key).ToArray();
@@ -39,16 +40,16 @@ namespace CoreBot
                 return GetFirstPuzzle(teamId, scenarioId);
             }
 
-            var puzzle = scenario.Collection.First(x=>x.Id == lastPuzzleId);
+            var puzzle = scenario.Collection.First(x=> string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
-            
-            return scenario.Collection.First(x => x.Id == puzzleId);
+
+            return scenario.Collection.First(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)
         {
             var scenario = _store[scenarioId];
-            var puzzle = scenario.Collection.First(x => x.Id == lastPuzzleId);
+            var puzzle = scenario.Collection.First(x => string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             return puzzle.IsLastPuzzle;
         }
 

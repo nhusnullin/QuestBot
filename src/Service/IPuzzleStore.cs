@@ -56,7 +56,7 @@ namespace CoreBot.Service
             {
                 Id = "timeot 30 min",
                 Question = "Я не могу дышать, сейчас будет timeot 30 min",
-                WaitnigTime = 30
+                WaitingTime = 30
             }.To(scenario);
 
             var yesQuestion5 = new Puzzle()
@@ -78,7 +78,7 @@ namespace CoreBot.Service
                 Id = "hell-",
                 Question = "Душно. Обморок. Сон.",
 //                Answer = "hell",
-                WaitnigTime = 30,
+                WaitingTime = 30,
                 NumberOfAttemptsLimit = 5
             }.To(scenario);
 
