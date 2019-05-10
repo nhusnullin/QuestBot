@@ -21,19 +21,19 @@ namespace CoreBot
 
     public class ScenarioService : IScenarioService
     {
-        public Dictionary<string, Scenario> _store = new Dictionary<string, Scenario>();
+        public Dictionary<string, Scenario> Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
 
         public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
         {
-            var scenario = _store[scenarioId];
+            var scenario = Store[scenarioId];
             return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public string[] AvailableScenario => _store.Select(x => x.Key).ToArray();
+        public string[] AvailableScenario => Store.Select(x => x.Key).ToArray();
 
         public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
-            var scenario = _store[scenarioId];
+            var scenario = Store[scenarioId];
 
             if (string.IsNullOrEmpty(lastPuzzleId))
             {
@@ -48,7 +48,7 @@ namespace CoreBot
 
         public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)
         {
-            var scenario = _store[scenarioId];
+            var scenario = Store[scenarioId];
             var puzzle = scenario.Collection.First(x => string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             return puzzle.IsLastPuzzle;
         }
@@ -58,7 +58,7 @@ namespace CoreBot
             path = Path.Combine(Directory.GetCurrentDirectory(), path);
             var value = File.ReadAllText(path);
             var scenario = JsonConvert.DeserializeObject<Scenario>(value);
-            _store[scenario.ScenarioId] = scenario;
+            Store[scenario.ScenarioId] = scenario;
             return scenario;
         }
 

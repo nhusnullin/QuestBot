@@ -27,6 +27,9 @@
     <Content Update="raw_data\nukescenario.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="raw_data\testScenario.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="raw_data\WelcomeToHellScenario.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

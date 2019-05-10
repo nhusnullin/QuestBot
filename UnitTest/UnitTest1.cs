@@ -37,7 +37,7 @@ namespace UnitTestProject
             scenarioService.LoadAll();
 
 
-            await InMemoryScenarioStore.Generate(scenarioService._store["nukescenario"]);
+            await InMemoryScenarioStore.Generate(scenarioService.Store["nukescenario"]);
         }
 
         [TestMethod]
