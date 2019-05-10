@@ -22,7 +22,6 @@ namespace CoreBot.Dialogs
             _logger = logger;
             this._scenarioService = scenarioService;
             _userService = userService;
-            AddDialog(new ChoiceDialog(scenarioService, userService));
             AddDialog(new ScenarioDialog(scenarioService, userService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -61,12 +60,11 @@ namespace CoreBot.Dialogs
             var user = await _userService.GetByAsync(channelId, userId);
             var scenarioDetails = new ScenarioDetails()
             {
-                ScenarioId = "nukescenario",
+                ScenarioId = "testScenario",
                 TeamId = user.TeamId
             };
 
-            //return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-            return await stepContext.BeginDialogAsync(nameof(ChoiceDialog), scenarioDetails, cancellationToken);
+            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,

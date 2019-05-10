@@ -17,7 +17,6 @@ namespace CoreBot
 
         public PuzzleDetails(Puzzle puzzle, List<string> possibleAnswers)
         {
-            ScenarioId = "1";
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
             PossibleAnswers = possibleAnswers;
@@ -59,7 +58,6 @@ namespace CoreBot
             return (AnswerTimeNoLessThan - now).Minutes;
         }
 
-        public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
         public string Question { get; set; }
         public IList<string> PossibleAnswers { get; set; }
