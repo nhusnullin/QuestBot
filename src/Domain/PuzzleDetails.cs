@@ -21,18 +21,50 @@ namespace CoreBot
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
             PossibleAnswers = possibleAnswers;
-            WaitUntilReceiveRightAnswer = puzzle.WaitUntilReceiveRightAnswer;
             NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
+            WaitnigTime = puzzle.WaitingTime;
+
+            // для режима ожидания у нас свой диалог
+            PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
         }
 
+        public PuzzleType PuzzleType { get; set; }
+
+
+        /// <summary>
+        /// Время когда задали вопрос (UTC)
+        /// </summary>
+        public DateTime? QuestionAskedAt { get; set; }
+
+
+        public void SetQuestionAskedAt(DateTime value)
+        {
+            QuestionAskedAt = value;
+
+            if (!WaitnigTime.HasValue)
+            {
+                return;
+            }
+
+            AnswerTimeNoLessThan = QuestionAskedAt.Value.AddMinutes(WaitnigTime.Value);
+        }
+
+        /// <summary>
+        /// Время когда можно дать ответ (UTC)
+        /// </summary>
+        public DateTime AnswerTimeNoLessThan { get; set; }
+
+        public int GetRemainMinutesToAnswer(DateTime now)
+        {
+            return (AnswerTimeNoLessThan - now).Minutes;
+        }
 
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
         public string Question { get; set; }
         public IList<string> PossibleAnswers { get; set; }
         public string ActualAnswer { get; set; }
-        public bool? WaitUntilReceiveRightAnswer { get; set; }
-
+        public int? WaitnigTime { get; set; }
         /// <summary>
         /// сколько раз пользователь вводил ответ 
         /// </summary>

@@ -35,21 +35,17 @@ namespace CoreBot
     /// </summary>
     public class Puzzle
     {
-        private const string GameOverid = "Game over";
         public const string RootId = "Root";
 
         public Puzzle()
         {
             PosibleBranches = new List<AnswerToBranch>();
-            ElseBranch = GameOverid;
         }
 
         public Puzzle(string id):this()
         {
             Id = id;
         }
-
-        public bool IsLastPuzzle => string.Equals(Id, GameOverid, StringComparison.CurrentCultureIgnoreCase);
         
         public Puzzle To(Scenario scenario)
         {
@@ -75,9 +71,10 @@ namespace CoreBot
 
         public string GetNextPossibleBranchId(string answer)
         {
-            if (string.IsNullOrEmpty(answer))
+            var answerToBranches = PosibleBranches.FirstOrDefault(x => string.Equals(x.Answer, answer, StringComparison.InvariantCultureIgnoreCase));
+            if (answerToBranches != null)
             {
-                return ElseBranch;
+                return answerToBranches.GoToId;
             }
 
             return ElseBranch;
@@ -134,11 +131,6 @@ namespace CoreBot
         public PuzzleType PuzzleType { get; set; }
       
         /// <summary>
-        /// надо дождаться пока пользователь ответит правильно на вопрос
-        /// </summary>
-        public bool? WaitUntilReceiveRightAnswer { get; set; }
-
-        /// <summary>
         /// кол-во попыток на получение правильного ответа
         /// </summary>
         public int? NumberOfAttemptsLimit { get; set; }
@@ -146,7 +138,7 @@ namespace CoreBot
         /// <summary>
         /// время ожидания перед тем как можно переходить на след шаг
         /// </summary>
-        public int? WaitnigTime { get; set; }
+        public int? WaitingTime { get; set; }
         
         /// <summary>
         /// ветки развития. key - это ответ пользователя, value - ветка развития
@@ -157,5 +149,10 @@ namespace CoreBot
         /// ветка развития, когда не подошел ни один из ответов
         /// </summary>
         public string ElseBranch { get; set; }
+
+        /// <summary>
+        /// признак что это последний шаг в квесте
+        /// </summary>
+        public bool IsLastPuzzle { get; set; }
     }
 }

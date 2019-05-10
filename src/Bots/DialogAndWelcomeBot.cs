@@ -21,10 +21,10 @@ namespace CoreBot.Bots
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            await _userService.InsertOrMergeAsync(new User(turnContext.Activity.ChannelId, turnContext.Activity.From.Id)
-            {
-                ChannelData = turnContext.Activity.ChannelData?.ToString()
-            });
+//            await _userService.InsertOrMergeAsync(new User(turnContext.Activity.ChannelId, turnContext.Activity.From.Id)
+//            {
+//                ChannelData = turnContext.Activity.ChannelData?.ToString()
+//            });
         }
     }
 }

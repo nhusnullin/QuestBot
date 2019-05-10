@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CoreBot.Dialogs
 {
-    public class SelectTeamDialog : CancelAndHelpDialog
+    public class SelectTeamDialog : ComponentDialog
     {
         private readonly ITeamService _teamService;
         private const string newTeamNameDialog = "InputNewTeamNamePromptDialog";

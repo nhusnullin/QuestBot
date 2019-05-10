@@ -121,7 +121,7 @@ namespace Microsoft.BotBuilderSamples
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _scenarioService.Load(@"raw_data\scenario1.json");
+            _scenarioService.LoadAll();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
