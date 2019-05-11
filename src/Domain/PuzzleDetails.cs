@@ -4,11 +4,13 @@ using System.Linq;
 
 namespace CoreBot
 {
+    // TODO нахер никому не нужный класс
     /// <summary>
     /// Класс для передачи данных из диалога в диалог 
     /// </summary>
     public class PuzzleDetails
     {
+        
         // пустой конструктор необходим для дессериализации bot framework
         public PuzzleDetails()
         {
@@ -22,10 +24,13 @@ namespace CoreBot
             PossibleAnswers = possibleAnswers;
             NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
             WaitnigTime = puzzle.WaitingTime;
+            IsLastPuzzle = puzzle.IsLastPuzzle;
 
             // для режима ожидания у нас свой диалог
             PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
         }
+
+        public bool IsLastPuzzle { get; set; }
 
         public PuzzleType PuzzleType { get; set; }
 

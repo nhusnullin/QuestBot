@@ -57,12 +57,17 @@ namespace CoreBot.Dialogs
             var userId = stepContext.Context.Activity.From.Id;
             var channelId = stepContext.Context.Activity.ChannelId;
 
-            var user = await _userService.GetByAsync(channelId, userId);
-            var scenarioDetails = new ScenarioDetails()
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, userId);
+
+            if (scenarioDetails == null)
             {
-                ScenarioId = "testScenario",
-                TeamId = user.TeamId
-            };
+                var user = await _userService.GetByAsync(channelId, userId);
+                scenarioDetails = new ScenarioDetails()
+                {
+                    ScenarioId = "testScenario",
+                    TeamId = user.TeamId
+                };
+            }
 
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }

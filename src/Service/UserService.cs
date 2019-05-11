@@ -1,4 +1,5 @@
-﻿using CoreBot.Service;
+﻿using System.Linq;
+using CoreBot.Service;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
@@ -11,6 +12,24 @@ namespace CoreBot
         public UserService(ICloudStorage storage)
         {
             _storage = storage;
+        }
+
+        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId)
+        {
+            var answers = _storage
+                .GetAnswersByUserId(userId, x => x.IsLastAnswer != true)
+                .OrderByDescending(x => x.Timestamp)
+                .Take(1)
+                .ToList();
+
+            var scenarioDetails = answers.FirstOrDefault()?.ScenarioDetails;
+
+            if (string.IsNullOrEmpty(scenarioDetails))
+            {
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
         }
 
         public async Task<User> GetByAsync(string channelId, string userId)
@@ -37,7 +56,8 @@ namespace CoreBot
             {
                 ScenarioId = scenarioId,
                 PuzzleId = puzzleId,
-                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails)
+                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails),
+                IsLastAnswer = scenarioDetails.LastPuzzleDetails?.IsLastPuzzle ?? false
             };
 
             await _storage.InsertOrMergeEntityAsync(table, answer);
