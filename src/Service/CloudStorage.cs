@@ -1,5 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -10,12 +9,11 @@ namespace CoreBot.Service
     {
         private readonly ILogger<CloudStorage> _logger;
         private readonly CloudStorageAccount _cloudStorageAccount;
-        private readonly string _connectionString;
 
         public CloudStorage(ILogger<CloudStorage> logger, CloudStorageAccount cloudStorageAccount)
         {
-            _logger = logger;
-            _cloudStorageAccount = cloudStorageAccount;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cloudStorageAccount = cloudStorageAccount ?? throw new ArgumentNullException(nameof(cloudStorageAccount));
         }
 
         public async Task<T> InsertOrMergeEntityAsync<T>(CloudTable table, T entity) where T : ITableEntity

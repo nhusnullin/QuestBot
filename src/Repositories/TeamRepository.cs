@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Service;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace CoreBot.Repositories
 {
@@ -33,19 +34,29 @@ namespace CoreBot.Repositories
             }
         }
 
+        public async Task UpdateTeamNameAsync(string teamId, string name)
+        {
+            var table = _cloudStorage.GetOrCreateTable(TableName);
+            var teamEntity = await _cloudStorage.RetrieveEntityByAsync<TeamEntity>(table, GetPartitionKey(teamId), teamId);
+            teamEntity.Name = name;
+            teamEntity.ETag = "*";
+            var operation = TableOperation.Merge(teamEntity);
+            var result = await table.ExecuteAsync(operation);
+        }
+
         public async Task AddTeamAsync(Team team)
         {
-            var entity = new TeamEntity(GetPartitionKey(team.Id), team.Id)
+            var entity = new TeamEntity(GetPartitionKey(team.Id), team.Id, team.Name)
             {
-                IsSingleUser = team.TeamType == TeamType.SingleUser
+                PinCode = team.PinCode
             };
             var table = _cloudStorage.GetOrCreateTable(TableName);
             await _cloudStorage.InsertAsync(table, entity);
-
-            foreach (var member in team.Members)
+            await AddMemberAsync(team.Id, team.Leader, true);
+            /*foreach (var member in team.Members)
             {
                 await AddMemberAsync(team.Id, member, member.Equals(team.Leader));
-            }
+            }*/
         }
 
         /*public async Task<Team> TryGetTeamAsync(string teamId)
@@ -61,11 +72,35 @@ namespace CoreBot.Repositories
 
         }*/
 
-        public async Task<bool> IsTeamExists(string teamId)
+        public Task<string> TryGetTeamIdByName(string teamName)
         {
             var table = _cloudStorage.GetOrCreateTable(TableName);
-            var teamEntity = await _cloudStorage.RetrieveEntityByAsync<TeamEntity>(table, GetPartitionKey(teamId), teamId);
-            return teamEntity != null;
+
+            TableQuery<TeamEntity> query =
+               new TableQuery<TeamEntity>()
+                  .Where(TableQuery.GenerateFilterCondition(nameof(TeamEntity.Name),
+                      QueryComparisons.Equal, teamName));
+            var result = table.ExecuteQuery(query).SingleOrDefault();
+            return Task.FromResult(result?.RowKey);
+        }
+
+
+        public async Task<bool> IsPinExists(int pinCode)
+        {
+            var result = await TryGetTeamIdByPin(pinCode);
+            return result != null;
+        }
+
+        public Task<string> TryGetTeamIdByPin(int pinCode)
+        {
+            var table = _cloudStorage.GetOrCreateTable(TableName);
+
+            TableQuery<TeamEntity> query =
+               new TableQuery<TeamEntity>()
+                  .Where(TableQuery.GenerateFilterConditionForInt(nameof(TeamEntity.PinCode),
+                      QueryComparisons.Equal, pinCode));
+            var result = table.ExecuteQuery(query).SingleOrDefault();
+            return Task.FromResult(result?.RowKey);
         }
 
         private static string GetPartitionKey(string teamId)

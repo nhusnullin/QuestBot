@@ -4,28 +4,19 @@ using System.Collections.Generic;
 
 namespace CoreBot.Domain
 {
-    public enum TeamType
-    {
-        SingleUser,
-        MultiUser
-    }
-
     public class Team
     {
-        public Team (string id, UserId leader)
+        public Team (string id, string name, int pinCode, UserId leader)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Leader = leader ?? throw new ArgumentNullException(nameof(leader));
-            Members = new HashSet<UserId>
-            {
-                leader
-            };
-            TeamType = TeamType.SingleUser;
+            PinCode = pinCode;
         }
 
         public string Id { get; }
+        public string Name { get; }
         public UserId Leader { get; }
-        public ISet<UserId> Members { get; }
-        public TeamType TeamType { get; set; }
+        public int PinCode { get; }
     }
 }

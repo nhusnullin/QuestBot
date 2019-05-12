@@ -61,16 +61,61 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
+        ///   Looks up a localized string similar to Только капитан может выполнять эту команду.
         /// </summary>
-        internal static string CreateTeamText {
+        internal static string CaptainRequiredPermission {
             get {
-                return ResourceManager.GetString("CreateTeamText", resourceCulture);
+                return ResourceManager.GetString("CaptainRequiredPermission", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input team name.
+        ///   Looks up a localized string similar to Имя команды было изменено на &apos;{0}&apos;.
+        /// </summary>
+        internal static string ChangeTeamNameCompletesdMessage {
+            get {
+                return ResourceManager.GetString("ChangeTeamNameCompletesdMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Команда недоступна. Необходимо создать свою команду..
+        /// </summary>
+        internal static string ChoicePlayMode {
+            get {
+                return ResourceManager.GetString("ChoicePlayMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Я хочу играть сам (один или как капитан команды).
+        /// </summary>
+        internal static string CreateTeam {
+            get {
+                return ResourceManager.GetString("CreateTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ваше имя команды &apos;{0}&apos;. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код &apos;{1}&apos;..
+        /// </summary>
+        internal static string CreateTeamCompletedMessage {
+            get {
+                return ResourceManager.GetString("CreateTeamCompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ведите пин код команды (вы можете обратиться за пин кодом доступной команды на стенд DotNetRu).
+        /// </summary>
+        internal static string InputPinTeamMessage {
+            get {
+                return ResourceManager.GetString("InputPinTeamMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Введите имя команды.
         /// </summary>
         internal static string InputTeamNameMessage {
             get {
@@ -79,34 +124,25 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Join.
+        ///   Looks up a localized string similar to Я хочу присоединиться к команде.
         /// </summary>
-        internal static string JoinTeamText {
+        internal static string JoinToTeam {
             get {
-                return ResourceManager.GetString("JoinTeamText", resourceCulture);
+                return ResourceManager.GetString("JoinToTeam", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I want to play in the team.
+        ///   Looks up a localized string similar to Пин код не найден. Укажите существующий код.
         /// </summary>
-        internal static string MultiPlayerTeam {
+        internal static string PinNotFoundMessage {
             get {
-                return ResourceManager.GetString("MultiPlayerTeam", resourceCulture);
+                return ResourceManager.GetString("PinNotFoundMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I want to play alone.
-        /// </summary>
-        internal static string OnePlayerTeam {
-            get {
-                return ResourceManager.GetString("OnePlayerTeam", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please choose an option from the list..
+        ///   Looks up a localized string similar to Пожалуйста, выбирите один из доступных выборов.
         /// </summary>
         internal static string RetryPromptText {
             get {
@@ -115,16 +151,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You want join to team or create own team?.
-        /// </summary>
-        internal static string SelectTeamText {
-            get {
-                return ResourceManager.GetString("SelectTeamText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, choose how you want to play.
+        ///   Looks up a localized string similar to Выберите вариант, как вы хотите играть.
         /// </summary>
         internal static string SelectTeamTypeText {
             get {
@@ -133,7 +160,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team is already exits. Please enter another name..
+        ///   Looks up a localized string similar to Команда уже существует. Выберите другое имя..
         /// </summary>
         internal static string TeamAlreadyExistsMessage {
             get {
@@ -142,11 +169,20 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team not found. Please enter existing team.
+        ///   Looks up a localized string similar to Привет, мой герой!.
         /// </summary>
-        internal static string TeamNotFoundMessage {
+        internal static string WelcomeMessage {
             get {
-                return ResourceManager.GetString("TeamNotFoundMessage", resourceCulture);
+                return ResourceManager.GetString("WelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добро пожаловать в комманду {0}!.
+        /// </summary>
+        internal static string WelcomeToTeamMessage {
+            get {
+                return ResourceManager.GetString("WelcomeToTeamMessage", resourceCulture);
             }
         }
     }

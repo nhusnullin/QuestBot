@@ -5,10 +5,11 @@ namespace CoreBot.Service
 {
     public interface ITeamService
     {
-        Task<Team> CreateTeam(string id, User leader);
-        Task<Team> CreateSingleUserTeam(User user);
-        Task<bool> IsTeamExists(string id);
+        Task<Team> CreateTeam(User leader);
+        Task<string> TryGetTeamIdByName(string teamName);
+        Task<bool> IsPinExists(int pin);
         string TryGetTeamId(User user);
-        Task AddMember(string teamId, User member);
+        Task<string> AddMember(int pinCode, User member);
+        Task ChangeTeamName(string teamId, string name);
     }
 }

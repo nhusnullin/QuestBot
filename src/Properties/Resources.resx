@@ -117,34 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CreateTeamText" xml:space="preserve">
-    <value>Create</value>
+  <data name="CaptainRequiredPermission" xml:space="preserve">
+    <value>Только капитан может выполнять эту команду</value>
+  </data>
+  <data name="ChangeTeamNameCompletesdMessage" xml:space="preserve">
+    <value>Имя команды было изменено на '{0}'</value>
+  </data>
+  <data name="ChoicePlayMode" xml:space="preserve">
+    <value>Команда недоступна. Необходимо создать свою команду.</value>
+  </data>
+  <data name="CreateTeam" xml:space="preserve">
+    <value>Я хочу играть сам (один или как капитан команды)</value>
+  </data>
+  <data name="CreateTeamCompletedMessage" xml:space="preserve">
+    <value>Ваше имя команды '{0}'. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код '{1}'.</value>
+  </data>
+  <data name="InputPinTeamMessage" xml:space="preserve">
+    <value>Ведите пин код команды (вы можете обратиться за пин кодом доступной команды на стенд DotNetRu)</value>
   </data>
   <data name="InputTeamNameMessage" xml:space="preserve">
-    <value>Input team name</value>
+    <value>Введите имя команды</value>
   </data>
-  <data name="JoinTeamText" xml:space="preserve">
-    <value>Join</value>
+  <data name="JoinToTeam" xml:space="preserve">
+    <value>Я хочу присоединиться к команде</value>
   </data>
-  <data name="MultiPlayerTeam" xml:space="preserve">
-    <value>I want to play in the team</value>
-  </data>
-  <data name="OnePlayerTeam" xml:space="preserve">
-    <value>I want to play alone</value>
+  <data name="PinNotFoundMessage" xml:space="preserve">
+    <value>Пин код не найден. Укажите существующий код</value>
   </data>
   <data name="RetryPromptText" xml:space="preserve">
-    <value>Please choose an option from the list.</value>
-  </data>
-  <data name="SelectTeamText" xml:space="preserve">
-    <value>You want join to team or create own team?</value>
+    <value>Пожалуйста, выбирите один из доступных выборов</value>
   </data>
   <data name="SelectTeamTypeText" xml:space="preserve">
-    <value>Please, choose how you want to play</value>
+    <value>Выберите вариант, как вы хотите играть</value>
   </data>
   <data name="TeamAlreadyExistsMessage" xml:space="preserve">
-    <value>Team is already exits. Please enter another name.</value>
+    <value>Команда уже существует. Выберите другое имя.</value>
   </data>
-  <data name="TeamNotFoundMessage" xml:space="preserve">
-    <value>Team not found. Please enter existing team</value>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Привет, мой герой!</value>
+  </data>
+  <data name="WelcomeToTeamMessage" xml:space="preserve">
+    <value>Добро пожаловать в комманду {0}!</value>
   </data>
 </root>

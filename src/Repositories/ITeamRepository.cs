@@ -7,6 +7,9 @@ namespace CoreBot.Repositories
     {
         Task AddTeamAsync(Team team);
         Task AddMemberAsync(string teamId, UserId user);
-        Task<bool> IsTeamExists(string teamId);
+        Task<string> TryGetTeamIdByName(string teamName);
+        Task<bool> IsPinExists(int pin);
+        Task<string> TryGetTeamIdByPin(int pinCode);
+        Task UpdateTeamNameAsync(string teamId, string name);
     }
 }

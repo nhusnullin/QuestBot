@@ -9,11 +9,13 @@ namespace CoreBot.Repositories
         {
 
         }
-        public TeamEntity(string partitionKey, string teamId)
+        public TeamEntity(string partitionKey, string teamId, string name)
         {
             PartitionKey = partitionKey;
             RowKey = teamId;
+            Name = teamId;
         }
-        public bool IsSingleUser { get; set; }
+        public string Name { get; set; }
+        public int PinCode { get; set; }
     }
 }

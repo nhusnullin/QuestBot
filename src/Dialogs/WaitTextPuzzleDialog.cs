@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
@@ -8,7 +9,8 @@ namespace CoreBot.Dialogs
 {
     public class WaitTextPuzzleDialog : TextPuzzleDialog
     {
-        public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService) : base(scenarioService, userService, nameof(WaitTextPuzzleDialog))
+        public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService) 
+            : base(scenarioService, userService, teamService, nameof(WaitTextPuzzleDialog))
         {
         }
 

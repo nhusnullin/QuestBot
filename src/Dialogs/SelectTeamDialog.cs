@@ -3,8 +3,10 @@ using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
+using Microsoft.Bot.Schema;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,19 +16,16 @@ namespace CoreBot.Dialogs
     public class SelectTeamDialog : ComponentDialog
     {
         private readonly ITeamService _teamService;
-        private const string newTeamNameDialog = "InputNewTeamNamePromptDialog";
-        private const string existsTeamNameDialog = "InputExistsTeamNamePromptDialog";
+        private const string teamPinCodeDialog = "TeamPinCode";
         public SelectTeamDialog(ITeamService teamService) : base(nameof(SelectTeamDialog))
         {
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
-            AddDialog(new TextPrompt(newTeamNameDialog, NewTeamNameValidator));
-            AddDialog(new TextPrompt(existsTeamNameDialog, ExistsTeamNameValidator));
+            AddDialog(new NumberPrompt<int>(teamPinCodeDialog, TeamPinValidator));
             var waterfallStep = new WaterfallStep[]
             {
-                SelectTeamTypeStep,
+                SelectPlayModeStep,
                 SelectTeamStep,
-                InputTeamNameStep,
                 FinishStep
             };
 
@@ -35,7 +34,7 @@ namespace CoreBot.Dialogs
 
         }
 
-        private async Task<DialogTurnResult> SelectTeamTypeStep(WaterfallStepContext stepContext,
+        private async Task<DialogTurnResult> SelectPlayModeStep(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
             return await stepContext.PromptAsync(
@@ -44,7 +43,7 @@ namespace CoreBot.Dialogs
                 {
                     Prompt = MessageFactory.Text(Resources.SelectTeamTypeText),
                     RetryPrompt = MessageFactory.Text(Resources.RetryPromptText),
-                    Choices = ChoiceFactory.ToChoices(new List<string>(new[] { Resources.OnePlayerTeam, Resources.MultiPlayerTeam })),
+                    Choices = ChoiceFactory.ToChoices(new List<string>(new[] { Resources.CreateTeam, Resources.JoinToTeam })),
                 },
                 cancellationToken);
         }
@@ -53,37 +52,22 @@ namespace CoreBot.Dialogs
             CancellationToken cancellationToken)
         {
             var choice = (FoundChoice)stepContext.Result;
-            if (choice.Value == Resources.OnePlayerTeam)
+            if (choice.Value == Resources.CreateTeam)
             {
                 var user = GetCurrentUser(stepContext);
-                var team = await _teamService.CreateSingleUserTeam(user);
+                var team = await _teamService.CreateTeam(user);
+                var message = String.Format(CultureInfo.InvariantCulture, Resources.CreateTeamCompletedMessage, team.Id, team.PinCode);
+                var activity = MessageFactory.Text(message, message, InputHints.IgnoringInput);
+                await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
                 return await stepContext.EndDialogAsync(team.Id, cancellationToken);
             }
 
             return await stepContext.PromptAsync(
-                nameof(ChoicePrompt),
+                teamPinCodeDialog,
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text(Resources.SelectTeamText),
-                    RetryPrompt = MessageFactory.Text(Resources.RetryPromptText),
-                    Choices = ChoiceFactory.ToChoices(new List<string>(new[] { Resources.JoinTeamText, Resources.CreateTeamText })),
-                },
-                cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> InputTeamNameStep(WaterfallStepContext stepContext,
-            CancellationToken cancellationToken)
-        {
-
-            var choice = (FoundChoice)stepContext.Result;
-            stepContext.Values["TeamJoinType"] = choice.Value;
-
-            return await stepContext.PromptAsync(
-                choice.Value == Resources.CreateTeamText ? newTeamNameDialog : existsTeamNameDialog,
-                new PromptOptions
-                {
-                    Prompt = MessageFactory.Text(Resources.InputTeamNameMessage),
-                    RetryPrompt = MessageFactory.Text(choice.Value == Resources.CreateTeamText ? Resources.TeamAlreadyExistsMessage : Resources.TeamNotFoundMessage),
+                    Prompt = MessageFactory.Text(Resources.InputPinTeamMessage),
+                    RetryPrompt = MessageFactory.Text(Resources.PinNotFoundMessage),
                 },
                 cancellationToken);
         }
@@ -91,31 +75,18 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> FinishStep(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-
-            var teamId = (string)stepContext.Result;
-            var joinType = (string)stepContext.Values["TeamJoinType"];
+            var teamPinCode = (int)stepContext.Result;
             var user = GetCurrentUser(stepContext);
-            if (joinType == Resources.CreateTeamText)
-            {
-                var team = await _teamService.CreateTeam(teamId, user);
-            }
-            else
-            {
-                await _teamService.AddMember(teamId, user);
-            }
+            var teamId = await _teamService.AddMember(teamPinCode, user);
+            var message = String.Format(CultureInfo.InvariantCulture, Resources.WelcomeToTeamMessage, teamId);
+            await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
             return await stepContext.EndDialogAsync(teamId, cancellationToken);
         }
 
-        private async Task<bool> NewTeamNameValidator(PromptValidatorContext<string> promptContext, CancellationToken cancellationToken)
+        private async Task<bool> TeamPinValidator(PromptValidatorContext<int> promptContext, CancellationToken cancellationToken)
         {
             var result = promptContext.Recognized.Value;
-            return !await _teamService.IsTeamExists(result);
-        }
-
-        private async Task<bool> ExistsTeamNameValidator(PromptValidatorContext<string> promptContext, CancellationToken cancellationToken)
-        {
-            var result = promptContext.Recognized.Value;
-            return await _teamService.IsTeamExists(result);
+            return await _teamService.IsPinExists(result);
         }
 
         private User GetCurrentUser(WaterfallStepContext stepContext)

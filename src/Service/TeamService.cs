@@ -17,46 +17,64 @@ namespace CoreBot.Service
             _teamRepository = teamRepository ?? throw new ArgumentNullException(nameof(teamRepository));
         }
 
-        public async Task AddMember(string teamId, User member)
+        public async Task<string> AddMember(int pinCode, User member)
         {
             if (TryGetTeamId(member) != null)
                 throw new InvalidOperationException("User is already member of team.");
-            if (!await IsTeamExists(teamId))
+            var teamId = await _teamRepository.TryGetTeamIdByPin(pinCode);
+            if (teamId == null)
                 throw new InvalidOperationException("Team not found.");
             await _teamRepository.AddMemberAsync(teamId, new UserId(member.ChannelId, member.UserId));
+            return teamId;
         }
 
-        public async Task<Team> CreateSingleUserTeam(User user)
+        public async Task<Team> CreateTeam(User leader)
         {
             var teamId = Guid.NewGuid().ToString("B", CultureInfo.InvariantCulture);
-            return await CreateTeam(teamId, user, TeamType.SingleUser);
-        }
-
-        public async Task<Team> CreateTeam(string id, User leader)
-        {
-            return await CreateTeam(id, leader, TeamType.MultiUser);
-        }
-
-        public async Task<Team> CreateTeam(string id, User leader, TeamType type)
-        {
-            if (await IsTeamExists(id))
-                throw new InvalidOperationException("Team already exists.");
-            var team = new Team(id, new UserId(leader.ChannelId, leader.UserId))
-            {
-                TeamType = type
-            };
+            var pin = await GetUniqueTeamPinCode();
+            var team = new Team(teamId, teamId, pin, new UserId(leader.ChannelId, leader.UserId));
             await _teamRepository.AddTeamAsync(team);
             return team;
         }
 
-        public async Task<bool> IsTeamExists(string id)
+        public async Task<string> TryGetTeamIdByName(string name)
         {
-            return await _teamRepository.IsTeamExists(id);
+            return await _teamRepository.TryGetTeamIdByName(name);
         }
+
+        public async Task<bool> IsPinExists(int pin)
+        {
+            return await _teamRepository.IsPinExists(pin);
+        }
+
 
         public string TryGetTeamId(User user)
         {
             return user.TeamId;
+        }
+
+        public async Task ChangeTeamName(string teamId, string name)
+        {
+            await _teamRepository.UpdateTeamNameAsync(teamId, name);
+        }
+
+        private async Task<int> GetUniqueTeamPinCode()
+        {
+            int result = 0;
+            do
+            {
+                result = GeneratePin();
+            }
+            while (await IsPinExists(result));
+            return result;
+        }
+
+        private static int GeneratePin()
+        {
+            const int min = 1000;
+            const int max = 9999;
+            Random rdm = new Random();
+            return rdm.Next(min, max);
         }
     }
 }

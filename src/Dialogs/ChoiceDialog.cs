@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
@@ -9,7 +10,8 @@ namespace CoreBot.Dialogs
 {
     public class ChoiceDialog : CancelAndHelpDialog
     {
-        public ChoiceDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ChoiceDialog), scenarioService, userService)
+        public ChoiceDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService) 
+            : base(nameof(ChoiceDialog), scenarioService, userService, teamService)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));

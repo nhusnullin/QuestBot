@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
@@ -8,7 +9,8 @@ namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
-        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, string id = "TextPuzzleDialog") : base(id, scenarioService, userService)
+        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService, string id = "TextPuzzleDialog") 
+            : base(id, scenarioService, userService, teamService)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
