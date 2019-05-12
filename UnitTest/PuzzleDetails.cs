@@ -24,5 +24,16 @@ namespace UnitTestProject
 //            details.ActualAnswer = actual;
 //            Assert.AreEqual(isEqual, details.IsRight);
 //        }
+
+
+        [TestMethod]
+        [DataRow(@"async-await", "async await")]
+        [DataRow(@"async\await", "async await")]
+        [DataRow(@"async  await", "async await")]
+        public void VanshTest(string input, string expectedOutput)
+        {
+            var actualOutput = PuzzleDetails.VanishAnswer(input);
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
     }
 }

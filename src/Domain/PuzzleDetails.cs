@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CoreBot
 {
@@ -141,9 +142,21 @@ namespace CoreBot
 
         public void SetAnswer(string answer)
         {
-            ActualAnswer = answer;
+            ActualAnswer = VanishAnswer(answer);
             NumberOfAttempts++;
         }
+
+        public static string VanishAnswer(string input)
+        {
+            string pattern = " *[\\\\~#%&*{}/:<>?|\"-]+ *";
+            string replacement = " ";
+
+            Regex regEx = new Regex(pattern);
+            string sanitized = Regex.Replace(regEx.Replace(input, replacement), @"\s+", " ");
+
+            return sanitized;
+        }
+
 
         
     }
