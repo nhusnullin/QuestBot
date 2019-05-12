@@ -157,6 +157,6 @@
     <value>Привет, мой герой!</value>
   </data>
   <data name="WelcomeToTeamMessage" xml:space="preserve">
-    <value>Добро пожаловать в комманду {0}!</value>
+    <value>Добро пожаловать в комманду '{0}'!</value>
   </data>
 </root>

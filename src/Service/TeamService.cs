@@ -17,7 +17,7 @@ namespace CoreBot.Service
             _teamRepository = teamRepository ?? throw new ArgumentNullException(nameof(teamRepository));
         }
 
-        public async Task<string> AddMember(int pinCode, User member)
+        public async Task<Team> AddMember(int pinCode, User member)
         {
             if (TryGetTeamId(member) != null)
                 throw new InvalidOperationException("User is already member of team.");
@@ -25,14 +25,16 @@ namespace CoreBot.Service
             if (teamId == null)
                 throw new InvalidOperationException("Team not found.");
             await _teamRepository.AddMemberAsync(teamId, new UserId(member.ChannelId, member.UserId));
-            return teamId;
+            var team = await _teamRepository.TryGetTeamByIdAsync(teamId);
+            return team;
         }
 
         public async Task<Team> CreateTeam(User leader)
         {
             var teamId = Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture);
             var pin = await GetUniqueTeamPinCode();
-            var team = new Team(teamId, teamId, pin, new UserId(leader.ChannelId, leader.UserId));
+            var teamName = await GetUniqueTeamName(leader);
+            var team = new Team(teamId, teamName, pin, new UserId(leader.ChannelId, leader.UserId));
             await _teamRepository.AddTeamAsync(team);
             return team;
         }
@@ -81,5 +83,19 @@ namespace CoreBot.Service
             Random rdm = new Random();
             return rdm.Next(min, max);
         }
+
+        private async Task<string> GetUniqueTeamName(User leader)
+        {
+            var result = leader.Name;
+            if (String.IsNullOrEmpty(result))
+                result = "Team1";
+            uint counter = 1;
+            while(await TryGetTeamIdByName(result) != null && counter < UInt16.MaxValue)
+            {
+                result = result + counter.ToString(CultureInfo.InvariantCulture);
+            }
+            return result;
+        }
+
     }
 }

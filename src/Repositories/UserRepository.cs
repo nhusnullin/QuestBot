@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Service;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace CoreBot.Repositories
 {
@@ -20,6 +21,18 @@ namespace CoreBot.Repositories
         {
             _storage.DeleteTableIfExists(User.TableName);
             return Task.CompletedTask;
+        }
+
+        public Task<ICollection<User>> GetTeamUsersAsync(string teamId)
+        {
+            var table = _storage.GetOrCreateTable(User.TableName);
+
+            TableQuery<User> query =
+               new TableQuery<User>()
+                  .Where(TableQuery.GenerateFilterCondition(nameof(User.TeamId),
+                      QueryComparisons.Equal, teamId));
+            ICollection<User> result = table.ExecuteQuery(query).ToList();
+            return Task.FromResult(result);
         }
 
         public async Task InsertOrMergeAsync(User user)

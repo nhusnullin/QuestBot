@@ -178,7 +178,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добро пожаловать в комманду {0}!.
+        ///   Looks up a localized string similar to Добро пожаловать в комманду &apos;{0}&apos;!.
         /// </summary>
         internal static string WelcomeToTeamMessage {
             get {

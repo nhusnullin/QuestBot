@@ -59,18 +59,16 @@ namespace CoreBot.Repositories
             }*/
         }
 
-        /*public async Task<Team> TryGetTeamAsync(string teamId)
+        public async Task<Team> TryGetTeamByIdAsync(string teamId)
         {
             var table = _cloudStorage.GetOrCreateTable(TableName);
             var teamEntity = await _cloudStorage.RetrieveEntityByAsync<TeamEntity>(table, GetPartitionKey(teamId), teamId);
             var members = await _userRepository.GetTeamUsersAsync(teamId);
             var captain = members.Where(i => i.IsCaptain).Select(i => new UserId(i.ChannelId, i.UserId)).Single();
-            var result = new Team(teamId, captain);
-            foreach (var member in members)
-                result.Members.Add(new UserId(member.ChannelId, member.UserId));
+            var result = new Team(teamEntity.RowKey, teamEntity.Name, teamEntity.PinCode, captain);
             return result;
 
-        }*/
+        }
 
         public Task<string> TryGetTeamIdByName(string teamName)
         {

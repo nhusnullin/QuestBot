@@ -9,5 +9,6 @@ namespace CoreBot.Repositories
         Task<User> TryGetUserByIdAsync(UserId userId);
         Task InsertOrMergeAsync(User user);
         Task DeleteUsers();
+        Task<ICollection<User>> GetTeamUsersAsync(string teamId);
     }
 }

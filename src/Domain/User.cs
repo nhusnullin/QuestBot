@@ -51,7 +51,7 @@ namespace CoreBot
 
         public string UserId { get; set; }
         public string ChannelId { get; set; }
-
+        public string Name { get; set; }
         public string TeamId { get; set; }
 
         public bool IsCaptain { get; set; }

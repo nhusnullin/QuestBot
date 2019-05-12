@@ -56,7 +56,7 @@ namespace CoreBot.Dialogs
             {
                 var user = GetCurrentUser(stepContext);
                 var team = await _teamService.CreateTeam(user);
-                var message = String.Format(CultureInfo.InvariantCulture, Resources.CreateTeamCompletedMessage, team.Id, team.PinCode);
+                var message = String.Format(CultureInfo.InvariantCulture, Resources.CreateTeamCompletedMessage, team.Name, team.PinCode);
                 var activity = MessageFactory.Text(message, message, InputHints.IgnoringInput);
                 await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
                 return await stepContext.EndDialogAsync(team.Id, cancellationToken);
@@ -77,10 +77,10 @@ namespace CoreBot.Dialogs
         {
             var teamPinCode = (int)stepContext.Result;
             var user = GetCurrentUser(stepContext);
-            var teamId = await _teamService.AddMember(teamPinCode, user);
-            var message = String.Format(CultureInfo.InvariantCulture, Resources.WelcomeToTeamMessage, teamId);
+            var team = await _teamService.AddMember(teamPinCode, user);
+            var message = String.Format(CultureInfo.InvariantCulture, Resources.WelcomeToTeamMessage, team.Name);
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
-            return await stepContext.EndDialogAsync(teamId, cancellationToken);
+            return await stepContext.EndDialogAsync(team.Id, cancellationToken);
         }
 
         private async Task<bool> TeamPinValidator(PromptValidatorContext<int> promptContext, CancellationToken cancellationToken)

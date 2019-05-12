@@ -10,6 +10,7 @@ namespace CoreBot.Repositories
         Task<string> TryGetTeamIdByName(string teamName);
         Task<bool> IsPinExists(int pin);
         Task<string> TryGetTeamIdByPin(int pinCode);
+        Task<Team> TryGetTeamByIdAsync(string teamId);
         Task UpdateTeamNameAsync(string teamId, string name);
         Task DeleteTeams();
     }
