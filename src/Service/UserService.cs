@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CoreBot.Service;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -30,6 +31,13 @@ namespace CoreBot
             }
 
             return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
+        }
+
+        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        {
+            return _storage.GetAnswersByUserId(userId,
+                answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
+                          answer.IsLastAnswer).Any();
         }
 
         public async Task<User> GetByAsync(string channelId, string userId)

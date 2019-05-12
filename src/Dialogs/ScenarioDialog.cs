@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace CoreBot.Dialogs
@@ -28,8 +29,17 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
-
             var userid = stepContext.Context.Activity.From.Id;
+
+            // проверим проходил ли пользователь сценарий
+            var scenarioIsOverOnce = _userService.IsScenarioIsOverByUser(userid, scenarioDetails.ScenarioId);
+
+            if (scenarioIsOverOnce)
+            {
+                await stepContext.PromptAsync(nameof(TextPrompt),
+                    new PromptOptions { Prompt = MessageFactory.Text("Вы этот сценарий уже проходили, пож выберите другой") }, cancellationToken);
+                return await stepContext.CancelAllDialogsAsync(cancellationToken);
+            }
 
             var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
             var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x=>x.Answer).ToList());

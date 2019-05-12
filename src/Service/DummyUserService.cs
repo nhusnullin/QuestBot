@@ -29,6 +29,11 @@ namespace CoreBot
         {
         }
 
+        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
         {
             return;
