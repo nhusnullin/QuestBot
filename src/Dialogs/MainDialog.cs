@@ -94,14 +94,11 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var teamId = (string)stepContext.Result;
-            var userId = stepContext.Context.Activity.From.Id;
-            var channelId = stepContext.Context.Activity.ChannelId;
 
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, userId);
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
 
             if (scenarioDetails == null)
             {
-                var user = await _userService.GetByAsync(channelId, userId);
                 scenarioDetails = new ScenarioDetails()
                 {
                     ScenarioId = "testScenario",

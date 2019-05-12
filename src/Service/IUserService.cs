@@ -1,16 +1,19 @@
+using CoreBot.Domain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CoreBot
 {
     public interface IUserService
     {
-        Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails);
-        ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId);
+        Task SetAnswer(ScenarioDetails scenarioDetails);
+        ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId);
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
         void Remove(string channelId, string userId);
         Task DeleteUsers();
-        bool IsScenarioIsOverByUser(string userId, string scenarioId);
+        bool IsScenarioIsOverByTeam(string teamId, string scenarioId);
+        Task<ICollection<Answer>> GetAnswers();
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using CoreBot.Domain;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -78,14 +79,14 @@ namespace CoreBot.Service
             }
         }
 
-        public IList<Answer> GetAnswersByUserId(string userId, Func<Answer, bool> whereClause) 
+        public IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause) 
         {
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(Answer.TableName);
 
             TableQuery<Answer> query = new TableQuery<Answer>();
 
-            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == userId)
+            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
                 //.OrderByDescending(x => x.Timestamp)
                 .Where(whereClause)
                 .ToList();
