@@ -42,10 +42,8 @@ namespace CoreBot
         {
             ChannelId = channelId;
             UserId = userId;
-
             PartitionKey = channelId;
-            RowKey = userId;
-        
+            RowKey = userId;        
             IsCaptain = false;
         }
 
