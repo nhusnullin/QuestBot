@@ -70,8 +70,8 @@ namespace CoreBot.Dialogs
                             await innerDc.Context.SendActivityAsync($"Выполнение квеста прервано");
                             return await innerDc.CancelAllDialogsAsync(cancellationToken);
                         case "2edaab42-9871-4c9b-8039-fd262121f8e0":
-                            await _teamService.DeleteTeams();
                             await _userService.DeleteUsers();
+                            await _teamService.DeleteTeams();
                             break;
 
                     }
