@@ -89,10 +89,17 @@ namespace CoreBot.Service
             var result = leader.Name;
             if (String.IsNullOrEmpty(result))
                 result = "Team1";
-            uint counter = 1;
-            while(await TryGetTeamIdByName(result) != null && counter < UInt16.MaxValue)
+            uint counter = 0;
+            while(await TryGetTeamIdByName(result) != null)
             {
+                if (counter < UInt16.MaxValue)
+                {
+                    result = Guid.NewGuid().ToString("D");
+                    break;
+                }
+                ++counter;
                 result = result + counter.ToString(CultureInfo.InvariantCulture);
+
             }
             return result;
         }
