@@ -20,7 +20,7 @@ namespace Microsoft.BotBuilderSamples
                 logger.LogError($"Exception caught : {exception.Message}");
 
                 // Send a catch-all appology to the user.
-                await turnContext.SendActivityAsync($"Sorry, it looks like something went wrong. {exception.Message}");
+                await turnContext.SendActivityAsync($"Sorry, it looks like something went wrong. {exception.ToString()}");
 
                 if (conversationState != null)
                 {
