@@ -11,5 +11,6 @@ namespace CoreBot
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
         void Remove(string channelId, string userId);
+        Task DeleteUsers();
     }
 }

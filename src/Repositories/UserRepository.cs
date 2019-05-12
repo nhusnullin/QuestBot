@@ -16,6 +16,12 @@ namespace CoreBot.Repositories
             _storage = storage ?? throw new ArgumentNullException(nameof(storage));
         }
 
+        public Task DeleteUsers()
+        {
+            _storage.DeleteTableIfExists(User.TableName);
+            return Task.CompletedTask;
+        }
+
         public async Task InsertOrMergeAsync(User user)
         {
             var table = _storage.GetOrCreateTable(User.TableName);

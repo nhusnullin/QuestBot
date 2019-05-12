@@ -31,9 +31,7 @@ namespace CoreBot.Dialogs
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
 
-            var userid = stepContext.Context.Activity.From.Id;
-
-            var puzzle = _scenarioService.GetNextPuzzle(userid, scenarioDetails.TeamId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
+            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.TeamId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
             var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x=>x.Answer).ToList());
 
             return await stepContext.BeginDialogAsync(

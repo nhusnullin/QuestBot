@@ -33,5 +33,10 @@ namespace CoreBot
         {
             return;
         }
+
+        public Task DeleteUsers()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

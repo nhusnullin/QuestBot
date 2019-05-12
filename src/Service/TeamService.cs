@@ -30,7 +30,7 @@ namespace CoreBot.Service
 
         public async Task<Team> CreateTeam(User leader)
         {
-            var teamId = Guid.NewGuid().ToString("B", CultureInfo.InvariantCulture);
+            var teamId = Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture);
             var pin = await GetUniqueTeamPinCode();
             var team = new Team(teamId, teamId, pin, new UserId(leader.ChannelId, leader.UserId));
             await _teamRepository.AddTeamAsync(team);
@@ -56,6 +56,11 @@ namespace CoreBot.Service
         public async Task ChangeTeamName(string teamId, string name)
         {
             await _teamRepository.UpdateTeamNameAsync(teamId, name);
+        }
+
+        public async Task DeleteTeams()
+        {
+            await _teamRepository.DeleteTeams();
         }
 
         private async Task<int> GetUniqueTeamPinCode()

@@ -62,5 +62,11 @@ namespace CoreBot
 
             await _storage.InsertOrMergeEntityAsync(table, answer);
         }
+
+        public async Task DeleteUsers()
+        {
+            await _userRepository.DeleteUsers();
+            _storage.DeleteTableIfExists(Answer.TableName);
+        }
     }
 }

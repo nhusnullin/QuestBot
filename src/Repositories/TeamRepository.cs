@@ -103,11 +103,16 @@ namespace CoreBot.Repositories
             return Task.FromResult(result?.RowKey);
         }
 
+        public Task DeleteTeams()
+        {
+            _cloudStorage.DeleteTableIfExists(TableName);
+            return Task.CompletedTask;
+        }
+
         private static string GetPartitionKey(string teamId)
         {
             // Use first char for partition key
             return teamId.Substring(0, 1);
         }
-
     }
 }

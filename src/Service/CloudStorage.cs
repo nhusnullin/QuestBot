@@ -90,5 +90,12 @@ namespace CoreBot.Service
                 .Where(whereClause)
                 .ToList();
         }
+
+        public void DeleteTableIfExists(string tableName)
+        {
+            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
+            CloudTable table = tableClient.GetTableReference(tableName);
+            table.DeleteIfExists();
+        }
     }
 }
