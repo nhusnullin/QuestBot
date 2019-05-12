@@ -6,6 +6,11 @@ namespace CoreBot
     public class DummyUserService : IUserService
     {
         public Dictionary<string, User> _store = new Dictionary<string, User>();
+        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<User> GetByAsync(string channelId, string userId)
         {
             if (_store.ContainsKey(userId))

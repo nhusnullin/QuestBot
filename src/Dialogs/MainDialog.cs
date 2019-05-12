@@ -31,7 +31,6 @@ namespace CoreBot.Dialogs
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _teamService = teamService;
             AddDialog(new SelectTeamDialog(teamService));
-            AddDialog(new ChoiceDialog(scenarioService, userService, teamService));
             AddDialog(new ScenarioDialog(scenarioService, userService, teamService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -73,8 +72,23 @@ namespace CoreBot.Dialogs
 
         private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-            return await stepContext.BeginDialogAsync(nameof(ScenarioListDialog), null, cancellationToken);
+            var teamId = (string)stepContext.Result;
+            var userId = stepContext.Context.Activity.From.Id;
+            var channelId = stepContext.Context.Activity.ChannelId;
+
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, userId);
+
+            if (scenarioDetails == null)
+            {
+                var user = await _userService.GetByAsync(channelId, userId);
+                scenarioDetails = new ScenarioDetails()
+                {
+                    ScenarioId = "testScenario",
+                    TeamId = teamId
+                };
+            }
+
+            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,

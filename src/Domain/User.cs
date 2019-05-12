@@ -21,6 +21,8 @@ namespace CoreBot
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
         public string ScenarioDetails { get; set; }
+
+        public bool IsLastAnswer { get; set; }
     }
 
 

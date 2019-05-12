@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreBot.Service
@@ -74,6 +76,19 @@ namespace CoreBot.Service
             {
                 throw;
             }
+        }
+
+        public IList<Answer> GetAnswersByUserId(string userId, Func<Answer, bool> whereClause) 
+        {
+            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
+            CloudTable table = tableClient.GetTableReference(Answer.TableName);
+
+            TableQuery<Answer> query = new TableQuery<Answer>();
+
+            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == userId)
+                //.OrderByDescending(x => x.Timestamp)
+                .Where(whereClause)
+                .ToList();
         }
     }
 }

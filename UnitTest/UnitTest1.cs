@@ -10,7 +10,9 @@ namespace UnitTestProject
 {
     public static class Settings
     {
-        public static string ConStr = "DefaultEndpointsProtocol=https;AccountName=0ecc2b45-0ee0-4-231-b9ee;AccountKey=Ej47ZXRBV7ZEGmNTIwl7w0HsoeCMmIZfGT5NNlz6iJWF7IZcJZJMnKg9v9PN7Wtf3X3Df2okTKooypJG3EjJUA==;TableEndpoint=https://0ecc2b45-0ee0-4-231-b9ee.table.cosmos.azure.com:443/;";
+        //public static string ConStr = "DefaultEndpointsProtocol=https;AccountName=0ecc2b45-0ee0-4-231-b9ee;AccountKey=Ej47ZXRBV7ZEGmNTIwl7w0HsoeCMmIZfGT5NNlz6iJWF7IZcJZJMnKg9v9PN7Wtf3X3Df2okTKooypJG3EjJUA==;TableEndpoint=https://0ecc2b45-0ee0-4-231-b9ee.table.cosmos.azure.com:443/;";
+        public static string ConStr =
+            "DefaultEndpointsProtocol=https;AccountName=dotquestbot;AccountKey=SpHHMi1pTPj2LCg03BuoKSnI4X0LRFf7eVyPaZN9JjugBJXS6YqYm6exbXIg4xyNtWkolOUDGyjv9g8SfGenOg==;TableEndpoint=https://dotquestbot.table.cosmos.azure.com:443/;";
     }
 
     [TestClass]
@@ -35,11 +37,11 @@ namespace UnitTestProject
             scenarioService.LoadAll();
 
 
-            await InMemoryScenarioStore.Generate(scenarioService._store["nukescenario"]);
+            await InMemoryScenarioStore.Generate(scenarioService.Store["nukescenario"]);
         }
 
         [TestMethod]
-        //[DataRow(User.TableName)]
+        [DataRow(User.TableName)]
         [DataRow(Answer.TableName)]
         public async Task CreateUserTable(string tableName)
         {
