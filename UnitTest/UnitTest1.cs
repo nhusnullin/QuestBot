@@ -33,11 +33,11 @@ namespace UnitTestProject
         [TestMethod]
         public async Task tt()
         {
-            var scenarioService = new ScenarioService();
-            scenarioService.LoadAll();
+            //var scenarioService = new ScenarioService();
+            //scenarioService.LoadAll();
 
 
-            await InMemoryScenarioStore.Generate(scenarioService.Store["nukescenario"]);
+            //await InMemoryScenarioStore.Generate(scenarioService.Store["nukescenario"]);
         }
 
         [TestMethod]

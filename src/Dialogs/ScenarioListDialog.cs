@@ -35,13 +35,14 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> ShowChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
+            var userId = stepContext.Context.Activity.From.Id;
+
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
                     RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
-                    Choices = ChoiceFactory.ToChoices(new List<string>(_scenarioService.AvailableScenario)),
-                    
+                    Choices = ChoiceFactory.ToChoices(_scenarioService.GetAvailableScenario(userId)),
                 },
                 cancellationToken);
         }
@@ -53,13 +54,18 @@ namespace CoreBot.Dialogs
             
             var userId = stepContext.Context.Activity.From.Id;
             var channelId = stepContext.Context.Activity.ChannelId;
-            
-            var user = await _userService.GetByAsync(channelId, userId);
-            var scenarioDetails = new ScenarioDetails()
+
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, userId);
+
+            if (scenarioDetails == null)
             {
-                ScenarioId = actualAnswer,
-                TeamId = user.TeamId
-            };
+                var user = await _userService.GetByAsync(channelId, userId);
+                scenarioDetails = new ScenarioDetails()
+                {
+                    ScenarioId = actualAnswer,
+                    TeamId = user.TeamId
+                };
+            }
 
             var reply = stepContext.Context.Activity.CreateReply($"Выбранный сценарий: {actualAnswer}");
             GenerateHideKeybordMarkupForTelegram(reply);

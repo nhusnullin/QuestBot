@@ -16,12 +16,19 @@ namespace CoreBot
         Scenario Load(string path);
         void LoadAll();
 
-        string[] AvailableScenario { get; }
+        IList<string> GetAvailableScenario(string userId);
     }
 
     public class ScenarioService : IScenarioService
     {
+        private readonly ICloudStorage _cloudStorage;
         public Dictionary<string, Scenario> Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
+
+        public ScenarioService(ICloudStorage cloudStorage)
+        {
+            _cloudStorage = cloudStorage;
+        }
+
 
         public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
         {
@@ -29,7 +36,15 @@ namespace CoreBot
             return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public string[] AvailableScenario => Store.Select(x => x.Key).ToArray();
+        public IList<string> GetAvailableScenario(string userId)
+        {
+            var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
+
+            var completedScenario = _cloudStorage.GetAnswersByUserId(userId, answer => answer.IsLastAnswer)
+                .GroupBy(x=>x.ScenarioId);
+
+            return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();
+        }
 
         public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
