@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using CoreBot.Domain;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -78,14 +79,14 @@ namespace CoreBot.Service
             }
         }
 
-        public IList<Answer> GetAnswersByUserId(string userId, Func<Answer, bool> whereClause) 
+        public IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause) 
         {
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(Answer.TableName);
 
             TableQuery<Answer> query = new TableQuery<Answer>();
 
-            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == userId)
+            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
                 //.OrderByDescending(x => x.Timestamp)
                 .Where(whereClause)
                 .ToList();
@@ -96,6 +97,19 @@ namespace CoreBot.Service
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(tableName);
             table.DeleteIfExists();
+        }
+
+        public Task<ICollection<T>> RetrieveEntitiesAsync<T>(CloudTable table) where T : ITableEntity, new()
+        {
+            TableContinuationToken token = null;
+            var entities = new List<T>();
+            do
+            {
+                var queryResult = table.ExecuteQuerySegmented(new TableQuery<T>(), token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+            return Task.FromResult<ICollection<T>>(entities);
         }
     }
 }

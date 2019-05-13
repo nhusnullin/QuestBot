@@ -31,10 +31,8 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
-            var userid = stepContext.Context.Activity.From.Id;
-
-            // проверим проходил ли пользователь сценарий
-            var scenarioIsOverOnce = _userService.IsScenarioIsOverByUser(userid, scenarioDetails.ScenarioId);
+            // проверим проходила ли команда сценарий
+            var scenarioIsOverOnce = _userService.IsScenarioIsOverByTeam(scenarioDetails.TeamId, scenarioDetails.ScenarioId);
 
             if (scenarioIsOverOnce)
             {
@@ -44,7 +42,7 @@ namespace CoreBot.Dialogs
             }
 
             var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.TeamId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
-            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x=>x.Answer).ToList());
+            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList());
 
             return await stepContext.BeginDialogAsync(
                 puzzleDetails.PuzzleType.ToString(),
@@ -58,7 +56,7 @@ namespace CoreBot.Dialogs
             var puzzleDetails =  (PuzzleDetails)stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
 
-            await _userService.SetAnswer(stepContext.Context.Activity.ChannelId, scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId, scenarioDetails);
+            await _userService.SetAnswer(scenarioDetails);
 
             if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
             {

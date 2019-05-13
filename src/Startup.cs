@@ -79,6 +79,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ITeamService, TeamService>();
             services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IReportService, ReportService>();
 
 
             // The Dialog that will be run by the bot.

@@ -4,6 +4,8 @@ using CoreBot.Repositories;
 using CoreBot.Service;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using CoreBot.Domain;
+using System.Collections.Generic;
 
 namespace CoreBot
 {
@@ -17,10 +19,10 @@ namespace CoreBot
             _storage = cloudStorage ?? throw new System.ArgumentNullException(nameof(cloudStorage));
         }
 
-        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId)
+        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId)
         {
             var answers = _storage
-                .GetAnswersByUserId(userId, x => x.IsLastAnswer != true)
+                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)
                 .OrderByDescending(x => x.Timestamp)
                 .Take(1)
                 .ToList();
@@ -35,9 +37,9 @@ namespace CoreBot
             return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
         }
 
-        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        public bool IsScenarioIsOverByTeam(string teamId, string scenarioId)
         {
-            return _storage.GetAnswersByUserId(userId,
+            return _storage.GetAnswersByTeamId(teamId,
                 answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
                           answer.IsLastAnswer).Any();
         }
@@ -56,16 +58,18 @@ namespace CoreBot
         {
         }
 
-        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
+        public async Task SetAnswer(ScenarioDetails scenarioDetails)
         {
             var table = _storage.GetOrCreateTable(Answer.TableName);
+            var scenarioId = scenarioDetails.ScenarioId;
+            var puzzleId = scenarioDetails.LastPuzzleDetails.PuzzleId;
 
-            var answer = new Answer(userId, $"{scenarioId} {puzzleId}")
+            var answer = new Answer(scenarioDetails.TeamId, $"{scenarioId} {puzzleId}")
             {
                 ScenarioId = scenarioId,
                 PuzzleId = puzzleId,
                 ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails),
-                IsLastAnswer = scenarioDetails.LastPuzzleDetails?.IsLastPuzzle ?? false
+                IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle
             };
 
             await _storage.InsertOrMergeEntityAsync(table, answer);
@@ -75,6 +79,12 @@ namespace CoreBot
         {
             await _userRepository.DeleteUsers();
             _storage.DeleteTableIfExists(Answer.TableName);
+        }
+
+        public async Task<ICollection<Answer>> GetAnswers()
+        {
+            var table = _storage.GetOrCreateTable(Answer.TableName);
+            return await _storage.RetrieveEntitiesAsync<Answer>(table);
         }
     }
 }

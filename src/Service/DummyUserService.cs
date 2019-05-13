@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 
 namespace CoreBot
 {
@@ -29,17 +30,27 @@ namespace CoreBot
         {
         }
 
-        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        public Task DeleteUsers()
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
+        public Task SetAnswer(ScenarioDetails scenarioDetails)
         {
-            return;
+            throw new System.NotImplementedException();
         }
 
-        public Task DeleteUsers()
+        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<ICollection<Answer>> GetAnswers()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsScenarioIsOverByTeam(string userId, string scenarioId)
         {
             throw new System.NotImplementedException();
         }
