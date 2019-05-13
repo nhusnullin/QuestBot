@@ -139,7 +139,7 @@
     <value>Введите имя команды</value>
   </data>
   <data name="JoinToTeam" xml:space="preserve">
-    <value>Я хочу присоединиться к команде</value>
+    <value>Я хочу присоединиться к команде. В этом режиме только капитан команды сможет отвечать на вопросы.</value>
   </data>
   <data name="PinNotFoundMessage" xml:space="preserve">
     <value>Пин код не найден. Укажите существующий код</value>
@@ -148,7 +148,7 @@
     <value>Пожалуйста, выбирите один из доступных выборов</value>
   </data>
   <data name="SelectTeamTypeText" xml:space="preserve">
-    <value>Выберите вариант, как вы хотите играть</value>
+    <value>Выбери вариант, как ты хочешь играть</value>
   </data>
   <data name="TeamAlreadyExistsMessage" xml:space="preserve">
     <value>Команда уже существует. Выберите другое имя.</value>
