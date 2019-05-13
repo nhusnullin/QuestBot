@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Exceptions;
+using CoreBot.Properties;
 using CoreBot.Service;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -75,6 +76,10 @@ namespace CoreBot.Dialogs
                             break;
 
                     }
+                }
+                catch(UserNotFoundException)
+                {
+                    await TurnContextExtensions.SendMessageAsync(innerDc.Context, Resources.PleaseWaitStartGame, cancellationToken);
                 }
                 catch(AuthorizationException ex)
                 {

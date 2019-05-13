@@ -49,37 +49,10 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
-            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
-            if (user == null)
-            {
-                user = new User(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id)
-                {
-                    Name = GetUserName(stepContext.Context.Activity.From),
-                    ChannelData = stepContext.Context.Activity.ChannelData != null ? stepContext.Context.Activity.ChannelData.ToString() : string.Empty
-                };
-                await _userService.InsertOrMergeAsync(user);
-            }
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.WelcomeMessage, cancellationToken);
+            // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
+            await _userService.GetOrCreateUser(stepContext.Context);
             return await stepContext.NextAsync(null, cancellationToken);
-        }
-
-        private static string GetUserName(ChannelAccount account)
-        {
-            var result = account.Name;
-            var firstName = account.Properties["first_name"]?.ToString();
-            var lastName = account.Properties["last_name"]?.ToString();
-            var fullName = firstName;
-            if (String.IsNullOrEmpty(fullName) && !String.IsNullOrEmpty(lastName))
-                fullName += " ";
-            fullName += lastName;
-            if (!String.IsNullOrEmpty(fullName))
-                if (String.IsNullOrEmpty(result))
-                    result = fullName;
-                else
-                    result += " (" + fullName + ")";
-            return result;
-
         }
 
         private async Task<DialogTurnResult> SelectTeamStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

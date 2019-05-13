@@ -10,7 +10,7 @@ namespace CoreBot
     {
         public static async Task<User> ValidateCaptainPermission(UserId userId, IUserService userService, ITeamService teamService)
         {
-            var user = await userService.GetByAsync(userId.ChannelId, userId.Id);
+            var user = await userService.ValidateUser(userId);
             await ValidateCaptainPermission(user, userService, teamService);
             return user;
         }

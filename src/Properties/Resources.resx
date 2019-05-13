@@ -144,6 +144,9 @@
   <data name="PinNotFoundMessage" xml:space="preserve">
     <value>Пин код не найден. Укажите существующий код</value>
   </data>
+  <data name="PleaseWaitStartGame" xml:space="preserve">
+    <value>Немного терпения скоро начнём игру )</value>
+  </data>
   <data name="RetryPromptText" xml:space="preserve">
     <value>Пожалуйста, выбирите один из доступных выборов</value>
   </data>
@@ -154,7 +157,7 @@
     <value>Команда уже существует. Выберите другое имя.</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Привет, мой герой!</value>
+    <value>Привет, мой герой! Немного терпения и мы скоро начнём игру.</value>
   </data>
   <data name="WelcomeToTeamMessage" xml:space="preserve">
     <value>Добро пожаловать в комманду '{0}'!</value>

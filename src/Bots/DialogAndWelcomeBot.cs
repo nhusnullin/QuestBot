@@ -20,9 +20,9 @@ namespace CoreBot.Bots
             _userService = userService;
         }
 
-        protected override Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            await RunDialog(turnContext, cancellationToken);
         }
     }
 }
