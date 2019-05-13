@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreBot.Domain;
@@ -105,6 +106,24 @@ namespace CoreBot.Repositories
         {
             _cloudStorage.DeleteTableIfExists(TableName);
             return Task.CompletedTask;
+        }
+
+        public async Task<ICollection<Team>> GetTeams()
+        {
+            var table = _cloudStorage.GetOrCreateTable(TableName);
+            var teams = (await _cloudStorage.RetrieveEntitiesAsync<TeamEntity>(table)).ToDictionary(i => i.RowKey, i => i);
+            var users = await _userRepository.GetUsersAsync();
+            var teamUsers = users.GroupBy(i => i.TeamId, i => i);
+            var result = new List<Team>();
+            foreach(var teamUser in teamUsers.Where(i => i.Key != null))
+            {
+                if (!teams.TryGetValue(teamUser.Key, out var foundTeam))
+                    continue;
+                var team = new Team(teamUser.Key, foundTeam.Name, foundTeam.PinCode,
+                        teamUser.Where(i => i.IsCaptain).Select(i => new UserId(i.PartitionKey, i.RowKey)).Single());
+                result.Add(team);
+            }
+            return result;
         }
 
         private static string GetPartitionKey(string teamId)

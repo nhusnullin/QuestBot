@@ -81,9 +81,10 @@ namespace CoreBot
             _storage.DeleteTableIfExists(Answer.TableName);
         }
 
-        public Task<ICollection<Answer>> GetAnswers()
+        public async Task<ICollection<Answer>> GetAnswers()
         {
-            throw new NotImplementedException();
+            var table = _storage.GetOrCreateTable(Answer.TableName);
+            return await _storage.RetrieveEntitiesAsync<Answer>(table);
         }
     }
 }

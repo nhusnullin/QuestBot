@@ -35,6 +35,13 @@ namespace CoreBot.Repositories
             return Task.FromResult(result);
         }
 
+        public async Task<ICollection<User>> GetUsersAsync()
+        {
+            var table = _storage.GetOrCreateTable(User.TableName);
+            var users = await _storage.RetrieveEntitiesAsync<User>(table);
+            return users;
+        }
+
         public async Task InsertOrMergeAsync(User user)
         {
             var table = _storage.GetOrCreateTable(User.TableName);

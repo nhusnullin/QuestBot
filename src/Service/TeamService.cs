@@ -65,6 +65,11 @@ namespace CoreBot.Service
             await _teamRepository.DeleteTeams();
         }
 
+        public async Task<ICollection<Team>> GetTeams()
+        {
+            return await _teamRepository.GetTeams();
+        }
+
         private async Task<int> GetUniqueTeamPinCode()
         {
             int result = 0;
@@ -103,6 +108,5 @@ namespace CoreBot.Service
             }
             return result;
         }
-
     }
 }

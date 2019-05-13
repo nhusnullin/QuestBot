@@ -10,6 +10,7 @@ namespace CoreBot.Service
     public interface ICloudStorage
     {
         Task<T> RetrieveEntityByAsync<T>(CloudTable table, string partitionKey, string rowKey) where T : ITableEntity;
+        Task<ICollection<T>> RetrieveEntitiesAsync<T>(CloudTable table) where T : ITableEntity, new();
         CloudTable GetOrCreateTable(string tableName);
         void DeleteTableIfExists(string tableName);
         Task<T> InsertOrMergeEntityAsync<T>(CloudTable table, T entity) where T : ITableEntity;
