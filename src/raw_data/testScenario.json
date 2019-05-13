@@ -57,10 +57,14 @@
             "Question": "Еще наши сценарии могут переспрашивать у тебя ответы, если ты неправильно отвечаешь. Этот сценарий будет переспрашивать тебя 3 раза. Вопрос простой, как называется наше сообщество? Попробуй пару раз ответить неверно, чтобы посмотреть, как работает механизм повторов.",
             "PuzzleType": 0,
             "PosibleBranches": [
-                {
-                    "Answer": "DotNetRu",
-                    "GoToId": "WaitingAndRepeat"
-                }
+              {
+                "Answer": "DotNetRu",
+                "GoToId": "WaitingAndRepeat"
+              },
+              {
+                "Answer": "Dot Net Ru",
+                "GoToId": "WaitingAndRepeat"
+              }
             ],
             "NumberOfAttemptsLimit": 3,
             "ElseBranch": "WaitingAndRepeat"
@@ -74,10 +78,14 @@
             "WaitingTime": 3,
             "NumberOfAttemptsLimit":3,
             "PosibleBranches": [
-                {
-                    "Answer": "DotNext",
-                    "GoToId": "Game over"
-                }
+              {
+                "Answer": "DotNext",
+                "GoToId": "Game over"
+              },
+              {
+                "Answer": "Dot Next",
+                "GoToId": "Game over"
+              }
             ],
             "ElseBranch": "Game over"
         },

@@ -48,7 +48,14 @@ namespace CoreBot.Dialogs
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 
-            return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
+            // hack! такая развязка нужна из за зацикливания если тип WaitTextPuzzleDialog,
+            // при этом если ветка else branch и указано кол-во попыток их надо учитывать
+            if (puzzleDetails.PuzzleType == PuzzleType.WaitTextPuzzleDialog)
+            {
+                return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
+            }
+
+            return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
         }
     }
 }
