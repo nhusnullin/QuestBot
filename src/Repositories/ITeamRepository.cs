@@ -1,4 +1,5 @@
 ﻿using CoreBot.Domain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CoreBot.Repositories
@@ -13,5 +14,6 @@ namespace CoreBot.Repositories
         Task<Team> TryGetTeamByIdAsync(string teamId);
         Task UpdateTeamNameAsync(string teamId, string name);
         Task DeleteTeams();
+        Task<ICollection<Team>> GetTeams();
     }
 }

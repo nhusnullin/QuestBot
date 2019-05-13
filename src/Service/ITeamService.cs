@@ -1,4 +1,5 @@
 ﻿using CoreBot.Domain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CoreBot.Service
@@ -12,5 +13,6 @@ namespace CoreBot.Service
         Task<Team> AddMember(int pinCode, User member);
         Task ChangeTeamName(string teamId, string name);
         Task DeleteTeams();
+        Task<ICollection<Team>> GetTeams();
     }
 }

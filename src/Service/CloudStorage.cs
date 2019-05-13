@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using CoreBot.Domain;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,19 @@ namespace CoreBot.Service
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(tableName);
             table.DeleteIfExists();
+        }
+
+        public Task<ICollection<T>> RetrieveEntitiesAsync<T>(CloudTable table) where T : ITableEntity, new()
+        {
+            TableContinuationToken token = null;
+            var entities = new List<T>();
+            do
+            {
+                var queryResult = table.ExecuteQuerySegmented(new TableQuery<T>(), token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+            return Task.FromResult<ICollection<T>>(entities);
         }
     }
 }

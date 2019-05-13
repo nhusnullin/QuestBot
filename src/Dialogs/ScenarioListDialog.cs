@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Service;
@@ -6,7 +5,6 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
-using Microsoft.BotBuilderSamples;
 using Newtonsoft.Json.Linq;
 
 namespace CoreBot.Dialogs
@@ -36,14 +34,14 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> ShowChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var userId = stepContext.Context.Activity.From.Id;
+            var teamId = (string)stepContext.Options;
 
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
                     RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
-                    Choices = ChoiceFactory.ToChoices(_scenarioService.GetAvailableScenario(userId)),
+                    Choices = ChoiceFactory.ToChoices(_scenarioService.GetAvailableScenario(teamId)),
                 },
                 cancellationToken);
         }
@@ -51,25 +49,21 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> AnswerToChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var actualAnswer = ((FoundChoice)stepContext.Result).Value;
-            
-            var userId = stepContext.Context.Activity.From.Id;
-            var channelId = stepContext.Context.Activity.ChannelId;
-            var user = await _userService.GetByAsync(channelId, userId);
+            var scenarioId = ((FoundChoice)stepContext.Result).Value;
+            var teamId = (string)stepContext.Options;
 
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
 
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, user.TeamId);
-
-            if (scenarioDetails == null)
+            if (scenarioDetails == null || scenarioDetails.ScenarioId != scenarioId)
             {
                 scenarioDetails = new ScenarioDetails()
                 {
-                    ScenarioId = actualAnswer,
-                    TeamId = user.TeamId
+                    ScenarioId = scenarioId,
+                    TeamId = teamId
                 };
             }
 
-            var reply = stepContext.Context.Activity.CreateReply($"Выбранный сценарий: {actualAnswer}");
+            var reply = stepContext.Context.Activity.CreateReply($"Выбранный сценарий: {scenarioId}");
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
 

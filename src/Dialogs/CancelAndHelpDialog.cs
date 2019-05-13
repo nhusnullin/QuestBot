@@ -55,8 +55,8 @@ namespace CoreBot.Dialogs
                     switch (text)
                     {
                         case "scenario":
-                            await AuthorizationUtils.ValidateCaptainPermission(userId, _userService, _teamService);
-                            return await innerDc.BeginDialogAsync(nameof(ScenarioListDialog), null, cancellationToken);
+                            var scUser = await AuthorizationUtils.ValidateCaptainPermission(userId, _userService, _teamService);
+                            return await innerDc.BeginDialogAsync(nameof(ScenarioListDialog), scUser.TeamId, cancellationToken);
                         case "set_team_name":
                             var user = await AuthorizationUtils.ValidateCaptainPermission(userId, _userService, _teamService);
                             return await innerDc.BeginDialogAsync(nameof(SetTeamNameDialog), _teamService.TryGetTeamId(user), cancellationToken);

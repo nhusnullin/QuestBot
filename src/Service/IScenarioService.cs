@@ -12,7 +12,6 @@ namespace CoreBot
         Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer);
         Puzzle GetFirstPuzzle(string teamId, string scenarioId);
         bool IsOver(string teamId, string scenarioId, string lastPuzzleId);
-
         Scenario Load(string path);
         void LoadAll();
 
@@ -36,11 +35,11 @@ namespace CoreBot
             return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public IList<string> GetAvailableScenario(string userId)
+        public IList<string> GetAvailableScenario(string teamId)
         {
             var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
 
-            var completedScenario = _cloudStorage.GetAnswersByTeamId(userId, answer => answer.IsLastAnswer)
+            var completedScenario = _cloudStorage.GetAnswersByTeamId(teamId, answer => answer.IsLastAnswer)
                 .GroupBy(x=>x.ScenarioId);
 
             return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();

@@ -1,30 +1,7 @@
 using Microsoft.Azure.Cosmos.Table;
-using System;
 
 namespace CoreBot
 {
-    public class Answer : TableEntity
-    {
-        public const string TableName = "answers";
-
-        public Answer()
-        {
-
-        }
-
-        public Answer(string userId, string rowkey)
-        {
-            PartitionKey = userId;
-            RowKey = rowkey;
-        }
-
-        public string ScenarioId { get; set; }
-        public string PuzzleId { get; set; }
-        public string ScenarioDetails { get; set; }
-
-        public bool IsLastAnswer { get; set; }
-    }
-
 
     /// <summary>
     /// Данные пользователя для хранения в БД 
