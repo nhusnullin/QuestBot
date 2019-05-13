@@ -34,7 +34,7 @@ namespace CoreBot.Dialogs
             var userid = stepContext.Context.Activity.From.Id;
 
             // проверим проходил ли пользователь сценарий
-            var scenarioIsOverOnce = _userService.IsScenarioIsOverByUser(userid, scenarioDetails.ScenarioId);
+            var scenarioIsOverOnce = _userService.IsScenarioIsOverByUser(scenarioDetails.TeamId, scenarioDetails.ScenarioId);
 
             if (scenarioIsOverOnce)
             {

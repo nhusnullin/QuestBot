@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -21,10 +22,6 @@ namespace CoreBot.Bots
 
         protected override Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            //            await _userService.InsertOrMergeAsync(new User(turnContext.Activity.ChannelId, turnContext.Activity.From.Id)
-            //            {
-            //                ChannelData = turnContext.Activity.ChannelData?.ToString()
-            //            });
             return Task.CompletedTask;
         }
     }

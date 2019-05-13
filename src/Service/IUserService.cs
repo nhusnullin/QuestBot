@@ -1,16 +1,15 @@
 using System.Threading.Tasks;
 
-namespace CoreBot
+namespace CoreBot.Service
 {
     public interface IUserService
     {
-        Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails);
-        ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId);
+        Task SetAnswer(string channelId, string teamId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails);
+        ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string teamId);
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
-        void Remove(string channelId, string userId);
         Task DeleteUsers();
-        bool IsScenarioIsOverByUser(string userId, string scenarioId);
+        bool IsScenarioIsOverByUser(string teamId, string scenarioId);
         
     }
 }

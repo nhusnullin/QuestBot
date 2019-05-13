@@ -14,7 +14,7 @@ namespace CoreBot.Service
         Task<T> InsertOrMergeEntityAsync<T>(CloudTable table, T entity) where T : ITableEntity;
         Task<T> InsertAsync<T>(CloudTable table, T entity) where T : ITableEntity;
 
-        IList<Answer> GetAnswersByUserId(string userId, Func<Answer, bool> whereClause);
+        IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause);
     }
     
 }

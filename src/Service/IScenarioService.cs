@@ -40,7 +40,7 @@ namespace CoreBot
         {
             var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
 
-            var completedScenario = _cloudStorage.GetAnswersByUserId(userId, answer => answer.IsLastAnswer)
+            var completedScenario = _cloudStorage.GetAnswersByTeamId(userId, answer => answer.IsLastAnswer)
                 .GroupBy(x=>x.ScenarioId);
 
             return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();

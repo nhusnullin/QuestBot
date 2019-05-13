@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
@@ -54,12 +55,13 @@ namespace CoreBot.Dialogs
             
             var userId = stepContext.Context.Activity.From.Id;
             var channelId = stepContext.Context.Activity.ChannelId;
+            var user = await _userService.GetByAsync(channelId, userId);
 
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, userId);
+
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(channelId, user.TeamId);
 
             if (scenarioDetails == null)
             {
-                var user = await _userService.GetByAsync(channelId, userId);
                 scenarioDetails = new ScenarioDetails()
                 {
                     ScenarioId = actualAnswer,

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CoreBot.Service;
 
 namespace CoreBot
 {
     public class DummyUserService : IUserService
     {
         public Dictionary<string, User> _store = new Dictionary<string, User>();
-        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId)
+        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string teamId)
         {
             throw new System.NotImplementedException();
         }
@@ -29,12 +30,12 @@ namespace CoreBot
         {
         }
 
-        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        public bool IsScenarioIsOverByUser(string teamId, string scenarioId)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
+        public async Task SetAnswer(string channelId, string teamId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
         {
             return;
         }

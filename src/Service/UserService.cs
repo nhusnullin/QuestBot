@@ -17,10 +17,10 @@ namespace CoreBot
             _storage = cloudStorage ?? throw new System.ArgumentNullException(nameof(cloudStorage));
         }
 
-        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string userId)
+        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string channelId, string teamId)
         {
             var answers = _storage
-                .GetAnswersByUserId(userId, x => x.IsLastAnswer != true)
+                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)
                 .OrderByDescending(x => x.Timestamp)
                 .Take(1)
                 .ToList();
@@ -35,9 +35,9 @@ namespace CoreBot
             return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
         }
 
-        public bool IsScenarioIsOverByUser(string userId, string scenarioId)
+        public bool IsScenarioIsOverByUser(string teamId, string scenarioId)
         {
-            return _storage.GetAnswersByUserId(userId,
+            return _storage.GetAnswersByTeamId(teamId,
                 answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
                           answer.IsLastAnswer).Any();
         }
@@ -56,11 +56,11 @@ namespace CoreBot
         {
         }
 
-        public async Task SetAnswer(string channelId, string userId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
+        public async Task SetAnswer(string channelId, string teamId, string scenarioId, string puzzleId, ScenarioDetails scenarioDetails)
         {
             var table = _storage.GetOrCreateTable(Answer.TableName);
 
-            var answer = new Answer(userId, $"{scenarioId} {puzzleId}")
+            var answer = new Answer(teamId, $"{scenarioId} {puzzleId}")
             {
                 ScenarioId = scenarioId,
                 PuzzleId = puzzleId,
