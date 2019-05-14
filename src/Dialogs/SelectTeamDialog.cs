@@ -1,10 +1,12 @@
-﻿using CoreBot.Properties;
+﻿using CoreBot.Domain;
+using CoreBot.Properties;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,10 +18,17 @@ namespace CoreBot.Dialogs
     public class SelectTeamDialog : ComponentDialog
     {
         private readonly ITeamService _teamService;
+        private readonly INotificationMessanger _notificationMessanger;
+        protected ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
         private const string teamPinCodeDialog = "TeamPinCode";
-        public SelectTeamDialog(ITeamService teamService) : base(nameof(SelectTeamDialog))
+        public SelectTeamDialog(ITeamService teamService,
+            INotificationMessanger notificationMessanger,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences) : base(nameof(SelectTeamDialog))
         {
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
+            _conversationReferences = conversationReferences ?? throw new System.ArgumentNullException(nameof(conversationReferences));
+            _notificationMessanger = notificationMessanger ?? throw new System.ArgumentNullException(nameof(notificationMessanger));
+
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
             AddDialog(new NumberPrompt<int>(teamPinCodeDialog, TeamPinValidator));
             var waterfallStep = new WaterfallStep[]
@@ -80,6 +89,8 @@ namespace CoreBot.Dialogs
             var team = await _teamService.AddMember(teamPinCode, user);
             var message = String.Format(CultureInfo.InvariantCulture, Resources.WelcomeToTeamMessage, team.Name);
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
+            var teamMessage = "К вашей команде присоединился '" + user.Name+"'";
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, team.Id, teamMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.EndDialogAsync(team.Id, cancellationToken);
         }
 

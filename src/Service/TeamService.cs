@@ -92,10 +92,11 @@ namespace CoreBot.Service
         private async Task<string> GetUniqueTeamName(User leader)
         {
             var name = leader.Name;
+            const string defaultTeamName = "Team";
             if (String.IsNullOrEmpty(name))
-                name = "Team1";
+                name = defaultTeamName + "1";
             var result = name;
-            uint counter = 0;
+            uint counter = 1;
             while(await TryGetTeamIdByName(result) != null)
             {
                 if (counter >= UInt16.MaxValue)
@@ -104,7 +105,7 @@ namespace CoreBot.Service
                     break;
                 }
                 ++counter;
-                result = name + counter.ToString(CultureInfo.InvariantCulture);
+                result = defaultTeamName + counter.ToString(CultureInfo.InvariantCulture);
 
             }
             return result;

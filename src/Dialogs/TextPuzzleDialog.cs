@@ -12,17 +12,12 @@ namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
-        private readonly INotificationMessanger _notificationMessanger;
-        private readonly ITeamService _teamService;
         public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             INotificationMessanger notificationMessanger,
             string id = "TextPuzzleDialog") 
             : base(id, scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
-            _notificationMessanger = notificationMessanger;
-            _conversationReferences = conversationReferences;
-            _teamService = teamService;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             var waterfallStep = new WaterfallStep[]
@@ -39,7 +34,7 @@ namespace CoreBot.Dialogs
             CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails)stepContext.Options;
-            TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(puzzleDetails.Question) }, cancellationToken);
         }
 
@@ -47,8 +42,10 @@ namespace CoreBot.Dialogs
             CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
-            puzzleDetails.SetAnswer((string) stepContext.Result);
-
+            var answer = (string)stepContext.Result;
+            puzzleDetails.SetAnswer(answer);
+            var teamMessage = $"Вы выбрали ответ '{answer}'";
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, teamMessage, _conversationReferences, cancellationToken, false);
             if (puzzleDetails.IsRight)
             {
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -56,8 +53,10 @@ namespace CoreBot.Dialogs
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
+                var message = "К сожалению, вы использовали все попытки ввести правильный ответ";
+                await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("К сожалению, вы использовали все попытки ввести правильный ответ") }, cancellationToken);
+                    new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 

@@ -130,7 +130,7 @@
     <value>Я хочу играть сам (один или как капитан команды)</value>
   </data>
   <data name="CreateTeamCompletedMessage" xml:space="preserve">
-    <value>Ваше имя команды '{0}'. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код '{1}'.</value>
+    <value>Ваше имя команды '{0}'. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код '{1}'. Этот код вы можете передать на стенд DotNetRu, чтобы другие участники могли к вам присоединиться</value>
   </data>
   <data name="InputPinTeamMessage" xml:space="preserve">
     <value>Ведите пин код команды (вы можете обратиться за пин кодом доступной команды на стенд DotNetRu)</value>
@@ -155,6 +155,9 @@
   </data>
   <data name="TeamAlreadyExistsMessage" xml:space="preserve">
     <value>Команда уже существует. Выберите другое имя.</value>
+  </data>
+  <data name="TeamNotificationInfo" xml:space="preserve">
+    <value>Вам будет приходить нотификация о вопросах, надо которые надо будет ответить капитану команды.</value>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Привет, мой герой! Немного терпения и мы скоро начнём игру.</value>

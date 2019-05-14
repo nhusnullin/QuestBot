@@ -97,7 +97,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ваше имя команды &apos;{0}&apos;. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Ваше имя команды &apos;{0}&apos;. Вы всегда можете изменить имя командой /set_team_name. Если хотите, чтобы к вам присоединились игроки, дайте им пин код &apos;{1}&apos;. Этот код вы можете передать на стенд DotNetRu, чтобы другие участники могли к вам присоединиться.
         /// </summary>
         internal static string CreateTeamCompletedMessage {
             get {
@@ -174,6 +174,15 @@ namespace CoreBot.Properties {
         internal static string TeamAlreadyExistsMessage {
             get {
                 return ResourceManager.GetString("TeamAlreadyExistsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вам будет приходить нотификация о вопросах, надо которые надо будет ответить капитану команды..
+        /// </summary>
+        internal static string TeamNotificationInfo {
+            get {
+                return ResourceManager.GetString("TeamNotificationInfo", resourceCulture);
             }
         }
         

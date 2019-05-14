@@ -100,12 +100,13 @@ namespace Microsoft.BotBuilderSamples
 
                 var adapter = new BotFrameworkAdapter(
                     credentialProvider: new SimpleCredentialProvider(botAppId, "V}a5YJQbR4kE836G-Yv*K409p.>5"),
-                    logger: logger);
-
-                adapter.OnTurnError = async (context, exception) =>
+                    logger: logger)
                 {
-                    logger.LogError(exception, "Bot adapter error");
-                    await context.SendActivityAsync("Sorry, it looks like something went wrong." + exception.Message);
+                    OnTurnError = async (context, exception) =>
+                    {
+                        logger.LogError(exception, "Bot adapter error");
+                        await context.SendActivityAsync("Sorry, it looks like something went wrong." + exception.Message);
+                    }
                 };
 
                 return adapter;

@@ -14,7 +14,6 @@ namespace CoreBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-
         public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             INotificationMessanger notificationMessanger)
@@ -52,6 +51,7 @@ namespace CoreBot.Dialogs
 
             if (puzzleDetails.IsLastPuzzle)
             {
+                await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -68,7 +68,6 @@ namespace CoreBot.Dialogs
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
             var puzzleDetails =  (PuzzleDetails)stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
-
             await _userService.SetAnswer(scenarioDetails);
 
             if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))

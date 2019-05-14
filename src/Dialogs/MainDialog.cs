@@ -20,7 +20,6 @@ namespace CoreBot.Dialogs
         protected readonly ILogger _logger;
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private readonly ITeamService _teamService;
         public MainDialog(IConfiguration configuration, 
             ILogger<MainDialog> logger, 
             IScenarioService scenarioService,
@@ -34,9 +33,8 @@ namespace CoreBot.Dialogs
             _logger = logger;
             _scenarioService = scenarioService ?? throw new System.ArgumentNullException(nameof(scenarioService));
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
-            _teamService = teamService;
             _conversationReferences = conversationReferences;
-            AddDialog(new SelectTeamDialog(teamService));
+            AddDialog(new SelectTeamDialog(teamService, notificationMessanger, conversationReferences));
             AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -73,7 +71,12 @@ namespace CoreBot.Dialogs
             var teamId = (string)stepContext.Result;
 
             var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
-
+            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+            if (!user.IsCaptain)
+            {
+                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
+                return await stepContext.EndDialogAsync(null, cancellationToken);
+            }
             if (scenarioDetails == null)
             {
                 scenarioDetails = new ScenarioDetails()

@@ -3,7 +3,9 @@ using CoreBot.Properties;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,9 +18,17 @@ namespace CoreBot.Dialogs
     {
         private const string newTeamNameDialog = "InputNewTeamNamePromptDialog";
         private readonly ITeamService _teamService;
-        public SetTeamNameDialog(string dialogId, ITeamService teamService) : base(dialogId)
+        private readonly INotificationMessanger _notificationMessanger;
+        protected ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
+        public SetTeamNameDialog(string dialogId, ITeamService teamService,
+            INotificationMessanger notificationMessanger,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences
+            ) : base(dialogId)
         {
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
+            _conversationReferences = conversationReferences ?? throw new System.ArgumentNullException(nameof(conversationReferences));
+            _notificationMessanger = notificationMessanger ?? throw new System.ArgumentNullException(nameof(notificationMessanger));
+
             AddDialog(new TextPrompt(newTeamNameDialog, NewTeamNameValidator));
             var waterfallStep = new WaterfallStep[]
             {
@@ -50,6 +60,7 @@ namespace CoreBot.Dialogs
             var teamId = (string)stepContext.Options;
             await _teamService.ChangeTeamName(teamId, teamName);
             var message = String.Format(CultureInfo.InvariantCulture, Resources.ChangeTeamNameCompletesdMessage, teamName);
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, message, _conversationReferences, cancellationToken, false);
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
             return await stepContext.EndDialogAsync(teamName, cancellationToken);
         }

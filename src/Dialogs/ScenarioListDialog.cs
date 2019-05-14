@@ -17,7 +17,7 @@ namespace CoreBot.Dialogs
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
         private readonly INotificationMessanger _notificationMessanger;
-        private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
+        private readonly ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
         public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
             ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,

@@ -28,8 +28,7 @@ namespace CoreBot.Dialogs
             {
                 // если первый заход, то задаем вопрос
                 puzzleDetails.SetQuestionAskedAt(DateTime.UtcNow);
-                return await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions {Prompt = MessageFactory.Text($"{puzzleDetails.Question}")}, cancellationToken);
+                return await base.AskDialog(stepContext, cancellationToken);
             }
 
             var remainMinutesToAnswer = puzzleDetails.GetRemainMinutesToAnswer(DateTime.UtcNow);
