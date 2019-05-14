@@ -13,8 +13,9 @@ namespace CoreBot.Dialogs
     public class WaitTextPuzzleDialog : TextPuzzleDialog
     {
         public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService,
-            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences) 
-            : base(scenarioService, userService, teamService, conversationReferences, nameof(WaitTextPuzzleDialog))
+            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger) 
+            : base(scenarioService, userService, teamService, conversationReferences, notificationMessanger, nameof(WaitTextPuzzleDialog))
         {
         }
 

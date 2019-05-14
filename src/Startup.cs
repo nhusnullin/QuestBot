@@ -17,12 +17,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
+using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Microsoft.BotBuilderSamples
@@ -91,6 +93,27 @@ namespace Microsoft.BotBuilderSamples
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
+            const string botAppId = "9b6857ad-5e19-4ed6-9dc0-c53d39105a97";
+            services.AddSingleton<IAdapterIntegration>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<IAdapterIntegration>>();
+
+                var adapter = new BotFrameworkAdapter(
+                    credentialProvider: new SimpleCredentialProvider(botAppId, "V}a5YJQbR4kE836G-Yv*K409p.>5"),
+                    logger: logger);
+
+                adapter.OnTurnError = async (context, exception) =>
+                {
+                    logger.LogError(exception, "Bot adapter error");
+                    await context.SendActivityAsync("Sorry, it looks like something went wrong." + exception.Message);
+                };
+
+                return adapter;
+            });
+            services.AddSingleton<INotificationMessanger>(sp =>
+                {
+                    return new NotificationMessanger(botAppId, sp.GetRequiredService<IAdapterIntegration>());
+                });
 
             services.AddHostedService<LoadScenarioService>();
         }

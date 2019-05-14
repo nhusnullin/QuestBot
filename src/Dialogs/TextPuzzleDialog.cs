@@ -12,10 +12,17 @@ namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
+        private readonly INotificationMessanger _notificationMessanger;
+        private readonly ITeamService _teamService;
         public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences, string id = "TextPuzzleDialog") 
-            : base(id, scenarioService, userService, teamService, conversationReferences)
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger,
+            string id = "TextPuzzleDialog") 
+            : base(id, scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
+            _notificationMessanger = notificationMessanger;
+            _conversationReferences = conversationReferences;
+            _teamService = teamService;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             var waterfallStep = new WaterfallStep[]
@@ -31,7 +38,8 @@ namespace CoreBot.Dialogs
         protected virtual async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails)stepContext.Options;
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
+            TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(puzzleDetails.Question) }, cancellationToken);
         }
 
         protected virtual async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,

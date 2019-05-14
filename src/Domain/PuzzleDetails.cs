@@ -18,7 +18,7 @@ namespace CoreBot
             PossibleAnswers = new List<string>();
         }
 
-        public PuzzleDetails(Puzzle puzzle, List<string> possibleAnswers)
+        public PuzzleDetails(Puzzle puzzle, List<string> possibleAnswers, string teamId)
         {
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
@@ -29,8 +29,10 @@ namespace CoreBot
 
             // для режима ожидания у нас свой диалог
             PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
+            TeamId = teamId;
         }
 
+        public string TeamId { get; }
         public bool IsLastPuzzle { get; set; }
 
         public PuzzleType PuzzleType { get; set; }

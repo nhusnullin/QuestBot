@@ -16,15 +16,18 @@ namespace CoreBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly INotificationMessanger _notificationMessanger;
         private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
         public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
-            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences) : base(nameof(ScenarioListDialog))
+            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
             _userService = userService;
             _teamService = teamService;
             _conversationReferences = conversationReferences;
+            _notificationMessanger = notificationMessanger ?? throw new System.ArgumentNullException(nameof(notificationMessanger));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
 
@@ -69,11 +72,12 @@ namespace CoreBot.Dialogs
                     TeamId = teamId
                 };
             }
-
-            var reply = stepContext.Context.Activity.CreateReply($"Выбранный сценарий: {scenarioId}");
+            var replyMessage = $"Выбранный сценарий: {scenarioId}";
+            var reply = stepContext.Context.Activity.CreateReply(replyMessage);
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, teamId, $"Выбранный сценарий: {scenarioId}", _conversationReferences);
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, 
+                replyMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 

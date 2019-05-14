@@ -1,11 +1,12 @@
 ﻿using CoreBot.Domain;
 using CoreBot.Service;
-using Microsoft.Azure.Documents.Client;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoreBot
@@ -13,17 +14,25 @@ namespace CoreBot
     static class TeamUtils
     {
         public static async Task SendTeamMessage(ITeamService teamService,
-            ITurnContext turnContext, string teamId, string message, IDictionary<UserId, ConversationReference> conversationReferences)
+            ITurnContext turnContext,
+            INotificationMessanger messenger, 
+            string teamId,
+            string message, 
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            CancellationToken cancellationToken,
+            bool sendMe = true)
         {
             var users = await teamService.GetTeamMembers(teamId);
-            var activities = conversationReferences.Where(i => users.Contains(i.Key)).Select(i =>
+            var teamConversations = conversationReferences.ToArray();
+            if (sendMe)
+                await TurnContextExtensions.SendMessageAsync(turnContext, message, cancellationToken);
+            var excludeUserId = new UserId(turnContext.Activity.ChannelId, turnContext.Activity.From.Id);
+            foreach (var reference in teamConversations.Where(i => users.Contains(i.Key)))
             {
-                var activity = turnContext.Activity.CreateReply(message);
-                activity.ApplyConversationReference(i.Value);
-                return activity;
-            }).ToArray();
-            foreach(var activity in activities)
-                await turnContext.SendActivityAsync(activity);
+                if (reference.Key.Equals(excludeUserId))
+                    continue;
+                await messenger.SendMessage(message, reference.Value, cancellationToken);
+            }
         }
     }
 }

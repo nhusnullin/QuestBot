@@ -16,12 +16,13 @@ namespace CoreBot.Dialogs
         private readonly ITeamService _teamService;
         protected ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
         public CancelAndHelpDialog(string id, IScenarioService scenarioService, IUserService userService, ITeamService teamService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger)
             : base(id)
         {
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _teamService = teamService ?? throw new System.ArgumentNullException(nameof(teamService));
-            AddDialog(new ScenarioListDialog(scenarioService, userService, teamService, conversationReferences));
+            AddDialog(new ScenarioListDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new SetTeamNameDialog(nameof(SetTeamNameDialog), teamService));
         }
 

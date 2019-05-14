@@ -16,16 +16,17 @@ namespace CoreBot.Dialogs
         private readonly IUserService _userService;
 
         public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
-            : base(nameof(ScenarioDialog), scenarioService, userService, teamService, conversationReferences)
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger)
+            : base(nameof(ScenarioDialog), scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
             var waterfallStep = new WaterfallStep[]
             {
                 Ask,
                 Check
             };
-            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences));
-            AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService, conversationReferences));
+            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
+            AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;
@@ -46,11 +47,11 @@ namespace CoreBot.Dialogs
             }
 
             var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.TeamId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
-            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList());
+            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.TeamId);
 
             return await stepContext.BeginDialogAsync(
                 puzzleDetails.PuzzleType.ToString(),
-                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList()),
+                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.TeamId),
                 cancellationToken);
         }
 

@@ -26,8 +26,9 @@ namespace CoreBot.Dialogs
             IScenarioService scenarioService,
             ITeamService teamService,
             IUserService userService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
-            : base(nameof(MainDialog), scenarioService, userService, teamService, conversationReferences)
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            INotificationMessanger notificationMessanger)
+            : base(nameof(MainDialog), scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
             _configuration = configuration;
             _logger = logger;
@@ -36,7 +37,7 @@ namespace CoreBot.Dialogs
             _teamService = teamService;
             _conversationReferences = conversationReferences;
             AddDialog(new SelectTeamDialog(teamService));
-            AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences));
+            AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
