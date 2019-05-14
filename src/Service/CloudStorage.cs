@@ -84,11 +84,17 @@ namespace CoreBot.Service
             CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CloudTable table = tableClient.GetTableReference(Answer.TableName);
 
-            TableQuery<Answer> query = new TableQuery<Answer>();
-
             return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
-                //.OrderByDescending(x => x.Timestamp)
                 .Where(whereClause)
+                .ToList();
+        }
+
+        public IList<Answer> GetAllAnswers()
+        {
+            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
+            CloudTable table = tableClient.GetTableReference(Answer.TableName);
+
+            return table.CreateQuery<Answer>()
                 .ToList();
         }
 

@@ -16,14 +16,20 @@ namespace CoreBot
         void LoadAll();
 
         IList<string> GetAvailableScenario(string userId);
+        IDictionary<string, Scenario> Store { get; set; }
     }
 
     public class ScenarioService : IScenarioService
     {
         private readonly ICloudStorage _cloudStorage;
-        public Dictionary<string, Scenario> Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
+        public IDictionary<string, Scenario> Store { get; set; }
 
-        public ScenarioService(ICloudStorage cloudStorage)
+        public ScenarioService()
+        {
+            Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
+        }
+
+        public ScenarioService(ICloudStorage cloudStorage):this()
         {
             _cloudStorage = cloudStorage;
         }

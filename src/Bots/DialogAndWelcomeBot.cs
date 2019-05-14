@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Domain;
+using CoreBot.Properties;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -26,6 +27,7 @@ namespace CoreBot.Bots
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
+            await TurnContextExtensions.SendMessageAsync(turnContext, Resources.WelcomeMessage, cancellationToken);
             await RunDialog(turnContext, cancellationToken);
         }
 

@@ -24,6 +24,7 @@ namespace CoreBot.Dialogs
             _teamService = teamService ?? throw new System.ArgumentNullException(nameof(teamService));
             AddDialog(new ScenarioListDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new SetTeamNameDialog(nameof(SetTeamNameDialog), teamService));
+            AddDialog(new ShowRatingDialog(scenarioService, userService, teamService));
         }
 
         protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options, CancellationToken cancellationToken)
@@ -77,16 +78,20 @@ namespace CoreBot.Dialogs
                             await _userService.DeleteUsers();
                             await _teamService.DeleteTeams();
                             break;
-
+                        case "top10":
+                            await innerDc.BeginDialogAsync(nameof(ShowRatingDialog), null, cancellationToken);
+                            return new DialogTurnResult(DialogTurnStatus.Waiting);
                     }
                 }
                 catch(UserNotFoundException)
                 {
                     await TurnContextExtensions.SendMessageAsync(innerDc.Context, Resources.PleaseWaitStartGame, cancellationToken);
+                    return new DialogTurnResult(DialogTurnStatus.Waiting);
                 }
                 catch(AuthorizationException ex)
                 {
                     await TurnContextExtensions.SendMessageAsync(innerDc.Context, ex.Message, cancellationToken);
+                    return new DialogTurnResult(DialogTurnStatus.Waiting);
                 }
             }
 

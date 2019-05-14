@@ -44,7 +44,7 @@ namespace CoreBot.Dialogs
                 IntroStepAsync,
                 SelectTeamStepAsync,
                 ScenarioLaunchStepAsync,
-                FinalStepAsync,
+                //FinalStepAsync,
             }));
 
             InitialDialogId = nameof(WaterfallDialog);
@@ -53,7 +53,7 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.WelcomeMessage, cancellationToken);
+            
             // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
             await _userService.GetOrCreateUser(stepContext.Context);
             return await stepContext.NextAsync(null, cancellationToken);
@@ -86,11 +86,11 @@ namespace CoreBot.Dialogs
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
-            CancellationToken cancellationToken)
-        {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
-            return await stepContext.EndDialogAsync(null, cancellationToken);
-        }
+        //private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
+        //    CancellationToken cancellationToken)
+        //{
+        //    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
+        //    return await stepContext.EndDialogAsync(null, cancellationToken);
+        //}
     }
 }
