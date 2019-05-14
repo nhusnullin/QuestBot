@@ -44,6 +44,13 @@ namespace CoreBot.Dialogs
             var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.TeamId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
             var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList());
 
+            if (puzzleDetails.IsLastPuzzle)
+            {
+                await stepContext.PromptAsync(nameof(TextPrompt),
+                    new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
+                return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
+            }
+
             return await stepContext.BeginDialogAsync(
                 puzzleDetails.PuzzleType.ToString(),
                 new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList()),

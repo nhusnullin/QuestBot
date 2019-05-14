@@ -24,10 +24,13 @@ namespace CoreBot.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-        protected virtual async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        protected virtual async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext,
+            CancellationToken cancellationToken)
         {
-            var puzzleDetails = (PuzzleDetails)stepContext.Options;
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
+            var puzzleDetails = (PuzzleDetails) stepContext.Options;
+
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions {Prompt = MessageFactory.Text($"{puzzleDetails.Question}")}, cancellationToken);
         }
 
         protected virtual async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,
@@ -48,14 +51,19 @@ namespace CoreBot.Dialogs
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 
+            if (puzzleDetails.NumberOfAttemptsLimit.HasValue && puzzleDetails.NumberOfAttemptsLimit.Value > 0)
+            {
+                return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
+            }
+
             // hack! такая развязка нужна из за зацикливания если тип WaitTextPuzzleDialog,
             // при этом если ветка else branch и указано кол-во попыток их надо учитывать
-            if (puzzleDetails.PuzzleType == PuzzleType.WaitTextPuzzleDialog)
+            //if (puzzleDetails.PuzzleType == PuzzleType.WaitTextPuzzleDialog)
             {
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 
-            return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
+            
         }
     }
 }
