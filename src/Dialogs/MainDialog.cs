@@ -40,7 +40,7 @@ namespace CoreBot.Dialogs
                 IntroStepAsync,
                 SelectTeamStepAsync,
                 ScenarioLaunchStepAsync,
-                FinalStepAsync,
+                //FinalStepAsync,
             }));
 
             InitialDialogId = nameof(WaterfallDialog);
@@ -82,11 +82,11 @@ namespace CoreBot.Dialogs
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
-            CancellationToken cancellationToken)
-        {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
-            return await stepContext.EndDialogAsync(null, cancellationToken);
-        }
+        //private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
+        //    CancellationToken cancellationToken)
+        //{
+        //    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
+        //    return await stepContext.EndDialogAsync(null, cancellationToken);
+        //}
     }
 }
