@@ -154,5 +154,10 @@ namespace CoreBot
         /// признак что это последний шаг в квесте
         /// </summary>
         public bool IsLastPuzzle { get; set; }
+
+        /// <summary>
+        /// вес шага
+        /// </summary>
+        public int Weight { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace CoreBot.Service
         Task DeleteUsers();
         bool IsScenarioIsOverByTeam(string teamId, string scenarioId);
         Task<ICollection<Answer>> GetAnswers();
-        
+        IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore);
     }
 }

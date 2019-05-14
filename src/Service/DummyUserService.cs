@@ -51,6 +51,11 @@ namespace CoreBot
             throw new System.NotImplementedException();
         }
 
+        public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool IsScenarioIsOverByTeam(string userId, string scenarioId)
         {
             throw new System.NotImplementedException();

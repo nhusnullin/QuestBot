@@ -13,6 +13,7 @@ namespace CoreBot
     {
         private readonly IUserRepository _userRepository;
         private readonly ICloudStorage _storage;
+
         public UserService(IUserRepository userRepository, ICloudStorage cloudStorage)
         {
             _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
@@ -85,6 +86,30 @@ namespace CoreBot
         {
             var table = _storage.GetOrCreateTable(Answer.TableName);
             return await _storage.RetrieveEntitiesAsync<Answer>(table);
+        }
+
+        public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)
+        {
+            var result = new Dictionary<string, int>();
+
+            var allAnswers = _storage.GetAllAnswers();
+
+            foreach (var answer in allAnswers)
+            {
+                if (!result.ContainsKey(answer.PartitionKey))
+                {
+                    result[answer.PartitionKey] = 0;
+                }
+
+                scenarioStore.TryGetValue(answer.ScenarioId, out var scenario);
+                var weight = scenario
+                    ?.Collection
+                    ?.FirstOrDefault(x => string.Equals(x.Id, answer.PuzzleId, StringComparison.CurrentCultureIgnoreCase))
+                    ?.Weight;
+                result[answer.PartitionKey] += weight ?? 0;
+            }
+
+            return result;
         }
     }
 }
