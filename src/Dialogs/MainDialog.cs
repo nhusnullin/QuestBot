@@ -49,7 +49,7 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.WelcomeMessage, cancellationToken);
+            
             // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
             await _userService.GetOrCreateUser(stepContext.Context);
             return await stepContext.NextAsync(null, cancellationToken);

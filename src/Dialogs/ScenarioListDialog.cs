@@ -14,10 +14,11 @@ namespace CoreBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
 
-        public ScenarioListDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ScenarioListDialog))
+        public ScenarioListDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
             _userService = userService;
+            //AddDialog(new ScenarioDialog(scenarioService, userService, teamService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
 
