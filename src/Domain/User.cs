@@ -32,6 +32,7 @@ namespace CoreBot
         public bool IsCaptain { get; set; }
 
         public string ChannelData { get; set; }
+        public string ConversationData { get; set; }
     }
     
 }

@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot;
@@ -25,6 +27,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Microsoft.BotBuilderSamples
@@ -32,7 +35,6 @@ namespace Microsoft.BotBuilderSamples
     public class Startup
     {
         private const string BotOpenIdMetadataKey = "BotOpenIdMetadata";
-
         public Startup(IHostingEnvironment env)
         {
             var _isProduction = env.IsProduction();
@@ -86,7 +88,11 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IReportService, ReportService>();
             // Create a global hashset for our ConversationReferences
-            services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>();
+            services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
+            {
+                var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
+                return new ConcurrentDictionary<UserId, ConversationReference>(values);
+            });
 
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
@@ -119,6 +125,14 @@ namespace Microsoft.BotBuilderSamples
             services.AddHostedService<LoadScenarioService>();
         }
 
+        private static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
+        {
+            var table = cloudStorage.GetOrCreateTable(User.TableName);
+            var users = await cloudStorage.RetrieveEntitiesAsync<User>(table);
+            return users.Where(i => i.ConversationData != null).Select(i => new KeyValuePair<UserId, ConversationReference>(
+                new UserId(i.PartitionKey, i.RowKey), JsonConvert.DeserializeObject<ConversationReference>(i.ConversationData)));
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -136,26 +150,6 @@ namespace Microsoft.BotBuilderSamples
 
             //app.UseHttpsRedirection();
             app.UseMvc();
-        }
-    }
-
-    public class LoadScenarioService : IHostedService
-    {
-        private readonly IScenarioService _scenarioService;
-
-        public LoadScenarioService(IScenarioService scenarioService)
-        {
-            _scenarioService = scenarioService;
-        }
-
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            _scenarioService.LoadAll();
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
         }
     }
 }

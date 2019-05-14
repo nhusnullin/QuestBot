@@ -31,24 +31,27 @@ namespace CoreBot.Bots
             await RunDialog(turnContext, cancellationToken);
         }
 
-        private void AddConversationReference(Activity activity)
+        private async Task AddConversationReference(ITurnContext turnContext)
         {
+            var activity = turnContext.Activity;
             var conversationReference = activity.GetConversationReference();
+            await _userService.AddOrUpdateConversation(turnContext, conversationReference);
             _conversationReferences.AddOrUpdate(new UserId(activity.ChannelId, conversationReference.User.Id), conversationReference, (key, newValue) => conversationReference);
+
         }
 
-        protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            AddConversationReference(turnContext.Activity as Activity);
+            await AddConversationReference(turnContext);
 
-            return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+            await base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
-        protected override Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            AddConversationReference(turnContext.Activity as Activity);
+            await AddConversationReference(turnContext);
 
-            return base.OnMessageActivityAsync(turnContext, cancellationToken);
+            await base.OnMessageActivityAsync(turnContext, cancellationToken);
         }
     }
 }

@@ -3,6 +3,7 @@ using CoreBot.Exceptions;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -18,11 +19,33 @@ namespace CoreBot
                 user = new User(context.Activity.ChannelId, context.Activity.From.Id)
                 {
                     Name = GetUserName(context.Activity.From),
-                    ChannelData = context.Activity.ChannelData != null ? context.Activity.ChannelData.ToString() : string.Empty
+                    ChannelData = context.Activity.ChannelData != null ? context.Activity.ChannelData.ToString() : string.Empty,
+                    ConversationData = GetConversationData(context.Activity.GetConversationReference())
                 };
                 await userService.InsertOrMergeAsync(user);
             }
             return user;
+        }
+
+        public static async Task<User> AddOrUpdateConversation(this IUserService userService, ITurnContext context, ConversationReference conversationReference)
+        {
+            var user = await userService.GetByAsync(context.Activity.ChannelId, context.Activity.From.Id);
+            if (user == null)
+            {
+                user = new User(context.Activity.ChannelId, context.Activity.From.Id)
+                {
+                    Name = GetUserName(context.Activity.From),
+                    ChannelData = context.Activity.ChannelData != null ? context.Activity.ChannelData.ToString() : string.Empty
+                };
+            }
+            user.ConversationData = GetConversationData(conversationReference);
+            await userService.InsertOrMergeAsync(user);
+            return user;
+        }
+
+        private static string GetConversationData(ConversationReference conversationReference)
+        {
+            return JsonConvert.SerializeObject(conversationReference);
         }
 
         public static async Task<User> ValidateUser(this IUserService userService, UserId userId)
