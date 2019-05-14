@@ -131,5 +131,11 @@ namespace CoreBot.Repositories
             // Use first char for partition key
             return teamId.Substring(0, 1);
         }
+
+        public async Task<ISet<UserId>> GetTeamMembers(string teamId)
+        {
+            var users = await _userRepository.GetTeamUsersAsync(teamId);
+            return new HashSet<UserId>(users.Select(i => new UserId(i.PartitionKey, i.RowKey)));
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace CoreBot.Repositories
         {
             PartitionKey = partitionKey;
             RowKey = teamId;
-            Name = teamId;
+            Name = name;
         }
         public string Name { get; set; }
         public int PinCode { get; set; }

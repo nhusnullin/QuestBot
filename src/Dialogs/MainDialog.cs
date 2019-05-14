@@ -1,7 +1,9 @@
 using System;
-using System.IO;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 using CoreBot.Properties;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
@@ -19,21 +21,22 @@ namespace CoreBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
-
         public MainDialog(IConfiguration configuration, 
             ILogger<MainDialog> logger, 
             IScenarioService scenarioService,
             ITeamService teamService,
-            IUserService userService)
-            : base(nameof(MainDialog), scenarioService, userService, teamService)
+            IUserService userService,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
+            : base(nameof(MainDialog), scenarioService, userService, teamService, conversationReferences)
         {
             _configuration = configuration;
             _logger = logger;
             _scenarioService = scenarioService ?? throw new System.ArgumentNullException(nameof(scenarioService));
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _teamService = teamService;
+            _conversationReferences = conversationReferences;
             AddDialog(new SelectTeamDialog(teamService));
-            AddDialog(new ScenarioDialog(scenarioService, userService, teamService));
+            AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {

@@ -1,9 +1,12 @@
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
 
 namespace CoreBot.Dialogs
 {
@@ -12,16 +15,17 @@ namespace CoreBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
 
-        public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService)
-            : base(nameof(ScenarioDialog), scenarioService, userService, teamService)
+        public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
+            : base(nameof(ScenarioDialog), scenarioService, userService, teamService, conversationReferences)
         {
             var waterfallStep = new WaterfallStep[]
             {
                 Ask,
                 Check
             };
-            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService));
-            AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService));
+            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences));
+            AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService, conversationReferences));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;

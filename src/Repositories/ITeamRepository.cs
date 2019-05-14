@@ -15,5 +15,6 @@ namespace CoreBot.Repositories
         Task UpdateTeamNameAsync(string teamId, string name);
         Task DeleteTeams();
         Task<ICollection<Team>> GetTeams();
+        Task<ISet<UserId>> GetTeamMembers(string teamId);
     }
 }

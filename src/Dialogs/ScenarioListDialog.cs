@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -13,11 +15,16 @@ namespace CoreBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
+        private readonly ITeamService _teamService;
+        private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
-        public ScenarioListDialog(IScenarioService scenarioService, IUserService userService) : base(nameof(ScenarioListDialog))
+        public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
+            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
             _userService = userService;
+            _teamService = teamService;
+            _conversationReferences = conversationReferences;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
 
@@ -66,7 +73,7 @@ namespace CoreBot.Dialogs
             var reply = stepContext.Context.Activity.CreateReply($"Выбранный сценарий: {scenarioId}");
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-
+            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, teamId, $"Выбранный сценарий: {scenarioId}", _conversationReferences);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 

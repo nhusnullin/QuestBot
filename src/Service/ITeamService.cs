@@ -13,6 +13,7 @@ namespace CoreBot.Service
         Task<Team> AddMember(int pinCode, User member);
         Task ChangeTeamName(string teamId, string name);
         Task DeleteTeams();
+        Task<ISet<UserId>> GetTeamMembers(string teamId);
         Task<ICollection<Team>> GetTeams();
     }
 }

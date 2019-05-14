@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
+using CoreBot.Domain;
 using CoreBot.Repositories;
 using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +19,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
+using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -80,7 +83,8 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IReportService, ReportService>();
-
+            // Create a global hashset for our ConversationReferences
+            services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>();
 
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();

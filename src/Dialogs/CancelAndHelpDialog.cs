@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Domain;
@@ -13,13 +14,14 @@ namespace CoreBot.Dialogs
     {
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
-
-        public CancelAndHelpDialog(string id, IScenarioService scenarioService, IUserService userService, ITeamService teamService)
+        protected ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
+        public CancelAndHelpDialog(string id, IScenarioService scenarioService, IUserService userService, ITeamService teamService,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
             : base(id)
         {
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _teamService = teamService ?? throw new System.ArgumentNullException(nameof(teamService));
-            AddDialog(new ScenarioListDialog(scenarioService, userService));
+            AddDialog(new ScenarioListDialog(scenarioService, userService, teamService, conversationReferences));
             AddDialog(new SetTeamNameDialog(nameof(SetTeamNameDialog), teamService));
         }
 

@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
 
 namespace CoreBot.Dialogs
 {
     public class WaitTextPuzzleDialog : TextPuzzleDialog
     {
-        public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService) 
-            : base(scenarioService, userService, teamService, nameof(WaitTextPuzzleDialog))
+        public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService,
+            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences) 
+            : base(scenarioService, userService, teamService, conversationReferences, nameof(WaitTextPuzzleDialog))
         {
         }
 

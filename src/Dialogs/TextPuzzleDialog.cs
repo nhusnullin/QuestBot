@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
 
 namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
-        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService, string id = "TextPuzzleDialog") 
-            : base(id, scenarioService, userService, teamService)
+        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences, string id = "TextPuzzleDialog") 
+            : base(id, scenarioService, userService, teamService, conversationReferences)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 

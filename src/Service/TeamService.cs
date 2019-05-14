@@ -91,22 +91,28 @@ namespace CoreBot.Service
 
         private async Task<string> GetUniqueTeamName(User leader)
         {
-            var result = leader.Name;
-            if (String.IsNullOrEmpty(result))
-                result = "Team1";
+            var name = leader.Name;
+            if (String.IsNullOrEmpty(name))
+                name = "Team1";
+            var result = name;
             uint counter = 0;
             while(await TryGetTeamIdByName(result) != null)
             {
-                if (counter < UInt16.MaxValue)
+                if (counter >= UInt16.MaxValue)
                 {
                     result = Guid.NewGuid().ToString("D");
                     break;
                 }
                 ++counter;
-                result = result + counter.ToString(CultureInfo.InvariantCulture);
+                result = name + counter.ToString(CultureInfo.InvariantCulture);
 
             }
             return result;
+        }
+
+        public async Task<ISet<UserId>> GetTeamMembers(string teamId)
+        {
+            return await _teamRepository.GetTeamMembers(teamId);
         }
     }
 }
