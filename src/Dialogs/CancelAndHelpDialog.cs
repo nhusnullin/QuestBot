@@ -83,10 +83,12 @@ namespace CoreBot.Dialogs
                 catch(UserNotFoundException)
                 {
                     await TurnContextExtensions.SendMessageAsync(innerDc.Context, Resources.PleaseWaitStartGame, cancellationToken);
+                    return new DialogTurnResult(DialogTurnStatus.Waiting);
                 }
                 catch(AuthorizationException ex)
                 {
                     await TurnContextExtensions.SendMessageAsync(innerDc.Context, ex.Message, cancellationToken);
+                    return new DialogTurnResult(DialogTurnStatus.Waiting);
                 }
             }
 
