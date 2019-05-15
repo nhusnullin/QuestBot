@@ -4,6 +4,7 @@ using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace CoreBot
             {
                 user = new User(context.Activity.ChannelId, context.Activity.From.Id)
                 {
-                    Name = GetUserName(context.Activity.From),
+                    Name = GetUserName(context.Activity.From, context.Activity.ChannelData),
                     ChannelData = context.Activity.ChannelData != null ? context.Activity.ChannelData.ToString() : string.Empty,
                     ConversationData = GetConversationData(context.Activity.GetConversationReference())
                 };
@@ -34,7 +35,7 @@ namespace CoreBot
             {
                 user = new User(context.Activity.ChannelId, context.Activity.From.Id)
                 {
-                    Name = GetUserName(context.Activity.From),
+                    Name = GetUserName(context.Activity.From, context.Activity.ChannelData),
                     ChannelData = context.Activity.ChannelData != null ? context.Activity.ChannelData.ToString() : string.Empty
                 };
             }
@@ -56,15 +57,14 @@ namespace CoreBot
             return user;
         }
 
-        private static string GetUserName(ChannelAccount account)
+        private static string GetUserName(ChannelAccount account, object channelData)
         {
             var result = account.Name;
-            var firstName = account.Properties["first_name"]?.ToString();
-            var lastName = account.Properties["last_name"]?.ToString();
-            var fullName = firstName;
-            if (String.IsNullOrEmpty(fullName) && !String.IsNullOrEmpty(lastName))
+            var personInfo = GetPersonInfo(channelData);
+            var fullName = personInfo.firstName;
+            if (!String.IsNullOrEmpty(fullName) && !String.IsNullOrEmpty(personInfo.lastName))
                 fullName += " ";
-            fullName += lastName;
+            fullName += personInfo.lastName;
             if (!String.IsNullOrEmpty(fullName))
                 if (String.IsNullOrEmpty(result))
                     result = fullName;
@@ -72,6 +72,24 @@ namespace CoreBot
                     result += " (" + fullName + ")";
             return result;
 
+        }
+
+        private static (string firstName, string lastName) GetPersonInfo(object channelData)
+        {
+            (string firstName, string lastName) result = (null, null);
+            try
+            {
+                if (channelData == null)
+                    return result;
+                var parseChannelData = JObject.Parse(channelData.ToString());
+                result.firstName = parseChannelData != null ? parseChannelData.SelectToken("message.from.first_name")?.Value<string>() : null;
+                result.lastName = parseChannelData != null ? parseChannelData.SelectToken("message.from.last_name")?.Value<string>() : null;
+                return result;
+            }
+            catch(Exception)
+            {
+                return result;
+            }
         }
     }
 }

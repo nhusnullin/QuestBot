@@ -178,7 +178,7 @@ namespace CoreBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вам будет приходить нотификация о вопросах, надо которые надо будет ответить капитану команды..
+        ///   Looks up a localized string similar to Вам будет приходить нотификация о вопросах, на которые надо будет ответить капитану команды..
         /// </summary>
         internal static string TeamNotificationInfo {
             get {
