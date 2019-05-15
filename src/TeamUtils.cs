@@ -34,5 +34,21 @@ namespace CoreBot
                 await messenger.SendMessage(message, reference.Value, cancellationToken);
             }
         }
+
+        public static void SendTeamMessage(ITeamService teamService,
+            INotificationMessanger messenger,
+            string teamId,
+            string message,
+            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+            CancellationToken cancellationToken
+            )
+        {
+            var users = teamService.GetTeamMembers(teamId).GetAwaiter().GetResult();
+            var teamConversations = conversationReferences.ToArray();
+            foreach (var reference in teamConversations.Where(i => users.Contains(i.Key)))
+            {
+                messenger.SendMessage(message, reference.Value, cancellationToken).GetAwaiter().GetResult();
+            }
+        }
     }
 }

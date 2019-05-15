@@ -16,6 +16,7 @@ using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
@@ -94,6 +95,11 @@ namespace Microsoft.BotBuilderSamples
                 return new ConcurrentDictionary<UserId, ConversationReference>(values);
             });
 
+            services.AddSingleton<ConcurrentBag<BackgroundNotifyMsg>>(sp =>
+            {
+                return new ConcurrentBag<BackgroundNotifyMsg>();
+            });
+
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();
 
@@ -123,6 +129,7 @@ namespace Microsoft.BotBuilderSamples
                 });
 
             services.AddHostedService<LoadScenarioService>();
+            services.AddHostedService<SendNotifyInBackgroundService>();
         }
 
         private static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
@@ -151,5 +158,19 @@ namespace Microsoft.BotBuilderSamples
             //app.UseHttpsRedirection();
             app.UseMvc();
         }
+    }
+
+    public class BackgroundNotifyMsg
+    {
+        public BackgroundNotifyMsg()
+        {
+                
+        }
+
+        public string TeamId { get; set; }
+        public DateTime WhenByUTC { get; set; }
+        public string Msg { get; set; }
+
+        public bool WasSend { get; set; }
     }
 }

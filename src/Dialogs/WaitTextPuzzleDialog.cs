@@ -7,16 +7,21 @@ using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.BotBuilderSamples;
 
 namespace CoreBot.Dialogs
 {
     public class WaitTextPuzzleDialog : TextPuzzleDialog
     {
+        private readonly ConcurrentBag<BackgroundNotifyMsg> _backgroundNotifyMsgsStore;
+
         public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService,
             ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger) 
+            INotificationMessanger notificationMessanger,
+            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore) 
             : base(scenarioService, userService, teamService, conversationReferences, notificationMessanger, nameof(WaitTextPuzzleDialog))
         {
+            _backgroundNotifyMsgsStore = backgroundNotifyMsgsStore;
         }
 
         protected override async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext,
@@ -28,6 +33,15 @@ namespace CoreBot.Dialogs
             {
                 // если первый заход, то задаем вопрос
                 puzzleDetails.SetQuestionAskedAt(DateTime.UtcNow);
+
+                // ставим себе напоминалку что надо сообщить команде о возможном продолжении квеста
+                _backgroundNotifyMsgsStore.Add(new BackgroundNotifyMsg()
+                {
+                    TeamId = puzzleDetails.TeamId,
+                    Msg = "Штрафное время закончилось, можно продолжить квест. Успехов и удачи! :)",
+                    WhenByUTC = puzzleDetails.AnswerTimeNoLessThan.AddMinutes(1)
+                });
+
                 return await base.AskDialog(stepContext, cancellationToken);
             }
 

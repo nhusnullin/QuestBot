@@ -9,6 +9,7 @@ using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -26,7 +27,8 @@ namespace CoreBot.Dialogs
             ITeamService teamService,
             IUserService userService,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger)
+            INotificationMessanger notificationMessanger,
+            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore)
             : base(nameof(MainDialog), scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
             _configuration = configuration;
@@ -35,7 +37,7 @@ namespace CoreBot.Dialogs
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _conversationReferences = conversationReferences;
             AddDialog(new SelectTeamDialog(teamService, notificationMessanger, conversationReferences));
-            AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
+            AddDialog(new ScenarioDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger, backgroundNotifyMsgsStore));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {

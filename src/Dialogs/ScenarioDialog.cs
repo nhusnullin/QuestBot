@@ -7,6 +7,7 @@ using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.BotBuilderSamples;
 
 namespace CoreBot.Dialogs
 {
@@ -16,7 +17,8 @@ namespace CoreBot.Dialogs
         private readonly IUserService _userService;
         public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger)
+            INotificationMessanger notificationMessanger,
+            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore)
             : base(nameof(ScenarioDialog), scenarioService, userService, teamService, conversationReferences, notificationMessanger)
         {
             var waterfallStep = new WaterfallStep[]
@@ -24,7 +26,7 @@ namespace CoreBot.Dialogs
                 Ask,
                 Check
             };
-            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
+            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger, backgroundNotifyMsgsStore));
             AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
