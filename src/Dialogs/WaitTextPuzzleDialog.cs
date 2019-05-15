@@ -48,7 +48,7 @@ namespace CoreBot.Dialogs
             var remainMinutesToAnswer = puzzleDetails.GetRemainMinutesToAnswer(DateTime.UtcNow);
             if (remainMinutesToAnswer > 0)
             {
-                var text = $"ѕродолжить прохождение квеста возможно лишь через {remainMinutesToAnswer} мин";
+                var text = $"ѕродолжить прохождение квеста возможно лишь через {remainMinutesToAnswer} мин. ¬ам придет уведомление.";
                 return await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions {Prompt = MessageFactory.Text(text)}, cancellationToken);
             }
