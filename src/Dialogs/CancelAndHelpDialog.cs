@@ -1,17 +1,25 @@
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Exceptions;
 using CoreBot.Properties;
 using CoreBot.Service;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Newtonsoft.Json.Linq;
 
 namespace CoreBot.Dialogs
 {
     public class CancelAndHelpDialog : ComponentDialog
     {
+        private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
         protected readonly ITeamService _teamService;
         protected readonly INotificationMessanger _notificationMessanger;
@@ -21,6 +29,7 @@ namespace CoreBot.Dialogs
             INotificationMessanger notificationMessanger)
             : base(id)
         {
+            _scenarioService = scenarioService;
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
             _teamService = teamService ?? throw new System.ArgumentNullException(nameof(teamService));
             _conversationReferences = conversationReferences ?? throw new System.ArgumentNullException(nameof(conversationReferences));
@@ -84,6 +93,18 @@ namespace CoreBot.Dialogs
                         case "top10":
                             await innerDc.BeginDialogAsync(nameof(ShowRatingDialog), null, cancellationToken);
                             return new DialogTurnResult(DialogTurnStatus.Waiting);
+                        default:
+                            if (text.StartsWith("top"))
+                            {
+                                var words = text.Split(" ").Where(x => !string.IsNullOrEmpty(x));
+
+                                int.TryParse(words.Last(), out var count);
+
+                                await ShowRating(innerDc.Context, count, cancellationToken);
+                                return new DialogTurnResult(DialogTurnStatus.Waiting);
+                            }
+
+                            return null;
                     }
                 }
                 catch(UserNotFoundException)
@@ -99,6 +120,69 @@ namespace CoreBot.Dialogs
             }
 
             return null;
+        }
+
+        private async Task ShowRating(ITurnContext stepcontext,
+            int take,
+            CancellationToken cancellationtoken)
+        {
+            var reply = stepcontext.Activity.CreateReply();
+            FormRatesToTelegramTable(reply, await GetRating(take));
+            await stepcontext.SendActivityAsync(reply, cancellationtoken);
+        }
+
+        private async Task<IEnumerable<KeyValuePair<string, int>>> GetRating(int take)
+        {
+            var teams = await _teamService.GetTeams();
+
+            string GetTeamNameById(string id)
+            {
+                var input = teams.FirstOrDefault(x => x.Id == id)?.Name ?? id;
+
+                string pattern = "[^A-Za-z0-9А-Яа-я]+";
+                string replacement = " ";
+
+                Regex regEx = new Regex(pattern);
+                string sanitized = Regex.Replace(regEx.Replace(input, replacement), @"\s+", " ");
+
+                return sanitized;
+            }
+
+            var ratedAnswers = _userService.CalcUserWeights(_scenarioService.Store);
+            return ratedAnswers
+                    .OrderByDescending(x => x.Value)
+                    .Take(take)
+                    .Select(x => new KeyValuePair<string, int>(GetTeamNameById(x.Key), x.Value))
+                ;
+        }
+
+
+
+        private void FormRatesToTelegramTable(IActivity reply, IEnumerable<KeyValuePair<string, int>> rates)
+        {
+            var htmlTable = new StringBuilder();
+
+            if (!rates.Any())
+            {
+                htmlTable.Append($"Еще нет ответов");
+            }
+
+            foreach (var pair in rates)
+            {
+                htmlTable.Append($"{pair.Key} -- {pair.Value}\n");
+            }
+
+            var channelData = new
+            {
+                method = "sendMessage",
+                parameters = new
+                {
+                    text = htmlTable.ToString(),
+                    parse_mode = "Markdown"
+                }
+            };
+
+            reply.ChannelData = JObject.FromObject(channelData);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot.Domain;
@@ -52,7 +53,15 @@ namespace CoreBot.Dialogs
 
             string GetTeamNameById(string id)
             {
-                return teams.FirstOrDefault(x => x.Id == id)?.Name ?? id;
+                var input = teams.FirstOrDefault(x => x.Id == id)?.Name ?? id;
+
+                string pattern = "[^A-Za-z0-9Р-пр-џ]+";
+                string replacement = " ";
+
+                Regex regEx = new Regex(pattern);
+                string sanitized = Regex.Replace(regEx.Replace(input, replacement), @"\s+", " ");
+
+                return sanitized;
             }
 
             var ratedAnswers = _userService.CalcUserWeights(_scenarioService.Store);
