@@ -129,7 +129,7 @@ namespace Microsoft.BotBuilderSamples
                 });
 
             services.AddHostedService<LoadScenarioService>();
-            services.AddHostedService<SendNotifyInBackgroundService>();
+            //services.AddHostedService<SendNotifyInBackgroundService>();
         }
 
         private static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
