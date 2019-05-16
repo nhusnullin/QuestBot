@@ -76,8 +76,8 @@ namespace CoreBot.Dialogs
             var reply = stepContext.Context.Activity.CreateReply(replyMessage);
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, 
-                replyMessage, _conversationReferences, cancellationToken, false);
+            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, 
+                //replyMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 

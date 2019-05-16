@@ -90,7 +90,7 @@ namespace CoreBot.Dialogs
             var message = String.Format(CultureInfo.InvariantCulture, Resources.WelcomeToTeamMessage, team.Name);
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
             var teamMessage = "К вашей команде присоединился '" + user.Name+"'";
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, team.Id, teamMessage, _conversationReferences, cancellationToken, false);
+            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, team.Id, teamMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.EndDialogAsync(team.Id, cancellationToken);
         }
 

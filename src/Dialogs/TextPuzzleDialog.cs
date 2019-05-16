@@ -34,7 +34,7 @@ namespace CoreBot.Dialogs
             CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails)stepContext.Options;
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
+            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(puzzleDetails.Question) }, cancellationToken);
         }
 
@@ -44,8 +44,8 @@ namespace CoreBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string)stepContext.Result;
             puzzleDetails.SetAnswer(answer);
-            var teamMessage = $"Вы выбрали ответ '{answer}'";
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, teamMessage, _conversationReferences, cancellationToken, false);
+            //var teamMessage = $"Вы выбрали ответ '{answer}'";
+            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, teamMessage, _conversationReferences, cancellationToken, false);
             if (puzzleDetails.IsRight)
             {
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -54,7 +54,7 @@ namespace CoreBot.Dialogs
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
                 var message = "К сожалению, вы использовали все попытки ввести правильный ответ";
-                await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
+                //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);

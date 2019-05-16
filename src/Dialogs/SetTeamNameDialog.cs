@@ -60,7 +60,7 @@ namespace CoreBot.Dialogs
             var teamId = (string)stepContext.Options;
             await _teamService.ChangeTeamName(teamId, teamName);
             var message = String.Format(CultureInfo.InvariantCulture, Resources.ChangeTeamNameCompletesdMessage, teamName);
-            await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, message, _conversationReferences, cancellationToken, false);
+            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, message, _conversationReferences, cancellationToken, false);
             await TurnContextExtensions.SendMessageAsync(stepContext.Context, message, cancellationToken);
             return await stepContext.EndDialogAsync(teamName, cancellationToken);
         }

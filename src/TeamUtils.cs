@@ -13,11 +13,12 @@ namespace CoreBot
 {
     static class TeamUtils
     {
+
         public static async Task SendTeamMessage(ITeamService teamService,
             ITurnContext turnContext,
-            INotificationMessanger messenger, 
+            INotificationMessanger messenger,
             string teamId,
-            string message, 
+            string message,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             CancellationToken cancellationToken,
             bool sendMe = true)

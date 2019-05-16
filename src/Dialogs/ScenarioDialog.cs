@@ -53,7 +53,7 @@ namespace CoreBot.Dialogs
 
             if (puzzleDetails.IsLastPuzzle)
             {
-                await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
+                //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
