@@ -132,7 +132,7 @@ namespace Microsoft.BotBuilderSamples
             //services.AddHostedService<SendNotifyInBackgroundService>();
         }
 
-        private static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
+        public static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
         {
             var table = cloudStorage.GetOrCreateTable(User.TableName);
             var users = await cloudStorage.RetrieveEntitiesAsync<User>(table);

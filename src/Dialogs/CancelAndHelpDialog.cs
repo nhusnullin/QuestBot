@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Exceptions;
 using CoreBot.Properties;
+using CoreBot.Repositories;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.BotBuilderSamples;
 using Newtonsoft.Json.Linq;
 
 namespace CoreBot.Dialogs
@@ -104,6 +106,29 @@ namespace CoreBot.Dialogs
                                 return new DialogTurnResult(DialogTurnStatus.Waiting);
                             }
 
+                            if (text.StartsWith("send"))
+                            {
+                                var words = text.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToList();
+                                string id = null;
+                                string msg = "";
+
+                                for(int i=0;i<words.Count; i++)
+                                {
+                                    if(i == 1)
+                                    {
+                                        id = words[i];
+                                    }
+
+                                    if(i > 1)
+                                    {
+                                        msg += " " + words[i];
+                                    }
+                                }
+
+                                await SendTeamMessage(_notificationMessanger, msg, cancellationToken, id);
+                                return new DialogTurnResult(DialogTurnStatus.Waiting);
+                            }
+
                             return null;
                     }
                 }
@@ -120,6 +145,44 @@ namespace CoreBot.Dialogs
             }
 
             return null;
+        }
+
+        public async Task SendTeamMessage(
+            INotificationMessanger messenger,
+            string message,
+            CancellationToken cancellationToken,
+            string userId
+        )
+        {
+            if (string.Equals(userId, "toAll", StringComparison.CurrentCultureIgnoreCase))
+            {
+                int count = 0;
+                foreach (var conversationReference in _conversationReferences)
+                {
+                    try
+                    {
+                        await messenger.SendMessage(message, conversationReference.Value, cancellationToken);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+
+                    count++;
+
+                    if (count > 20)
+                    {
+                        await Task.Delay(1000, cancellationToken);
+                        count = 0;
+                    }
+                }
+            }
+            else
+            {
+                var refs = _conversationReferences.FirstOrDefault(x => x.Key.Id == userId);
+                await messenger.SendMessage(message, refs.Value, cancellationToken);
+            }
         }
 
         private async Task ShowRating(ITurnContext stepcontext,
