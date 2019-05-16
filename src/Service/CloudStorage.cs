@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoreBot.Service
@@ -12,13 +13,21 @@ namespace CoreBot.Service
     {
         private readonly ILogger<CloudStorage> _logger;
         private readonly CloudStorageAccount _cloudStorageAccount;
-
+        private readonly AsyncLocal<CloudTableClient> tableClientHolder = new AsyncLocal<CloudTableClient>();
         public CloudStorage(ILogger<CloudStorage> logger, CloudStorageAccount cloudStorageAccount)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _cloudStorageAccount = cloudStorageAccount ?? throw new ArgumentNullException(nameof(cloudStorageAccount));
+            tableClientHolder.Value = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
         }
 
+        private CloudTableClient TableClient
+        {
+            get
+            {
+                return tableClientHolder.Value;
+            }
+        }
         public async Task<T> InsertOrMergeEntityAsync<T>(CloudTable table, T entity) where T : ITableEntity
         {
             if (entity == null)
@@ -59,8 +68,7 @@ namespace CoreBot.Service
 
         public  CloudTable GetOrCreateTable(string tableName)
         {
-            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
-            CloudTable table = tableClient.GetTableReference(tableName);
+            CloudTable table = TableClient.GetTableReference(tableName);
             table.CreateIfNotExists();
             return table;
         }
@@ -81,8 +89,7 @@ namespace CoreBot.Service
 
         public IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause) 
         {
-            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
-            CloudTable table = tableClient.GetTableReference(Answer.TableName);
+            CloudTable table = TableClient.GetTableReference(Answer.TableName);
 
             return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
                 .Where(whereClause)
@@ -91,8 +98,7 @@ namespace CoreBot.Service
 
         public IList<Answer> GetAllAnswers()
         {
-            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
-            CloudTable table = tableClient.GetTableReference(Answer.TableName);
+            CloudTable table = TableClient.GetTableReference(Answer.TableName);
 
             return table.CreateQuery<Answer>()
                 .ToList();
@@ -100,8 +106,7 @@ namespace CoreBot.Service
 
         public void DeleteTableIfExists(string tableName)
         {
-            CloudTableClient tableClient = _cloudStorageAccount.CreateCloudTableClient(new TableClientConfiguration());
-            CloudTable table = tableClient.GetTableReference(tableName);
+            CloudTable table = TableClient.GetTableReference(tableName);
             table.DeleteIfExists();
         }
 
