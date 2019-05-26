@@ -11,7 +11,8 @@ using CoreBot;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
 using CoreBot.Domain;
-using CoreBot.Repositories;
+using CoreBot.Repository;
+using CoreBot.Repository.Impl;
 using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using IStorage = CoreBot.Storage.IStorage;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -84,15 +86,13 @@ namespace Microsoft.BotBuilderSamples
 
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<ITeamService, TeamService>();
-            services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IReportService, ReportService>();
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
             {
-                var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
-                return new ConcurrentDictionary<UserId, ConversationReference>(values);
+                //var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
+                return new ConcurrentDictionary<UserId, ConversationReference>();
             });
 
             services.AddSingleton<ConcurrentBag<BackgroundNotifyMsg>>(sp =>

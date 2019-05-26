@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using CoreBot.Domain;
 using CoreBot.Exceptions;
 using CoreBot.Properties;
-using CoreBot.Repositories;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;

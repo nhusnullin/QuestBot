@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using CoreBot.Domain;
 using System.Collections.Generic;
+using CoreBot.Repository;
 
 namespace CoreBot
 {
@@ -47,12 +48,12 @@ namespace CoreBot
 
         public async Task<User> GetByAsync(string channelId, string userId)
         {
-            return await _userRepository.TryGetUserByIdAsync(new Domain.UserId(channelId, userId));
+            return await _userRepository.GetUserByIdAsync(new Domain.UserId(channelId, userId));
         }
 
         public async Task InsertOrMergeAsync(User user)
         {
-            await _userRepository.InsertOrMergeAsync(user);
+            await _userRepository.InsertOrUpdateAsync(user);
         }
 
         public void Remove(string channelId, string userId)

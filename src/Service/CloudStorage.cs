@@ -89,7 +89,7 @@ namespace CoreBot.Service
 
         public IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause) 
         {
-            CloudTable table = TableClient.GetTableReference(Answer.TableName);
+            CloudTable table = TableClient.GetTableReference(Answer.EntityName);
 
             return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
                 .Where(whereClause)

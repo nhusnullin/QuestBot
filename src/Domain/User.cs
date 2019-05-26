@@ -1,30 +1,28 @@
-using Microsoft.Azure.Cosmos.Table;
-
-namespace CoreBot
+namespace CoreBot.Domain
 {
-
     /// <summary>
     /// Данные пользователя для хранения в БД 
     /// </summary>
-    public class User: TableEntity
+    public class User
     {
-        public const string TableName = "users";
+        public const string EntityName = "users";
 
         public User()
         {
 
         }
 
-        public User(string channelId, string userId)
+        public User(string channelId, string id)
         {
             ChannelId = channelId;
-            UserId = userId;
-            PartitionKey = channelId;
-            RowKey = userId;        
+            Id = id;
             IsCaptain = false;
+            UserId = new UserId(channelId, id);
         }
 
-        public string UserId { get; set; }
+        public UserId UserId { get; set; }
+
+        public string Id { get; set; }
         public string ChannelId { get; set; }
         public string Name { get; set; }
         public string TeamId { get; set; }
@@ -33,6 +31,16 @@ namespace CoreBot
 
         public string ChannelData { get; set; }
         public string ConversationData { get; set; }
+
+        public  string GetStorageKey()
+        {
+            return $"{UserId.ChannelId}/users/{UserId.Id}";
+        }
+
+        public static string GetStorageKey(UserId userId)
+        {
+            return $"{userId.ChannelId}/{EntityName}/{userId.Id}";
+        }
     }
     
 }

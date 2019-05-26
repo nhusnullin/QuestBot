@@ -27,31 +27,31 @@ namespace CoreBot.Bots
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            await TurnContextExtensions.SendMessageAsync(turnContext, Resources.WelcomeMessage, cancellationToken);
-            await RunDialog(turnContext, cancellationToken);
+            //await TurnContextExtensions.SendMessageAsync(turnContext, Resources.WelcomeMessage, cancellationToken);
+            //await RunDialog(turnContext, cancellationToken);
         }
 
-        private async Task AddConversationReference(ITurnContext turnContext)
-        {
-            var activity = turnContext.Activity;
-            var conversationReference = activity.GetConversationReference();
-            await _userService.AddOrUpdateConversation(turnContext, conversationReference);
-            _conversationReferences.AddOrUpdate(new UserId(activity.ChannelId, conversationReference.User.Id), conversationReference, (key, newValue) => conversationReference);
+        //private async Task AddConversationReference(ITurnContext turnContext)
+        //{
+        //    var activity = turnContext.Activity;
+        //    var conversationReference = activity.GetConversationReference();
+        //    await _userService.AddOrUpdateConversation(turnContext, conversationReference);
+        //    _conversationReferences.AddOrUpdate(new Id(activity.ChannelId, conversationReference.User.Id), conversationReference, (key, newValue) => conversationReference);
 
-        }
+        //}
 
-        protected override async Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            await AddConversationReference(turnContext);
+        //protected override async Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        //{
+        //    //await AddConversationReference(turnContext);
 
-            await base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
-        }
+        //    await base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+        //}
 
-        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-        {
-            await AddConversationReference(turnContext);
+        //protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        //{
+        //    //await AddConversationReference(turnContext);
 
-            await base.OnMessageActivityAsync(turnContext, cancellationToken);
-        }
+        //    await base.OnMessageActivityAsync(turnContext, cancellationToken);
+        //}
     }
 }
