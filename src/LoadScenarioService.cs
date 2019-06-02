@@ -8,12 +8,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreBot;
-using CoreBot.Domain;
-using CoreBot.Service;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ScenarioBot.Service;
 
 namespace Microsoft.BotBuilderSamples
 {

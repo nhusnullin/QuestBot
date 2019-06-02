@@ -2,19 +2,13 @@
 using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Schema;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Service;
 
 namespace CoreBot
 {
-    public interface INotificationMessanger
-    {
-        Task SendMessage(string message, ConversationReference conversationReference, CancellationToken cancellationToken);
-    }
-
-    class NotificationMessanger : INotificationMessanger
+    public class NotificationMessanger : INotificationMessanger
     {
         private readonly IAdapterIntegration _adapter;
         private readonly string _botAppId;

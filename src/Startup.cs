@@ -6,12 +6,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Domain;
+using Core.Service;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
-using CoreBot.Domain;
-using CoreBot.Repository;
-using CoreBot.Repository.Impl.InMemory;
-using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +23,11 @@ using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ScenarioBot.Repository;
+using ScenarioBot.Repository.Impl.InMemory;
+using ScenarioBot.Service;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using MemoryStorage = Microsoft.Bot.Builder.MemoryStorage;
 
 namespace CoreBot
 {
@@ -77,7 +78,7 @@ namespace CoreBot
             var storageAccount = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
             services.AddSingleton<CloudStorageAccount>(storageAccount);
 
-            services.AddSingleton<ICloudStorage, CloudStorage>();
+            //services.AddSingleton<ICloudStorage, CloudStorage>();
 
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
@@ -155,19 +156,5 @@ namespace CoreBot
             //app.UseHttpsRedirection();
             app.UseMvc();
         }
-    }
-
-    public class BackgroundNotifyMsg
-    {
-        public BackgroundNotifyMsg()
-        {
-                
-        }
-
-        public string TeamId { get; set; }
-        public DateTime WhenByUTC { get; set; }
-        public string Msg { get; set; }
-
-        public bool WasSend { get; set; }
     }
 }

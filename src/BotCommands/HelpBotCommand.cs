@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
-using CoreBot.Domain;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace CoreBot.BotCommands

@@ -1,11 +1,10 @@
 using CoreBot;
-using CoreBot.Domain;
-using CoreBot.Service;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using ScenarioBot.Service;
 
 namespace UnitTestProject
 {

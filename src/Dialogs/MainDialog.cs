@@ -5,50 +5,44 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
+using Core.Dialogs;
 using Core.Domain;
+using Core.Service;
 using CoreBot.BotCommands;
-using CoreBot.Domain;
 using CoreBot.Properties;
-using CoreBot.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ScenarioBot.Dialogs;
+using ScenarioBot.Domain;
+using ScenarioBot.Service;
 
 namespace CoreBot.Dialogs
 {
     public class MainDialog : CancelAndHelpDialog
     {
-        protected readonly IConfiguration _configuration;
         protected readonly ILogger _logger;
-        private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
         public MainDialog(IConfiguration configuration, 
             ILogger<MainDialog> logger, 
             IScenarioService scenarioService,
             IUserService userService,
             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger,
-            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore,
             IList<IBotCommand> botCommands)
             : base(nameof(MainDialog), botCommands)
         {
-            _configuration = configuration;
             _logger = logger;
-            _scenarioService = scenarioService ?? throw new System.ArgumentNullException(nameof(scenarioService));
             _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
-            _conversationReferences = conversationReferences;
 //            AddDialog(new SelectTeamDialog(teamService, notificationMessanger, conversationReferences));
-            AddDialog(new ScenarioDialog(_scenarioService, _userService, backgroundNotifyMsgsStore, botCommands));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 IntroStepAsync,
-                ScenarioLaunchStepAsync,
+                //ScenarioLaunchStepAsync,
                 //FinalStepAsync,
             }));
 
@@ -79,11 +73,11 @@ namespace CoreBot.Dialogs
 
             var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
             var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
-            if (!user.IsCaptain)
-            {
-                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
-                return await stepContext.EndDialogAsync(null, cancellationToken);
-            }
+//            if (!user.IsCaptain)
+//            {
+//                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
+//                return await stepContext.EndDialogAsync(null, cancellationToken);
+//            }
             if (scenarioDetails == null)
             {
                 scenarioDetails = new ScenarioDetails()

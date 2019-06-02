@@ -1,6 +1,4 @@
-﻿using CoreBot.Domain;
-using CoreBot.Exceptions;
-using CoreBot.Service;
+﻿using CoreBot.Exceptions;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
@@ -8,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Core.Domain;
+using ScenarioBot.Service;
 
 namespace CoreBot
 {
