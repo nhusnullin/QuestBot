@@ -4,16 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
-using CoreBot.Domain;
 using Microsoft.Bot.Builder.Dialogs;
 
-namespace CoreBot.BotCommands
+namespace ScenarioBot.BotCommands
 {
-    public class HelpBotCommand : IBotCommand
+    public class ScenarioBotCommand : IBotCommand
     {
         public bool IsApplicable(string message, UserId userId)
         {
-            return message.Equals("help", StringComparison.InvariantCultureIgnoreCase);
+            return message.Equals("scenario", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public bool Validate(UserId userId)

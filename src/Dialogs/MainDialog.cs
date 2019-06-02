@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.BotCommands;
+using Core.Domain;
 using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Properties;

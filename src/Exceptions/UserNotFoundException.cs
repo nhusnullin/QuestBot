@@ -1,5 +1,6 @@
 ﻿using CoreBot.Domain;
 using System;
+using Core.Domain;
 
 namespace CoreBot.Exceptions
 {

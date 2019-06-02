@@ -1,3 +1,5 @@
+using Core.Domain;
+
 namespace CoreBot.Domain
 {
     /// <summary>

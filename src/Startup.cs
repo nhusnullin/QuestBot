@@ -4,20 +4,17 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using CoreBot;
+using Core.Domain;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
 using CoreBot.Domain;
 using CoreBot.Repository;
-using CoreBot.Repository.Impl;
+using CoreBot.Repository.Impl.InMemory;
 using CoreBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
@@ -25,15 +22,13 @@ using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
+using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using IStorage = CoreBot.Repository.Impl.InMemory.IStorage;
 
-namespace Microsoft.BotBuilderSamples
+namespace CoreBot
 {
     public class Startup
     {

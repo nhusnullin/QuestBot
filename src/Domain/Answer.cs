@@ -1,4 +1,6 @@
-﻿namespace CoreBot.Domain
+﻿using Core.Domain;
+
+namespace CoreBot.Domain
 {
     public class Answer
     {

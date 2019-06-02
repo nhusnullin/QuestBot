@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreBot.BotCommands;
-using CoreBot.Domain;
+using Core.BotCommands;
+using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 
@@ -45,7 +45,6 @@ namespace CoreBot.Dialogs
             {
                 return null;
             }
-            
             
             var text = dialogContext.Context.Activity.Text.ToLowerInvariant().Replace("/", "");
             var userId = new UserId(dialogContext.Context.Activity.ChannelId, dialogContext.Context.Activity.From.Id);

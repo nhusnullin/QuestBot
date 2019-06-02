@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.BotCommands;
 using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Service;
@@ -66,14 +67,7 @@ namespace CoreBot.Dialogs
                 return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
             }
 
-            // hack! ����� �������� ����� �� �� ������������ ���� ��� WaitTextPuzzleDialog,
-            // ��� ���� ���� ����� else branch � ������� ���-�� ������� �� ���� ���������
-            //if (puzzleDetails.PuzzleType == PuzzleType.WaitTextPuzzleDialog)
-            {
-                return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
-            }
-
-            
+            return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
         }
     }
 }

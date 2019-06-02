@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.BotCommands;
 using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Service;

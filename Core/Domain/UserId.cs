@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreBot.Domain
+namespace Core.Domain
 {
     public class UserId : IEquatable<UserId>
     {

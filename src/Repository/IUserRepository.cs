@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.Domain;
 using CoreBot.Domain;
 
 namespace CoreBot.Repository

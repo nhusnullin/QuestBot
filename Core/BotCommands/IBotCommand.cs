@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreBot.Domain;
-using Microsoft.Bot.Builder.Adapters;
+using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
 
-namespace CoreBot.BotCommands
+namespace Core.BotCommands
 {
     public interface IBotCommand
     {
