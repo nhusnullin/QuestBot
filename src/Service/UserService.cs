@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using CoreBot.Repositories;
 using CoreBot.Service;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
@@ -23,20 +22,21 @@ namespace CoreBot
 
         public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId)
         {
-            var answers = _storage
-                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)
-                .OrderByDescending(x => x.Timestamp)
-                .Take(1)
-                .ToList();
-
-            var scenarioDetails = answers.FirstOrDefault()?.ScenarioDetails;
-
-            if (string.IsNullOrEmpty(scenarioDetails))
-            {
-                return null;
-            }
-
-            return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
+            throw new NotImplementedException();
+//            var answers = _storage
+//                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)
+//                .OrderByDescending(x => x.Timestamp)
+//                .Take(1)
+//                .ToList();
+//
+//            var scenarioDetails = answers.FirstOrDefault()?.ScenarioDetails;
+//
+//            if (string.IsNullOrEmpty(scenarioDetails))
+//            {
+//                return null;
+//            }
+//
+//            return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
         }
 
         public bool IsScenarioIsOverByTeam(string teamId, string scenarioId)
@@ -62,53 +62,56 @@ namespace CoreBot
 
         public async Task SetAnswer(ScenarioDetails scenarioDetails)
         {
-            var table = _storage.GetOrCreateTable(Answer.TableName);
-            var scenarioId = scenarioDetails.ScenarioId;
-            var puzzleId = scenarioDetails.LastPuzzleDetails.PuzzleId;
-
-            var answer = new Answer(scenarioDetails.TeamId, $"{scenarioId} {puzzleId}")
-            {
-                ScenarioId = scenarioId,
-                PuzzleId = puzzleId,
-                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails),
-                IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle
-            };
-
-            await _storage.InsertOrMergeEntityAsync(table, answer);
+            throw new NotImplementedException();
+            
+//            var table = _storage.GetOrCreateTable(Answer.TableName);
+//            var scenarioId = scenarioDetails.ScenarioId;
+//            var puzzleId = scenarioDetails.LastPuzzleDetails.PuzzleId;
+//
+//            var answer = new Answer(scenarioDetails.TeamId, $"{scenarioId} {puzzleId}")
+//            {
+//                ScenarioId = scenarioId,
+//                PuzzleId = puzzleId,
+//                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails),
+//                IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle
+//            };
+//
+//            await _storage.InsertOrMergeEntityAsync(table, answer);
         }
 
         public async Task DeleteUsers()
         {
-            await _userRepository.DeleteUsers();
-            _storage.DeleteTableIfExists(Answer.TableName);
+//            await _userRepository.DeleteUsers();
+//            _storage.DeleteTableIfExists(Answer.TableName);
         }
 
         public async Task<ICollection<Answer>> GetAnswers()
         {
-            var table = _storage.GetOrCreateTable(Answer.TableName);
-            return await _storage.RetrieveEntitiesAsync<Answer>(table);
+            throw  new NotImplementedException();
+//            var table = _storage.GetOrCreateTable(Answer.TableName);
+//            return await _storage.RetrieveEntitiesAsync<Answer>(table);
         }
 
         public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)
         {
             var result = new Dictionary<string, int>();
 
-            var allAnswers = _storage.GetAllAnswers();
-
-            foreach (var answer in allAnswers)
-            {
-                if (!result.ContainsKey(answer.PartitionKey))
-                {
-                    result[answer.PartitionKey] = 0;
-                }
-
-                scenarioStore.TryGetValue(answer.ScenarioId, out var scenario);
-                var weight = scenario
-                    ?.Collection
-                    ?.FirstOrDefault(x => string.Equals(x.Id, answer.PuzzleId, StringComparison.CurrentCultureIgnoreCase))
-                    ?.Weight;
-                result[answer.PartitionKey] += weight ?? 0;
-            }
+//            var allAnswers = _storage.GetAllAnswers();
+//
+//            foreach (var answer in allAnswers)
+//            {
+//                if (!result.ContainsKey(answer.PartitionKey))
+//                {
+//                    result[answer.PartitionKey] = 0;
+//                }
+//
+//                scenarioStore.TryGetValue(answer.ScenarioId, out var scenario);
+//                var weight = scenario
+//                    ?.Collection
+//                    ?.FirstOrDefault(x => string.Equals(x.Id, answer.PuzzleId, StringComparison.CurrentCultureIgnoreCase))
+//                    ?.Weight;
+//                result[answer.PartitionKey] += weight ?? 0;
+//            }
 
             return result;
         }

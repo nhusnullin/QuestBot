@@ -31,7 +31,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using IStorage = CoreBot.Storage.IStorage;
+using IStorage = CoreBot.Repository.Impl.InMemory.IStorage;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -71,7 +71,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.) 
-            services.AddSingleton<IStorage, MemoryStorage>();
+            services.AddSingleton<Microsoft.Bot.Builder.IStorage, MemoryStorage>();
 
             // Create the User state. (Used in this bot's Dialog implementation.)
             services.AddSingleton<UserState>();
@@ -87,7 +87,7 @@ namespace Microsoft.BotBuilderSamples
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IReportService, ReportService>();
+//            services.AddSingleton<IReportService, ReportService>();
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
             {
@@ -134,10 +134,12 @@ namespace Microsoft.BotBuilderSamples
 
         public static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
         {
-            var table = cloudStorage.GetOrCreateTable(User.TableName);
-            var users = await cloudStorage.RetrieveEntitiesAsync<User>(table);
-            return users.Where(i => i.ConversationData != null).Select(i => new KeyValuePair<UserId, ConversationReference>(
-                new UserId(i.PartitionKey, i.RowKey), JsonConvert.DeserializeObject<ConversationReference>(i.ConversationData)));
+            
+            throw new NotImplementedException();
+//            var table = cloudStorage.GetOrCreateTable(User.TableName);
+//            var users = await cloudStorage.RetrieveEntitiesAsync<User>(table);
+//            return users.Where(i => i.ConversationData != null).Select(i => new KeyValuePair<UserId, ConversationReference>(
+//                new UserId(i.PartitionKey, i.RowKey), JsonConvert.DeserializeObject<ConversationReference>(i.ConversationData)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

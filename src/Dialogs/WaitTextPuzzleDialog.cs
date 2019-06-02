@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
@@ -15,11 +17,9 @@ namespace CoreBot.Dialogs
     {
         private readonly ConcurrentBag<BackgroundNotifyMsg> _backgroundNotifyMsgsStore;
 
-        public WaitTextPuzzleDialog(IScenarioService scenarioService, IUserService userService,
-            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger,
+        public WaitTextPuzzleDialog(IList<IBotCommand> botCommands,
             ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore) 
-            : base(scenarioService, userService, teamService, conversationReferences, notificationMessanger, nameof(WaitTextPuzzleDialog))
+            : base(botCommands, nameof(WaitTextPuzzleDialog) )
         {
             _backgroundNotifyMsgsStore = backgroundNotifyMsgsStore;
         }

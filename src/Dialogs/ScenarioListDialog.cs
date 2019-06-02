@@ -15,17 +15,15 @@ namespace CoreBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private readonly ITeamService _teamService;
         private readonly INotificationMessanger _notificationMessanger;
         private readonly ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
         public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
-            ITeamService teamService, ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
+             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             INotificationMessanger notificationMessanger) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
             _userService = userService;
-            _teamService = teamService;
             _conversationReferences = conversationReferences;
             _notificationMessanger = notificationMessanger ?? throw new System.ArgumentNullException(nameof(notificationMessanger));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -49,8 +47,8 @@ namespace CoreBot.Dialogs
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
-                    RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
+                    Prompt = MessageFactory.Text("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ СЃС†РµРЅР°СЂРёР№:"),
+                    RetryPrompt = MessageFactory.Text("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ СЃС†РµРЅР°СЂРёР№ :"),
                     Choices = ChoiceFactory.ToChoices(_scenarioService.GetAvailableScenario(teamId)),
                 },
                 cancellationToken);
@@ -72,7 +70,7 @@ namespace CoreBot.Dialogs
                     TeamId = teamId
                 };
             }
-            var replyMessage = $"Выбранный сценарий: {scenarioId}";
+            var replyMessage = $"Р’С‹Р±СЂР°РЅРЅС‹Р№ СЃС†РµРЅР°СЂРёР№: {scenarioId}";
             var reply = stepContext.Context.Activity.CreateReply(replyMessage);
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);

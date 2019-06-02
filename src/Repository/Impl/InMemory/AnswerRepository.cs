@@ -1,4 +1,5 @@
-﻿using CoreBot.Storage;
+﻿using CoreBot.Repository.Impl.InMemory;
+using CoreBot.Storage;
 
 namespace CoreBot.Repository.Impl
 {

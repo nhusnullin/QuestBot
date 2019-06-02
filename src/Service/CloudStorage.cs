@@ -89,19 +89,23 @@ namespace CoreBot.Service
 
         public IList<Answer> GetAnswersByTeamId(string teamId, Func<Answer, bool> whereClause) 
         {
-            CloudTable table = TableClient.GetTableReference(Answer.EntityName);
-
-            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
-                .Where(whereClause)
-                .ToList();
+            throw  new NotImplementedException();
+            
+//            CloudTable table = TableClient.GetTableReference(Answer.EntityName);
+//
+//            return table.CreateQuery<Answer>().Where(x => x.PartitionKey == teamId)
+//                .Where(whereClause)
+//                .ToList();
         }
 
         public IList<Answer> GetAllAnswers()
         {
-            CloudTable table = TableClient.GetTableReference(Answer.TableName);
-
-            return table.CreateQuery<Answer>()
-                .ToList();
+            throw  new NotImplementedException();
+            
+//            CloudTable table = TableClient.GetTableReference(Answer.TableName);
+//
+//            return table.CreateQuery<Answer>()
+//                .ToList();
         }
 
         public void DeleteTableIfExists(string tableName)

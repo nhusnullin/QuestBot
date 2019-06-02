@@ -42,8 +42,8 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        [DataRow(User.TableName)]
-        [DataRow(Answer.TableName)]
+//        [DataRow(User.TableName)]
+//        [DataRow(Answer.TableName)]
         public async Task CreateUserTable(string tableName)
         {
             CloudTable table = await Common.CreateTableAsync(tableName);
@@ -66,7 +66,7 @@ namespace UnitTestProject
 
             var customerII = new CustomerEntityII("asds", "qwe")
             {
-                bla = "ÿ÷ÿñ"
+                bla = "ï¿½ï¿½ï¿½ï¿½"
             };
 
             customerII = await SamplesUtils.InsertOrMergeEntityAsync(table, customerII);
@@ -262,7 +262,7 @@ namespace UnitTestProject
             catch (StorageException)
             {
                 Console.WriteLine(
-                    "If you are running with the default configuration please make sure you have started the storage emulator. Press the Windows key and type Azure Storage to select and run it from the list of applications - then restart the sample.");
+                    "If you are running with the default configuration please make sure you have started the storage emulator. Press theï¿½Windowsï¿½key and type Azure Storage to select and run it from the list of applications - then restart the sample.");
                 Console.ReadLine();
                 throw;
             }

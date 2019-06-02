@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
@@ -15,36 +17,38 @@ namespace CoreBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        public ScenarioDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger,
-            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore)
-            : base(nameof(ScenarioDialog), scenarioService, userService, teamService, conversationReferences, notificationMessanger)
+        private readonly ConcurrentBag<BackgroundNotifyMsg> _backgroundNotifyMsgsStore;
+
+        public ScenarioDialog(IScenarioService scenarioService, IUserService userService, 
+            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore,
+            IList<IBotCommand> botCommands)
+            : base(nameof(ScenarioDialog), botCommands)
         {
             var waterfallStep = new WaterfallStep[]
             {
                 Ask,
                 Check
             };
-            AddDialog(new WaitTextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger, backgroundNotifyMsgsStore));
-            AddDialog(new TextPuzzleDialog(scenarioService, userService, teamService, conversationReferences, notificationMessanger));
+            AddDialog(new WaitTextPuzzleDialog(botCommands, _backgroundNotifyMsgsStore));
+            AddDialog(new TextPuzzleDialog(botCommands));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;
             _userService = userService;
+            _backgroundNotifyMsgsStore = backgroundNotifyMsgsStore;
         }
 
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
             
-            //// проверим проходила ли команда сценарий
+            //// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             //var scenarioIsOverOnce = _userService.IsScenarioIsOverByTeam(scenarioDetails.TeamId, scenarioDetails.ScenarioId);
 
             //if (scenarioIsOverOnce)
             //{
             //    await stepContext.PromptAsync(nameof(TextPrompt),
-            //        new PromptOptions { Prompt = MessageFactory.Text("Вы этот сценарий уже проходили, пож выберите другой") }, cancellationToken);
+            //        new PromptOptions { Prompt = MessageFactory.Text("пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ") }, cancellationToken);
             //    return await stepContext.CancelAllDialogsAsync(cancellationToken);
             //}
 

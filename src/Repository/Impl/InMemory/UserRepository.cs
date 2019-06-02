@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreBot.Domain;
+using CoreBot.Repository.Impl.InMemory;
 using CoreBot.Storage;
 
 namespace CoreBot.Repository.Impl

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.BotCommands;
 using CoreBot.Domain;
 using CoreBot.Service;
 using Microsoft.Bot.Builder;
@@ -12,11 +14,10 @@ namespace CoreBot.Dialogs
 {
     public class TextPuzzleDialog : CancelAndHelpDialog
     {
-        public TextPuzzleDialog(IScenarioService scenarioService, IUserService userService, ITeamService teamService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
-            INotificationMessanger notificationMessanger,
-            string id = "TextPuzzleDialog") 
-            : base(id, scenarioService, userService, teamService, conversationReferences, notificationMessanger)
+        public TextPuzzleDialog(IList<IBotCommand> botCommands,
+            string id = "TextPuzzleDialog"
+            ) 
+            : base(id, botCommands)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
@@ -44,7 +45,7 @@ namespace CoreBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string)stepContext.Result;
             puzzleDetails.SetAnswer(answer);
-            //var teamMessage = $"Вы выбрали ответ '{answer}'";
+            //var teamMessage = $"пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ '{answer}'";
             //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, teamMessage, _conversationReferences, cancellationToken, false);
             if (puzzleDetails.IsRight)
             {
@@ -53,7 +54,7 @@ namespace CoreBot.Dialogs
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
-                var message = "К сожалению, вы использовали все попытки ввести правильный ответ";
+                var message = "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ";
                 //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
@@ -65,8 +66,8 @@ namespace CoreBot.Dialogs
                 return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
             }
 
-            // hack! такая развязка нужна из за зацикливания если тип WaitTextPuzzleDialog,
-            // при этом если ветка else branch и указано кол-во попыток их надо учитывать
+            // hack! пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ WaitTextPuzzleDialog,
+            // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ else branch пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             //if (puzzleDetails.PuzzleType == PuzzleType.WaitTextPuzzleDialog)
             {
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);

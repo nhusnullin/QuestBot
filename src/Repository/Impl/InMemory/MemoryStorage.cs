@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using IStorage = CoreBot.Repository.Impl.InMemory.IStorage;
 
 namespace CoreBot.Storage
 {

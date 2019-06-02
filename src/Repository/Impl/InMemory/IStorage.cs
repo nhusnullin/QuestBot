@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoreBot.Storage
+namespace CoreBot.Repository.Impl.InMemory
 {
     public interface IStorage
     {
