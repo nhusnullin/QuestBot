@@ -1,31 +1,22 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Core.BotCommands;
 using Core.Domain;
-using Core.Service;
+using CoreBot.BotCommands;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
-using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ScenarioBot.Repository;
-using ScenarioBot.Repository.Impl.InMemory;
-using ScenarioBot.Service;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using MemoryStorage = Microsoft.Bot.Builder.MemoryStorage;
 
@@ -75,16 +66,25 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            var storageAccount = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
-            services.AddSingleton<CloudStorageAccount>(storageAccount);
+//            var storageAccount = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
+//            services.AddSingleton<CloudStorageAccount>(storageAccount);
 
             //services.AddSingleton<ICloudStorage, CloudStorage>();
 
-            services.AddSingleton<IScenarioService, ScenarioService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+//            services.AddSingleton<IScenarioService, ScenarioService>();
+//            services.AddSingleton<IUserService, UserService>();
+//            services.AddSingleton<IUserRepository, UserRepository>();
 //            services.AddSingleton<IReportService, ReportService>();
-            // Create a global hashset for our ConversationReferences
+
+            services.AddSingleton<IList<IBotCommand>>(x =>
+            {
+                return new List<IBotCommand>()
+                {
+                    new HelpBotCommand()
+                };
+                
+            });
+
             services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
             {
                 //var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
@@ -119,24 +119,25 @@ namespace CoreBot
 
                 return adapter;
             });
-            services.AddSingleton<INotificationMessanger>(sp =>
-                {
-                    return new NotificationMessanger(botAppId, sp.GetRequiredService<IAdapterIntegration>());
-                });
+            
+//            services.AddSingleton<INotificationMessanger>(sp =>
+//                {
+//                    return new NotificationMessanger(botAppId, sp.GetRequiredService<IAdapterIntegration>());
+//                });
 
-            services.AddHostedService<LoadScenarioService>();
+            //services.AddHostedService<LoadScenarioService>();
             //services.AddHostedService<SendNotifyInBackgroundService>();
         }
 
-        public static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
-        {
+//        public static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
+//        {
             
-            throw new NotImplementedException();
+//            throw new NotImplementedException();
 //            var table = cloudStorage.GetOrCreateTable(User.TableName);
 //            var users = await cloudStorage.RetrieveEntitiesAsync<User>(table);
 //            return users.Where(i => i.ConversationData != null).Select(i => new KeyValuePair<UserId, ConversationReference>(
 //                new UserId(i.PartitionKey, i.RowKey), JsonConvert.DeserializeObject<ConversationReference>(i.ConversationData)));
-        }
+//        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

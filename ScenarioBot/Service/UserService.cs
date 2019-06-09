@@ -12,10 +12,9 @@ namespace ScenarioBot.Service
     {
         private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository, ICloudStorage cloudStorage)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
-            _storage = cloudStorage ?? throw new System.ArgumentNullException(nameof(cloudStorage));
         }
 
         public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId)
@@ -39,9 +38,10 @@ namespace ScenarioBot.Service
 
         public bool IsScenarioIsOverByTeam(string teamId, string scenarioId)
         {
-            return _storage.GetAnswersByTeamId(teamId,
-                answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
-                          answer.IsLastAnswer).Any();
+            return false;
+//            return _storage.GetAnswersByTeamId(teamId,
+//                answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
+//                          answer.IsLastAnswer).Any();
         }
 
         public async Task<User> GetByAsync(string channelId, string userId)

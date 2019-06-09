@@ -1,4 +1,6 @@
-﻿namespace ScenarioBot.Repository.Impl.InMemory
+﻿using CoreBot.Repository;
+
+namespace ScenarioBot.Repository.Impl.InMemory
 {
     public class AnswerRepository:IAnswerRepository
     {

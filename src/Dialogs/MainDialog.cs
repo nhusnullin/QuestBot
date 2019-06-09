@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
-using Core.Domain;
-using Core.Service;
-using CoreBot.BotCommands;
-using CoreBot.Properties;
-using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Schema;
-using Microsoft.BotBuilderSamples;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ScenarioBot.Dialogs;
 using ScenarioBot.Domain;
@@ -27,16 +16,13 @@ namespace CoreBot.Dialogs
         protected readonly ILogger _logger;
         private readonly IUserService _userService;
 
-        public MainDialog(IConfiguration configuration, 
+        public MainDialog(
             ILogger<MainDialog> logger, 
-            IScenarioService scenarioService,
-            IUserService userService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             IList<IBotCommand> botCommands)
             : base(nameof(MainDialog), botCommands)
         {
             _logger = logger;
-            _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
+//            _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
 //            AddDialog(new SelectTeamDialog(teamService, notificationMessanger, conversationReferences));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -67,28 +53,28 @@ namespace CoreBot.Dialogs
 //            return await stepContext.BeginDialogAsync(nameof(SelectTeamDialog), user, cancellationToken);
 //        }
 
-        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var teamId = (string)stepContext.Result;
-
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
-            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
-//            if (!user.IsCaptain)
+//        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+//        {
+//            var teamId = (string)stepContext.Result;
+//
+//            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
+//            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+////            if (!user.IsCaptain)
+////            {
+////                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
+////                return await stepContext.EndDialogAsync(null, cancellationToken);
+////            }
+//            if (scenarioDetails == null)
 //            {
-//                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
-//                return await stepContext.EndDialogAsync(null, cancellationToken);
+//                scenarioDetails = new ScenarioDetails()
+//                {
+//                    ScenarioId = "testScenario",
+//                    TeamId = teamId
+//                };
 //            }
-            if (scenarioDetails == null)
-            {
-                scenarioDetails = new ScenarioDetails()
-                {
-                    ScenarioId = "testScenario",
-                    TeamId = teamId
-                };
-            }
-
-            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-        }
+//
+//            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
+//        }
 
         //private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
         //    CancellationToken cancellationToken)

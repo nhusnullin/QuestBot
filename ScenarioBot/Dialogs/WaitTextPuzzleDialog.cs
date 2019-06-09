@@ -35,7 +35,7 @@ namespace ScenarioBot.Dialogs
                 // ставим себе напоминалку что надо сообщить команде о возможном продолжении квеста
                 _backgroundNotifyMsgsStore.Add(new BackgroundNotifyMsg()
                 {
-                    TeamId = puzzleDetails.TeamId,
+                    //TeamId = puzzleDetails.TeamId,
                     Msg = "Штрафное время закончилось, можно продолжить квест. Успехов и удачи! :)",
                     WhenByUTC = puzzleDetails.AnswerTimeNoLessThan.AddMinutes(1)
                 });

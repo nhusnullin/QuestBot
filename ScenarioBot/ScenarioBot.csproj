@@ -19,6 +19,9 @@
     <Reference Include="Microsoft.Bot.Builder.Dialogs">
       <HintPath>..\..\..\Users\nhusnullin\.nuget\packages\microsoft.bot.builder.dialogs\4.4.3\lib\netstandard2.0\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.hosting.abstractions\2.1.0\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
     <PackageReference Include="Microsoft.Bot.Builder" Version="4.4.4" />
     <PackageReference Include="Shields.GraphViz" Version="1.0.2" />
   </ItemGroup>

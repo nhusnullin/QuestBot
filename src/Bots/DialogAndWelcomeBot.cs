@@ -15,14 +15,17 @@ namespace CoreBot.Bots
 {
     public class DialogAndWelcomeBot<T> : DialogBot<T> where T : Dialog
     {
-        private readonly IUserService _userService;
-        private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
-        public DialogAndWelcomeBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger, IUserService userService,
-            ConcurrentDictionary<UserId, ConversationReference> conversationReferences)
+//        private readonly IUserService _userService;
+//        private ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
+        public DialogAndWelcomeBot(ConversationState conversationState, UserState userState,
+            T dialog, ILogger<DialogBot<T>> logger
+//            IUserService userService,
+//            ConcurrentDictionary<UserId, ConversationReference> conversationReferences
+            )
             : base(conversationState, userState, dialog, logger)
         {
-            _userService = userService;
-            _conversationReferences = conversationReferences;
+//            _userService = userService;
+//            _conversationReferences = conversationReferences;
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)

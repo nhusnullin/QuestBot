@@ -1,20 +1,9 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreBot;
-using Microsoft.Bot.Connector;
-using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using ScenarioBot.Service;
 
-namespace Microsoft.BotBuilderSamples
+namespace ScenarioBot
 {
     public class LoadScenarioService : IHostedService
     {

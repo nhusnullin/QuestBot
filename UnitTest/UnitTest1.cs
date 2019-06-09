@@ -22,11 +22,11 @@ namespace UnitTestProject
         public void T2()
         {
 
-            var sc1 = JsonConvert.SerializeObject(InMemoryScenarioStore.GetScenario1(), Newtonsoft.Json.Formatting.None,
-                            new JsonSerializerSettings
-                            {
-                                NullValueHandling = NullValueHandling.Ignore
-                            });
+//            var sc1 = JsonConvert.SerializeObject(InMemoryScenarioStore.GetScenario1(), Newtonsoft.Json.Formatting.None,
+//                            new JsonSerializerSettings
+//                            {
+//                                NullValueHandling = NullValueHandling.Ignore
+//                            });
         }
 
 

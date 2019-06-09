@@ -1,5 +1,4 @@
-﻿using CoreBot.Exceptions;
-using Microsoft.Bot.Builder;
+﻿using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -49,13 +48,13 @@ namespace CoreBot
             return JsonConvert.SerializeObject(conversationReference);
         }
 
-        public static async Task<User> ValidateUser(this IUserService userService, UserId userId)
-        {
-            var user = await userService.GetByAsync(userId.ChannelId, userId.Id);
-            if (user == null)
-                throw new UserNotFoundException(userId);
-            return user;
-        }
+//        public static async Task<User> ValidateUser(this IUserService userService, UserId userId)
+//        {
+//            var user = await userService.GetByAsync(userId.ChannelId, userId.Id);
+//            if (user == null)
+//                throw new UserNotFoundException(userId);
+//            return user;
+//        }
 
         private static string GetUserName(ChannelAccount account, object channelData)
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CoreBot;
 using Newtonsoft.Json;
 using ScenarioBot.Domain;
 
@@ -10,7 +9,6 @@ namespace ScenarioBot.Service
 {
     public class ScenarioService : IScenarioService
     {
-        private readonly ICloudStorage _cloudStorage;
         public IDictionary<string, Scenario> Store { get; set; }
 
         public ScenarioService()
@@ -18,10 +16,6 @@ namespace ScenarioBot.Service
             Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
         }
 
-        public ScenarioService(ICloudStorage cloudStorage):this()
-        {
-            _cloudStorage = cloudStorage;
-        }
 
 
         public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
@@ -32,12 +26,13 @@ namespace ScenarioBot.Service
 
         public IList<string> GetAvailableScenario(string teamId)
         {
-            var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
-
-            var completedScenario = _cloudStorage.GetAnswersByTeamId(teamId, answer => answer.IsLastAnswer)
-                .GroupBy(x=>x.ScenarioId);
-
-            return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();
+            return new List<string>();
+//            var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
+//
+//            var completedScenario = _cloudStorage.GetAnswersByTeamId(teamId, answer => answer.IsLastAnswer)
+//                .GroupBy(x=>x.ScenarioId);
+//
+//            return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();
         }
 
         public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
