@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
+using Core.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using ScenarioBot.Domain;
@@ -13,13 +14,13 @@ namespace ScenarioBot.Dialogs
 {
     public class WaitTextPuzzleDialog : TextPuzzleDialog
     {
-        private readonly ConcurrentBag<BackgroundNotifyMsg> _backgroundNotifyMsgsStore;
+        private readonly INotificationService _notificationService;
 
         public WaitTextPuzzleDialog(IList<IBotCommand> botCommands,
-            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore) 
+            INotificationService notificationService) 
             : base(botCommands, nameof(WaitTextPuzzleDialog) )
         {
-            _backgroundNotifyMsgsStore = backgroundNotifyMsgsStore;
+            _notificationService = notificationService;
         }
 
         protected override async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext,
@@ -33,7 +34,7 @@ namespace ScenarioBot.Dialogs
                 puzzleDetails.SetQuestionAskedAt(DateTime.UtcNow);
 
                 // ставим себе напоминалку что надо сообщить команде о возможном продолжении квеста
-                _backgroundNotifyMsgsStore.Add(new BackgroundNotifyMsg()
+                await _notificationService.SendMessageInBackground(new BackgroundNotifyMsg()
                 {
                     //TeamId = puzzleDetails.TeamId,
                     Msg = "Штрафное время закончилось, можно продолжить квест. Успехов и удачи! :)",

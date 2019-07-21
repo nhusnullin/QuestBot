@@ -4,15 +4,16 @@ using Microsoft.Bot.Schema;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain;
 using Core.Service;
 
 namespace CoreBot
 {
-    public class NotificationMessanger : INotificationMessanger
+    public class NotificationService : INotificationService
     {
         private readonly IAdapterIntegration _adapter;
         private readonly string _botAppId;
-        public NotificationMessanger(string botAppId, IAdapterIntegration adapter)
+        public NotificationService(string botAppId, IAdapterIntegration adapter)
         {
             _botAppId = botAppId ?? throw new ArgumentNullException(nameof(botAppId));
             _adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
@@ -25,6 +26,11 @@ namespace CoreBot
                 Message = message
             };
             await teamMessage.SendMessage(_adapter, _botAppId, conversationReference, cancellationToken);
+        }
+
+        public Task SendMessageInBackground(BackgroundNotifyMsg msg)
+        {
+            throw new NotImplementedException();
         }
 
 

@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Core.BotCommands;
 using Core.Domain;
+using Core.Service;
 using CoreBot.BotCommands;
 using CoreBot.Bots;
 using CoreBot.Dialogs;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ScenarioBot.BotCommands;
+using ScenarioBot.Dialogs;
 using ScenarioBot.Repository;
 using ScenarioBot.Repository.Impl.InMemory;
 using ScenarioBot.Service;
@@ -71,12 +73,8 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-//            var storageAccount = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
-//            services.AddSingleton<CloudStorageAccount>(storageAccount);
 
-            //services.AddSingleton<ICloudStorage, CloudStorage>();
-
-//            services.AddSingleton<IScenarioService, ScenarioService>();
+            services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IUserRepository, UserRepository>();
 //            services.AddSingleton<IReportService, ReportService>();
@@ -103,11 +101,18 @@ namespace CoreBot
             //    return new ConcurrentBag<BackgroundNotifyMsg>();
             //});
 
+            
+            
+//            // The Dialog that will be run by the bot.
+//            services.AddSingleton<MainDialog>();
+//            // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
+//            services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
+            
             // The Dialog that will be run by the bot.
-            services.AddSingleton<MainDialog>();
-
+            services.AddSingleton<ScenarioDialog>();
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, DialogAndWelcomeBot<MainDialog>>();
+            services.AddTransient<IBot, DialogAndWelcomeBot<ScenarioDialog>>();
+            
             const string botAppId = "9b6857ad-5e19-4ed6-9dc0-c53d39105a97";
             services.AddSingleton<IAdapterIntegration>(sp =>
             {
@@ -127,10 +132,10 @@ namespace CoreBot
                 return adapter;
             });
             
-//            services.AddSingleton<INotificationMessanger>(sp =>
-//                {
-//                    return new NotificationMessanger(botAppId, sp.GetRequiredService<IAdapterIntegration>());
-//                });
+            services.AddSingleton<INotificationService>(sp =>
+                {
+                    return new NotificationService(botAppId, sp.GetRequiredService<IAdapterIntegration>());
+                });
 
             //services.AddHostedService<LoadScenarioService>();
             //services.AddHostedService<SendNotifyInBackgroundService>();

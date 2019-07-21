@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
 using Core.Domain;
+using Core.Service;
 using CoreBot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -18,10 +19,10 @@ namespace ScenarioBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private readonly ConcurrentBag<BackgroundNotifyMsg> _backgroundNotifyMsgsStore;
+        private readonly INotificationService _notificationService;
 
         public ScenarioDialog(IScenarioService scenarioService, IUserService userService, 
-            ConcurrentBag<BackgroundNotifyMsg> backgroundNotifyMsgsStore,
+            INotificationService notificationService,
             IList<IBotCommand> botCommands)
             : base(nameof(ScenarioDialog), botCommands)
         {
@@ -30,18 +31,24 @@ namespace ScenarioBot.Dialogs
                 Ask,
                 Check
             };
-            AddDialog(new WaitTextPuzzleDialog(botCommands, _backgroundNotifyMsgsStore));
+            AddDialog(new WaitTextPuzzleDialog(botCommands, notificationService));
             AddDialog(new TextPuzzleDialog(botCommands));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;
             _userService = userService;
-            _backgroundNotifyMsgsStore = backgroundNotifyMsgsStore;
+            _notificationService = notificationService;
         }
 
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var scenarioDetails = (ScenarioDetails)stepContext.Options;
+
+            if (scenarioDetails == null)
+            {
+                var userId = stepContext.Context.Activity.From.Id;
+                scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
+            }
             
             //// �������� ��������� �� ������� ��������
             //var scenarioIsOverOnce = _userService.IsScenarioIsOverByTeam(scenarioDetails.TeamId, scenarioDetails.ScenarioId);

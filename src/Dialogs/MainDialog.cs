@@ -43,7 +43,7 @@ namespace CoreBot.Dialogs
         {
             
             // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
-            //await _userService.GetOrCreateUser(stepContext.Context);
+//            await _userService.GetOrCreateUser(stepContext.Context);
             return await stepContext.NextAsync(null, cancellationToken);
         }
 
