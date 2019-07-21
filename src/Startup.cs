@@ -18,7 +18,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ScenarioBot.BotCommands;
+using ScenarioBot.Repository;
+using ScenarioBot.Repository.Impl.InMemory;
+using ScenarioBot.Service;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using IStorage = Microsoft.Bot.Builder.IStorage;
 using MemoryStorage = Microsoft.Bot.Builder.MemoryStorage;
 
 namespace CoreBot
@@ -73,8 +77,8 @@ namespace CoreBot
             //services.AddSingleton<ICloudStorage, CloudStorage>();
 
 //            services.AddSingleton<IScenarioService, ScenarioService>();
-//            services.AddSingleton<IUserService, UserService>();
-//            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 //            services.AddSingleton<IReportService, ReportService>();
 
             services.AddSingleton<IList<IBotCommand>>(x =>

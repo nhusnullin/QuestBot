@@ -8,24 +8,19 @@ namespace ScenarioBot.Repository.Impl.InMemory
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IStorage _storage;
 
-        public UserRepository(IStorage storage)
+        public UserRepository()
         {
-            _storage = storage;
         }
 
         public async Task<User> GetUserByIdAsync(UserId userId)
         {
-            var key = User.GetStorageKey(userId);
-            var resDic = await _storage.ReadAsync<User>(new[] {key});
-            return resDic.Values.FirstOrDefault();
+            throw new NotSupportedException();
         }
 
         public async Task InsertOrUpdateAsync(User user)
         {
-            var key = user.GetStorageKey();
-            await _storage.WriteAsync(new Dictionary<string, object> {{key, user}});
+            throw new NotSupportedException();
         }
 
         public Task DeleteUsers()

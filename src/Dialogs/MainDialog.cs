@@ -19,10 +19,12 @@ namespace CoreBot.Dialogs
 
         public MainDialog(
             ILogger<MainDialog> logger, 
-            IList<IBotCommand> botCommands)
+            IList<IBotCommand> botCommands,
+            IUserService userService)
             : base(nameof(MainDialog), botCommands)
         {
             _logger = logger;
+            _userService = userService;
 //            _userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
 //            AddDialog(new SelectTeamDialog(teamService, notificationMessanger, conversationReferences));
             AddDialog(new TextPrompt(nameof(TextPrompt)));

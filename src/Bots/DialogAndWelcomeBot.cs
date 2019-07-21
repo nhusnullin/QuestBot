@@ -7,7 +7,6 @@ using CoreBot.Properties;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
-using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Logging;
 using ScenarioBot.Service;
 
