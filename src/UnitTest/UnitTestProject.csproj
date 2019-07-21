@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\CoreBot.csproj" />
+    <ProjectReference Include="..\CoreBot\CoreBot.csproj" />
   </ItemGroup>
 
 </Project>

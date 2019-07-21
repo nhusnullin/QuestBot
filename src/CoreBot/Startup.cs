@@ -18,6 +18,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ScenarioBot;
 using ScenarioBot.BotCommands;
 using ScenarioBot.Dialogs;
 using ScenarioBot.Repository;
@@ -85,23 +86,9 @@ namespace CoreBot
                 {
                     new HelpBotCommand(),
                     new ScenarioBotCommand()
-                    
                 };
-                
             });
 
-            //services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
-            //{
-            //    //var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
-            //    return new ConcurrentDictionary<UserId, ConversationReference>();
-            //});
-
-            //services.AddSingleton<ConcurrentBag<BackgroundNotifyMsg>>(sp =>
-            //{
-            //    return new ConcurrentBag<BackgroundNotifyMsg>();
-            //});
-
-            
             
 //            // The Dialog that will be run by the bot.
 //            services.AddSingleton<MainDialog>();
@@ -137,7 +124,7 @@ namespace CoreBot
                     return new NotificationService(botAppId, sp.GetRequiredService<IAdapterIntegration>());
                 });
 
-            //services.AddHostedService<LoadScenarioService>();
+            services.AddHostedService<LoadScenarioService>();
             //services.AddHostedService<SendNotifyInBackgroundService>();
         }
 
