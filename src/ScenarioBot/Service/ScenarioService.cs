@@ -68,7 +68,7 @@ namespace ScenarioBot.Service
 
         public void LoadAll()
         {
-            var dr = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "raw_data"));
+            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data"));
             dr.GetFiles("*.json").Select(x => Load(x.FullName)).ToList();
         }
     }
