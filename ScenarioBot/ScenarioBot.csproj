@@ -33,6 +33,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
     <PackageReference Include="Microsoft.Bot.Builder" Version="4.4.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Shields.GraphViz" Version="1.0.2" />
   </ItemGroup>
 

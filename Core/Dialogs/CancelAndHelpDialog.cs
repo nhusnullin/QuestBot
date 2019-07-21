@@ -12,6 +12,7 @@ namespace Core.Dialogs
     public class CancelAndHelpDialog : ComponentDialog
     {
         private readonly IList<IBotCommand> _botCommands;
+
         public CancelAndHelpDialog(string id, IList<IBotCommand> botCommands): base(id)
         {
             _botCommands = botCommands;
@@ -53,11 +54,10 @@ namespace Core.Dialogs
 
             if (cmd == null)
             {
-                await dialogContext.Context.SendActivityAsync($"Unknown command...", cancellationToken: cancellationToken);
                 return null;
             }
             
-            if (cmd.Validate(userId))
+            if (!cmd.Validate(userId))
             {
                 await dialogContext.Context.SendActivityAsync($"Command is not allowed", cancellationToken: cancellationToken);
                 return null;

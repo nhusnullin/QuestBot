@@ -8,11 +8,10 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json.Linq;
-using ScenarioBot.Dialogs;
 using ScenarioBot.Domain;
 using ScenarioBot.Service;
 
-namespace CoreBot.Dialogs
+namespace ScenarioBot.Dialogs
 {
     public class ScenarioListDialog : ComponentDialog
     {

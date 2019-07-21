@@ -22,7 +22,7 @@ namespace ScenarioBot.BotCommands
 
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId, CancellationToken cancellationToken)
         {
-            await dialogContext.Context.SendActivityAsync($"Show Help...", cancellationToken: cancellationToken);
+            await dialogContext.Context.SendActivityAsync($"Show all scenarios...", cancellationToken: cancellationToken);
             return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 

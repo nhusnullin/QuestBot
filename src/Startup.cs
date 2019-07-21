@@ -17,6 +17,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ScenarioBot.BotCommands;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using MemoryStorage = Microsoft.Bot.Builder.MemoryStorage;
 
@@ -58,7 +59,7 @@ namespace CoreBot
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.) 
-            services.AddSingleton<Microsoft.Bot.Builder.IStorage, MemoryStorage>();
+            services.AddSingleton<IStorage, MemoryStorage>();
 
             // Create the User state. (Used in this bot's Dialog implementation.)
             services.AddSingleton<UserState>();
@@ -80,21 +81,23 @@ namespace CoreBot
             {
                 return new List<IBotCommand>()
                 {
-                    new HelpBotCommand()
+                    new HelpBotCommand(),
+                    new ScenarioBotCommand()
+                    
                 };
                 
             });
 
-            services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
-            {
-                //var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
-                return new ConcurrentDictionary<UserId, ConversationReference>();
-            });
+            //services.AddSingleton<ConcurrentDictionary<UserId, ConversationReference>>(sp =>
+            //{
+            //    //var values = LoadConversationReferences(sp.GetRequiredService<ICloudStorage>()).Result;
+            //    return new ConcurrentDictionary<UserId, ConversationReference>();
+            //});
 
-            services.AddSingleton<ConcurrentBag<BackgroundNotifyMsg>>(sp =>
-            {
-                return new ConcurrentBag<BackgroundNotifyMsg>();
-            });
+            //services.AddSingleton<ConcurrentBag<BackgroundNotifyMsg>>(sp =>
+            //{
+            //    return new ConcurrentBag<BackgroundNotifyMsg>();
+            //});
 
             // The Dialog that will be run by the bot.
             services.AddSingleton<MainDialog>();

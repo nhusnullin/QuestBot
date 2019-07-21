@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\**" />
+    <Content Remove="Service\**" />
+    <EmbeddedResource Remove="Service\**" />
+    <None Remove="Service\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GraphViz.NET" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -61,10 +68,6 @@
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.logging.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Service" />
   </ItemGroup>
 
   <Import Project="PostDeployScripts\IncludeSources.targets" Condition="Exists('PostDeployScripts\IncludeSources.targets')" />
