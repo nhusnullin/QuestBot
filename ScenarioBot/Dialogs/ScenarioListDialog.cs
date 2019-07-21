@@ -69,7 +69,7 @@ namespace ScenarioBot.Dialogs
                 scenarioDetails = new ScenarioDetails()
                 {
                     ScenarioId = scenarioId,
-                    TeamId = teamId
+                    UserId = teamId
                 };
             }
             var replyMessage = $"Выбранный сценарий: {scenarioId}";

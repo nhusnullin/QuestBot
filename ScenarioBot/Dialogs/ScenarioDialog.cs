@@ -53,8 +53,8 @@ namespace ScenarioBot.Dialogs
             //    return await stepContext.CancelAllDialogsAsync(cancellationToken);
             //}
 
-            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.TeamId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
-            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.TeamId);
+            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.UserId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
+            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.UserId);
 
             if (puzzleDetails.IsLastPuzzle)
             {
@@ -66,7 +66,7 @@ namespace ScenarioBot.Dialogs
 
             return await stepContext.BeginDialogAsync(
                 puzzleDetails.PuzzleType.ToString(),
-                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.TeamId),
+                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.UserId),
                 cancellationToken);
         }
 
@@ -77,11 +77,12 @@ namespace ScenarioBot.Dialogs
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
             await _userService.SetAnswer(scenarioDetails);
 
-            if(!_scenarioService.IsOver(scenarioDetails.TeamId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
+            if(!_scenarioService.IsOver(scenarioDetails.UserId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
             {
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
             }
 
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
             return await stepContext.EndDialogAsync(scenarioDetails, cancellationToken);
         }
     }

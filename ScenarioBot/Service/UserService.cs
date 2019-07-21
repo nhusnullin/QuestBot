@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Domain;
 using CoreBot;
+using Microsoft.Bot.Builder;
 using ScenarioBot.Domain;
 using ScenarioBot.Repository;
 
@@ -17,8 +18,14 @@ namespace ScenarioBot.Service
             _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
         }
 
-        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string teamId)
+        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string userId)
         {
+                return new ScenarioDetails()
+                {
+                    ScenarioId = "testScenario",
+                    UserId = userId
+                };
+                
             throw new NotImplementedException();
 //            var answers = _storage
 //                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)

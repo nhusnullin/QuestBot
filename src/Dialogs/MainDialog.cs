@@ -6,6 +6,8 @@ using Core.Dialogs;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Extensions.Logging;
+using ScenarioBot.Dialogs;
+using ScenarioBot.Domain;
 using ScenarioBot.Service;
 
 namespace CoreBot.Dialogs
@@ -27,7 +29,7 @@ namespace CoreBot.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 //IntroStepAsync,
-                //ScenarioLaunchStepAsync,
+                ScenarioLaunchStepAsync,
                 FinalStepAsync,
             }));
 
@@ -52,28 +54,15 @@ namespace CoreBot.Dialogs
 //            return await stepContext.BeginDialogAsync(nameof(SelectTeamDialog), user, cancellationToken);
 //        }
 
-//        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-//        {
-//            var teamId = (string)stepContext.Result;
-//
-//            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
-//            var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
-////            if (!user.IsCaptain)
-////            {
-////                await TurnContextExtensions.SendMessageAsync(stepContext.Context, Resources.TeamNotificationInfo, cancellationToken);
-////                return await stepContext.EndDialogAsync(null, cancellationToken);
-////            }
-//            if (scenarioDetails == null)
-//            {
-//                scenarioDetails = new ScenarioDetails()
-//                {
-//                    ScenarioId = "testScenario",
-//                    TeamId = teamId
-//                };
-//            }
-//
-//            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-//        }
+        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var userId = (string)stepContext.Result;
+
+            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
+            //var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+
+            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
+        }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
