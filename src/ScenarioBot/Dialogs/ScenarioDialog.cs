@@ -34,6 +34,7 @@ namespace ScenarioBot.Dialogs
             };
             AddDialog(new WaitTextPuzzleDialog(botCommands, notificationService));
             AddDialog(new TextPuzzleDialog(botCommands));
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;
@@ -85,7 +86,6 @@ namespace ScenarioBot.Dialogs
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
             }
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("Квест окончен!"), cancellationToken);
             return await stepContext.EndDialogAsync(scenarioDetails, cancellationToken);
         }
     }

@@ -6,11 +6,9 @@ namespace ScenarioBot.Repository.Impl.InMemory
 {
     public class AnswerRepository:IAnswerRepository
     {
-        private readonly IStorage _storage;
 
-        public AnswerRepository(IStorage storage)
+        public AnswerRepository()
         {
-            _storage = storage;
         }
 
         public Task<IList<string>> GetCompletedScenarioNames(UserId userId)

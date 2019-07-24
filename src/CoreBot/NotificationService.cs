@@ -28,9 +28,9 @@ namespace CoreBot
             await teamMessage.SendMessage(_adapter, _botAppId, conversationReference, cancellationToken);
         }
 
-        public Task SendMessageInBackground(BackgroundNotifyMsg msg)
+        public async Task SendMessageInBackground(BackgroundNotifyMsg msg)
         {
-            throw new NotImplementedException();
+            return;
         }
 
 
