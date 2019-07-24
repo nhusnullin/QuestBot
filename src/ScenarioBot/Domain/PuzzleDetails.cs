@@ -5,34 +5,34 @@ using System.Text.RegularExpressions;
 
 namespace ScenarioBot.Domain
 {
-    // TODO нахер никому не нужный класс
     /// <summary>
     /// Класс для передачи данных из диалога в диалог 
     /// </summary>
     public class PuzzleDetails
     {
-        
+        private readonly Puzzle _puzzle;
+
         // пустой конструктор необходим для дессериализации bot framework
         public PuzzleDetails()
         {
             PossibleAnswers = new List<string>();
         }
 
-        public PuzzleDetails(Puzzle puzzle, List<string> possibleAnswers, string teamId)
+        public PuzzleDetails(Puzzle puzzle)
         {
+            _puzzle = puzzle;
+            
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
-            PossibleAnswers = possibleAnswers;
+            PossibleAnswers = _puzzle.PosibleBranches.Select(x => x.Answer).ToList();
             NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
             WaitnigTime = puzzle.WaitingTime;
             IsLastPuzzle = puzzle.IsLastPuzzle;
 
             // для режима ожидания у нас свой диалог
             PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
-            TeamId = teamId;
         }
 
-        public string TeamId { get; }
         public bool IsLastPuzzle { get; set; }
 
         public PuzzleType PuzzleType { get; set; }

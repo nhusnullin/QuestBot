@@ -2,49 +2,47 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Core.Domain;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ScenarioBot.Domain;
+using ScenarioBot.Repository;
 
 namespace ScenarioBot.Service
 {
     public class ScenarioService : IScenarioService
     {
-        public IDictionary<string, Scenario> Store { get; set; }
+        private readonly ILogger<ScenarioService> _logger;
+        private readonly IAnswerRepository _answerRepository;
+        private readonly IDictionary<string, Scenario> _store;
 
-        public ScenarioService()
+        public ScenarioService(ILogger<ScenarioService> logger,
+            IAnswerRepository answerRepository)
         {
-            Store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
+            _logger = logger;
+            _answerRepository = answerRepository;
+            _store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
         }
 
-
-
-        public Puzzle GetFirstPuzzle(string teamId, string scenarioId)
+        public  async Task<IList<string>> GetNotCompletedScenarioNames(UserId teamId)
         {
-            var scenario = Store[scenarioId];
-            return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        public IList<string> GetAvailableScenario(string teamId)
-        {
-            return new List<string>();
-//            var loadedScenario = Store.Select(x => x.Key.ToLower()).ToArray();
-//
-//            var completedScenario = _cloudStorage.GetAnswersByTeamId(teamId, answer => answer.IsLastAnswer)
-//                .GroupBy(x=>x.ScenarioId);
-//
-//            return loadedScenario.Except(completedScenario.Select(x => x.Key.ToLower())).ToList();
+            var loadedScenarioNames = _store.Select(x => x.Key.ToLower()).ToArray();
+            var completedScenarioNames = await _answerRepository.GetCompletedScenarioNames(teamId);
+            return loadedScenarioNames.Except(completedScenarioNames).ToList();
         }
 
         public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
-            var scenario = Store[scenarioId];
+            var scenario = _store[scenarioId];
 
             if (string.IsNullOrEmpty(lastPuzzleId))
             {
-                return GetFirstPuzzle(teamId, scenarioId);
+                return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
             }
 
             var puzzle = scenario.Collection.First(x=> string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
+            
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
             return scenario.Collection.First(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
@@ -52,24 +50,35 @@ namespace ScenarioBot.Service
 
         public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)
         {
-            var scenario = Store[scenarioId];
+            var scenario = _store[scenarioId];
             var puzzle = scenario.Collection.First(x => string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             return puzzle.IsLastPuzzle;
         }
 
-        public Scenario Load(string path)
+        private Scenario Load(string path)
         {
-            path = Path.Combine(Directory.GetCurrentDirectory(), path);
-            var value = File.ReadAllText(path);
-            var scenario = JsonConvert.DeserializeObject<Scenario>(value);
-            Store[scenario.ScenarioId] = scenario;
-            return scenario;
+            try
+            {
+                path = Path.Combine(Directory.GetCurrentDirectory(), path);
+                var value = File.ReadAllText(path);
+                var scenario = JsonConvert.DeserializeObject<Scenario>(value);
+                _store[scenario.ScenarioId] = scenario;
+                return scenario;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "While loading scenario {@path}", path);
+            }
+
+            return null;
         }
 
         public void LoadAll()
         {
             var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data"));
-            dr.GetFiles("*.json").Select(x => Load(x.FullName)).ToList();
+            dr.GetFiles("*.json").Select(x => Load(x.FullName))
+                .Where(x => x != null)
+                .ToList();
         }
     }
 }

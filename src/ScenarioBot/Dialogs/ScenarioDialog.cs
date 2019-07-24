@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace ScenarioBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private readonly INotificationService _notificationService;
 
-        public ScenarioDialog(IScenarioService scenarioService, IUserService userService, 
+        public ScenarioDialog(IScenarioService scenarioService, 
+            IUserService userService, 
             INotificationService notificationService,
             IList<IBotCommand> botCommands)
             : base(nameof(ScenarioDialog), botCommands)
@@ -37,44 +38,39 @@ namespace ScenarioBot.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
             _scenarioService = scenarioService;
             _userService = userService;
-            _notificationService = notificationService;
         }
 
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var scenarioDetails = (ScenarioDetails)stepContext.Options;
+            var scenarioDetails = (ScenarioDetails) stepContext.Options;
 
             if (scenarioDetails == null)
             {
                 var userId = stepContext.Context.Activity.From.Id;
                 scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
+
+                if (scenarioDetails == null)
+                {
+                    throw new ApplicationException("There is no any scenario to launch");
+                }
+
+                // этот фин ушами чтобы пробросить scenarioDetails - вызывается один раз, когда происходит инициализация 
+                return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
             }
-            
-            //// �������� ��������� �� ������� ��������
-            //var scenarioIsOverOnce = _userService.IsScenarioIsOverByTeam(scenarioDetails.TeamId, scenarioDetails.ScenarioId);
 
-            //if (scenarioIsOverOnce)
-            //{
-            //    await stepContext.PromptAsync(nameof(TextPrompt),
-            //        new PromptOptions { Prompt = MessageFactory.Text("�� ���� �������� ��� ���������, ��� �������� ������") }, cancellationToken);
-            //    return await stepContext.CancelAllDialogsAsync(cancellationToken);
-            //}
-
-            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.UserId, scenarioDetails.ScenarioId, scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
-            var puzzleDetails = new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.UserId);
+            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.UserId, scenarioDetails.ScenarioId,
+                scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
+            var puzzleDetails = new PuzzleDetails(puzzle);
 
             if (puzzleDetails.IsLastPuzzle)
             {
-                //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text($"{puzzleDetails.Question}") }, cancellationToken);
+                    new PromptOptions {Prompt = MessageFactory.Text($"{puzzleDetails.Question}")}, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 
             return await stepContext.BeginDialogAsync(
-                puzzleDetails.PuzzleType.ToString(),
-                new PuzzleDetails(puzzle, puzzle.PosibleBranches.Select(x => x.Answer).ToList(), scenarioDetails.UserId),
-                cancellationToken);
+                puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
         }
 
         private async Task<DialogTurnResult> Check(WaterfallStepContext stepContext, CancellationToken cancellationToken) {

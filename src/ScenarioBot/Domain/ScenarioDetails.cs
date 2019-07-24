@@ -9,11 +9,6 @@ namespace ScenarioBot.Domain
     {
         public string ScenarioId { get; set; }
         public string UserId { get; set; }
-
-        [Obsolete("над использовать LastPuzzle", false)]
-        public PuzzleDetails LastPuzzleDetails { get; set; }
-        
-        public Puzzle LastPuzzle { get; set; }
-        
+        public PuzzleDetails LastPuzzleDetails { get; set; } 
     }
 }

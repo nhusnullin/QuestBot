@@ -44,14 +44,14 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> ShowChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var teamId = (string)stepContext.Options;
+            var userId = (UserId)stepContext.Options;
 
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
                     RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
-                    Choices = ChoiceFactory.ToChoices(_scenarioService.GetAvailableScenario(teamId)),
+                    Choices = ChoiceFactory.ToChoices(await _scenarioService.GetNotCompletedScenarioNames(userId)),
                 },
                 cancellationToken);
         }

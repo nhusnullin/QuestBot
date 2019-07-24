@@ -15,7 +15,7 @@ namespace ScenarioBot.Service
 
         public UserService(IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
         public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string userId)
@@ -67,34 +67,15 @@ namespace ScenarioBot.Service
 
         public async Task SetAnswer(ScenarioDetails scenarioDetails)
         {
-            throw new NotImplementedException();
-            
-//            var table = _storage.GetOrCreateTable(Answer.TableName);
-//            var scenarioId = scenarioDetails.ScenarioId;
-//            var puzzleId = scenarioDetails.LastPuzzleDetails.PuzzleId;
-//
-//            var answer = new Answer(scenarioDetails.TeamId, $"{scenarioId} {puzzleId}")
-//            {
-//                ScenarioId = scenarioId,
-//                PuzzleId = puzzleId,
-//                ScenarioDetails = JsonConvert.SerializeObject(scenarioDetails),
-//                IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle
-//            };
-//
-//            await _storage.InsertOrMergeEntityAsync(table, answer);
         }
 
         public async Task DeleteUsers()
         {
-//            await _userRepository.DeleteUsers();
-//            _storage.DeleteTableIfExists(Answer.TableName);
         }
 
         public async Task<ICollection<Answer>> GetAnswers()
         {
-            throw  new NotImplementedException();
-//            var table = _storage.GetOrCreateTable(Answer.TableName);
-//            return await _storage.RetrieveEntitiesAsync<Answer>(table);
+            return new List<Answer>(); 
         }
 
         public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)
