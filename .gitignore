@@ -5,3 +5,4 @@
 **/runtimes/**
 **/.vs/**
 **/.idea/**
+log*.txt
