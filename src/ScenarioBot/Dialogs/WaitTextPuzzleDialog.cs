@@ -30,14 +30,14 @@ namespace ScenarioBot.Dialogs
 
             if (!puzzleDetails.QuestionAskedAt.HasValue)
             {
-                // если первый заход, то задаем вопрос
+                // РµСЃР»Рё РїРµСЂРІС‹Р№ Р·Р°С…РѕРґ, С‚Рѕ Р·Р°РґР°РµРј РІРѕРїСЂРѕСЃ
                 puzzleDetails.SetQuestionAskedAt(DateTime.UtcNow);
 
-                // ставим себе напоминалку что надо сообщить команде о возможном продолжении квеста
+                // СЃС‚Р°РІРёРј СЃРµР±Рµ РЅР°РїРѕРјРёРЅР°Р»РєСѓ С‡С‚Рѕ РЅР°РґРѕ СЃРѕРѕР±С‰РёС‚СЊ РєРѕРјР°РЅРґРµ Рѕ РІРѕР·РјРѕР¶РЅРѕРј РїСЂРѕРґРѕР»Р¶РµРЅРёРё РєРІРµСЃС‚Р°
                 await _notificationService.SendMessageInBackground(new BackgroundNotifyMsg()
                 {
                     //TeamId = puzzleDetails.TeamId,
-                    Msg = "Штрафное время закончилось, можно продолжить квест. Успехов и удачи! :)",
+                    Msg = "РЁС‚СЂР°С„РЅРѕРµ РІСЂРµРјСЏ Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ, РјРѕР¶РЅРѕ РїСЂРѕРґРѕР»Р¶РёС‚СЊ РєРІРµСЃС‚. РЈСЃРїРµС…РѕРІ Рё СѓРґР°С‡Рё! :)",
                     WhenByUTC = puzzleDetails.AnswerTimeNoLessThan.AddMinutes(1)
                 });
 
@@ -47,7 +47,7 @@ namespace ScenarioBot.Dialogs
             var remainMinutesToAnswer = puzzleDetails.GetRemainMinutesToAnswer(DateTime.UtcNow);
             if (remainMinutesToAnswer > 0)
             {
-                var text = $"Продолжить прохождение квеста возможно лишь через {remainMinutesToAnswer} мин";
+                var text = $"РџСЂРѕРґРѕР»Р¶РёС‚СЊ РїСЂРѕС…РѕР¶РґРµРЅРёРµ РєРІРµСЃС‚Р° РІРѕР·РјРѕР¶РЅРѕ Р»РёС€СЊ С‡РµСЂРµР· {remainMinutesToAnswer} РјРёРЅ";
                 return await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions {Prompt = MessageFactory.Text(text)}, cancellationToken);
             }
