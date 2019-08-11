@@ -28,5 +28,15 @@ namespace ScenarioBot.Repository.Impl.InMemory
         {
             _store.Add(answer);
         }
+
+        public Answer GetLastAddedAnswerFromNotCompletedScenario()
+        {
+            var completedScenarioIds = _store.Where(x => x.IsLastAnswer).Select(x => x.ScenarioId).Distinct();
+
+            return _store.Where(x => !x.IsLastAnswer) // не последний ответ сценария
+                .Where(x => !completedScenarioIds.Contains(x.ScenarioId)) // из списка не законченных сценариев
+                .OrderBy(x => x.Timestamp)
+                .FirstOrDefault();
+        }
     }
 }

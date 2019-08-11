@@ -18,30 +18,7 @@ namespace ScenarioBot.Service
             _answerRepository = answerRepository;
         }
 
-        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId)
-        {
-                return new ScenarioDetails()
-                {
-                    ScenarioId = "testScenario",
-                    UserId = userId
-                };
-                
-            throw new NotImplementedException();
-//            var answers = _storage
-//                .GetAnswersByTeamId(teamId, x => x.IsLastAnswer != true)
-//                .OrderByDescending(x => x.Timestamp)
-//                .Take(1)
-//                .ToList();
-//
-//            var scenarioDetails = answers.FirstOrDefault()?.ScenarioDetails;
-//
-//            if (string.IsNullOrEmpty(scenarioDetails))
-//            {
-//                return null;
-//            }
-//
-//            return JsonConvert.DeserializeObject<ScenarioDetails>(scenarioDetails);
-        }
+        
 
         public bool IsScenarioIsOverByTeam(string teamId, string scenarioId)
         {
@@ -61,22 +38,10 @@ namespace ScenarioBot.Service
             await _userRepository.InsertOrUpdateAsync(user);
         }
 
-        public void Remove(string channelId, string userId)
-        {
-        }
 
         public async Task SetAnswer(ScenarioDetails scenarioDetails)
         {
             await _answerRepository.AddAnswer(new Answer(scenarioDetails));
-        }
-
-        public async Task DeleteUsers()
-        {
-        }
-
-        public async Task<ICollection<Answer>> GetAnswers()
-        {
-            return new List<Answer>(); 
         }
 
         public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)

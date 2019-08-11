@@ -31,6 +31,25 @@ namespace ScenarioBot.Service
             var completedScenarioNames = await _answerRepository.GetCompletedScenarioIds(teamId);
             return loadedScenarioNames.Except(completedScenarioNames).ToList();
         }
+        
+        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId)
+        {
+            var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario();
+            if (answer == null)
+            {
+                // значит у пользователя нет начатого сценария
+                return null;
+            }
+
+            var puzzle = GetNextPuzzle(userId, answer.ScenarioId, answer.PuzzleId, answer.ActualAnswer);
+            return new ScenarioDetails()
+            {
+                ScenarioId = answer.ScenarioId,
+                UserId = userId,
+                LastPuzzleDetails = new PuzzleDetails(puzzle)
+            };
+        }
+        
 
         public Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {

@@ -57,15 +57,15 @@ namespace CoreBot.Dialogs
 //            return await stepContext.BeginDialogAsync(nameof(SelectTeamDialog), user, cancellationToken);
 //        }
 
-        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userId = (UserId)stepContext.Result;
-
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
-            //var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
-
-            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-        }
+//        private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+//        {
+//            var userId = (UserId)stepContext.Result;
+//
+////            var scenarioDetails = _sce.GetLastScenarioDetailsExceptGameOver(userId);
+//            //var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);
+//
+////            return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
+//        }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)

@@ -3,6 +3,8 @@ using Core.Domain;
 
 namespace ScenarioBot.Domain
 {
+    // todo чет кажется лишняя сущность
+    
     /// <summary>
     /// Класс для передачи данных из диалога в диалог 
     /// </summary>

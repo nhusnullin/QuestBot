@@ -1,4 +1,5 @@
-﻿using Core.Domain;
+﻿using System;
+using Core.Domain;
 
 namespace ScenarioBot.Domain
 {
@@ -16,6 +17,7 @@ namespace ScenarioBot.Domain
             PuzzleId = scenarioDetails.LastPuzzleDetails.PuzzleId;
             IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle;
             ActualAnswer = scenarioDetails.LastPuzzleDetails.ActualAnswer;
+            Timestamp = DateTime.UtcNow;
         }
 
         public UserId RespondentId { get; }
@@ -23,5 +25,6 @@ namespace ScenarioBot.Domain
         public string PuzzleId { get; set; }
         public bool IsLastAnswer { get; set; }
         public string ActualAnswer { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

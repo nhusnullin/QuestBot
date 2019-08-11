@@ -5,11 +5,18 @@ using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
+using ScenarioBot.Service;
 
 namespace ScenarioBot.BotCommands
 {
     public class ScenarioBotCommand : IBotCommand
     {
+        private readonly IScenarioService _scenarioService;
+
+        public ScenarioBotCommand(IScenarioService scenarioService)
+        {
+            _scenarioService = scenarioService;
+        }
         public bool IsApplicable(string message, UserId userId)
         {
             return message.Equals("scenario", StringComparison.InvariantCultureIgnoreCase);

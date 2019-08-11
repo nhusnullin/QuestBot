@@ -80,15 +80,15 @@ namespace CoreBot
             services.AddSingleton<IUserRepository, UserRepositoryInMemory>();
 //            services.AddSingleton<IReportService, ReportService>();
 
-            services.AddSingleton<IList<IBotCommand>>(x =>
+            services.AddSingleton<HelpBotCommand, HelpBotCommand>();
+            services.AddSingleton<ScenarioBotCommand, ScenarioBotCommand>();
+            services.AddSingleton<IList<IBotCommand>>(x => new List<IBotCommand>()
             {
-                return new List<IBotCommand>()
-                {
-                    new HelpBotCommand(),
-                    new ScenarioBotCommand()
-                };
+                x.GetRequiredService<HelpBotCommand>(),
+                x.GetRequiredService<ScenarioBotCommand>()
             });
 
+            
             
 //            // The Dialog that will be run by the bot.
 //            services.AddSingleton<MainDialog>();

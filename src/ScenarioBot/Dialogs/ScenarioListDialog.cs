@@ -18,15 +18,12 @@ namespace ScenarioBot.Dialogs
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
         private readonly INotificationService _notificationService;
-        private readonly ConcurrentDictionary<UserId, ConversationReference> _conversationReferences;
 
         public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
-             ConcurrentDictionary<UserId, ConversationReference> conversationReferences,
             INotificationService notificationService) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
             _userService = userService;
-            _conversationReferences = conversationReferences;
             _notificationService = notificationService ?? throw new System.ArgumentNullException(nameof(notificationService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
@@ -62,7 +59,7 @@ namespace ScenarioBot.Dialogs
             var scenarioId = ((FoundChoice)stepContext.Result).Value;
             var teamId = (UserId)stepContext.Options;
 
-            var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
+            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId);
 
             if (scenarioDetails == null || scenarioDetails.ScenarioId != scenarioId)
             {

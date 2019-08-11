@@ -17,6 +17,7 @@ namespace ScenarioBot.Dialogs
     {
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
 
         public ScenarioDialog(IScenarioService scenarioService, 
             IUserService userService, 
@@ -24,6 +25,10 @@ namespace ScenarioBot.Dialogs
             IList<IBotCommand> botCommands)
             : base(nameof(ScenarioDialog), botCommands)
         {
+            _scenarioService = scenarioService;
+            _userService = userService;
+            _notificationService = notificationService;
+
             var waterfallStep = new WaterfallStep[]
             {
                 Ask,
@@ -33,9 +38,9 @@ namespace ScenarioBot.Dialogs
             AddDialog(new TextPuzzleDialog(botCommands));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
+            AddDialog(new ScenarioListDialog(_scenarioService, _userService, _notificationService));
             InitialDialogId = nameof(WaterfallDialog);
-            _scenarioService = scenarioService;
-            _userService = userService;
+            
         }
 
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -46,11 +51,13 @@ namespace ScenarioBot.Dialogs
             {
                 var id = stepContext.Context.Activity.From.Id;
                 var channelId = stepContext.Context.Activity.ChannelId;
-                scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(new UserId(channelId, id));
+                var userId = new UserId(channelId, id);
+                scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId);
 
+                // либо первый раз запускаем, либо надо дать пользователю шанс выбрать сценарий
                 if (scenarioDetails == null)
                 {
-                    throw new ApplicationException("There is no any scenario to launch");
+                    return await stepContext.ReplaceDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
                 }
 
                 // этот фин ушами чтобы пробросить scenarioDetails - вызывается один раз, когда происходит инициализация 
