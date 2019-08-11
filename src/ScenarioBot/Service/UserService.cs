@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Domain;
-using CoreBot;
-using Microsoft.Bot.Builder;
 using ScenarioBot.Domain;
 using ScenarioBot.Repository;
 
@@ -12,13 +10,15 @@ namespace ScenarioBot.Service
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAnswerRepository _answerRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IAnswerRepository answerRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _answerRepository = answerRepository;
         }
 
-        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(string userId)
+        public  ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId)
         {
                 return new ScenarioDetails()
                 {
@@ -67,6 +67,7 @@ namespace ScenarioBot.Service
 
         public async Task SetAnswer(ScenarioDetails scenarioDetails)
         {
+            await _answerRepository.AddAnswer(new Answer(scenarioDetails));
         }
 
         public async Task DeleteUsers()

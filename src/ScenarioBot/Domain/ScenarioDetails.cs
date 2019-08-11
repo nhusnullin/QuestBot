@@ -1,4 +1,5 @@
 using System;
+using Core.Domain;
 
 namespace ScenarioBot.Domain
 {
@@ -8,7 +9,7 @@ namespace ScenarioBot.Domain
     public class ScenarioDetails
     {
         public string ScenarioId { get; set; }
-        public string UserId { get; set; }
+        public UserId UserId { get; set; }
         public PuzzleDetails LastPuzzleDetails { get; set; } 
     }
 }

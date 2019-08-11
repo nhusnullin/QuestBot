@@ -8,8 +8,8 @@ namespace ScenarioBot.Service
 {
     public interface IScenarioService
     {
-        Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer);
-        bool IsOver(string teamId, string scenarioId, string lastPuzzleId);
+        Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer);
+        bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId);
         void LoadAll();
         Task<IList<string>> GetNotCompletedScenarioNames(UserId userId);
     }

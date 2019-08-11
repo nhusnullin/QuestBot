@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
+using Core.Domain;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace CoreBot.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 //IntroStepAsync,
-                ScenarioLaunchStepAsync,
+//                ScenarioLaunchStepAsync,
                 FinalStepAsync,
             }));
 
@@ -58,7 +59,7 @@ namespace CoreBot.Dialogs
 
         private async Task<DialogTurnResult> ScenarioLaunchStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var userId = (string)stepContext.Result;
+            var userId = (UserId)stepContext.Result;
 
             var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
             //var user = await _userService.GetByAsync(stepContext.Context.Activity.ChannelId, stepContext.Context.Activity.From.Id);

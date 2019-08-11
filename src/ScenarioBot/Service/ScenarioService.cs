@@ -28,11 +28,11 @@ namespace ScenarioBot.Service
         public  async Task<IList<string>> GetNotCompletedScenarioNames(UserId teamId)
         {
             var loadedScenarioNames = _store.Select(x => x.Key.ToLower()).ToArray();
-            var completedScenarioNames = await _answerRepository.GetCompletedScenarioNames(teamId);
+            var completedScenarioNames = await _answerRepository.GetCompletedScenarioIds(teamId);
             return loadedScenarioNames.Except(completedScenarioNames).ToList();
         }
 
-        public Puzzle GetNextPuzzle(string teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
+        public Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
             var scenario = _store[scenarioId];
 
@@ -48,7 +48,7 @@ namespace ScenarioBot.Service
             return scenario.Collection.First(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public bool IsOver(string teamId, string scenarioId, string lastPuzzleId)
+        public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)
         {
             var scenario = _store[scenarioId];
             var puzzle = scenario.Collection.First(x => string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));

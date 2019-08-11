@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
 using Core.Domain;
 using Core.Service;
-using CoreBot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using ScenarioBot.Domain;
@@ -47,8 +44,9 @@ namespace ScenarioBot.Dialogs
 
             if (scenarioDetails == null)
             {
-                var userId = stepContext.Context.Activity.From.Id;
-                scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(userId);
+                var id = stepContext.Context.Activity.From.Id;
+                var channelId = stepContext.Context.Activity.ChannelId;
+                scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(new UserId(channelId, id));
 
                 if (scenarioDetails == null)
                 {

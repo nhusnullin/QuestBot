@@ -60,7 +60,7 @@ namespace ScenarioBot.Dialogs
             CancellationToken cancellationToken)
         {
             var scenarioId = ((FoundChoice)stepContext.Result).Value;
-            var teamId = (string)stepContext.Options;
+            var teamId = (UserId)stepContext.Options;
 
             var scenarioDetails = _userService.GetLastScenarioDetailsExceptGameOver(teamId);
 

@@ -74,10 +74,10 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            services.AddSingleton<IAnswerRepository, AnswerRepositoryInMemory>();
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserRepository, UserRepositoryInMemory>();
 //            services.AddSingleton<IReportService, ReportService>();
 
             services.AddSingleton<IList<IBotCommand>>(x =>

@@ -9,7 +9,7 @@ namespace ScenarioBot.Service
     public interface IUserService
     {
         Task SetAnswer(ScenarioDetails scenarioDetails);
-        ScenarioDetails GetLastScenarioDetailsExceptGameOver(string userId);
+        ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId);
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
         Task DeleteUsers();
