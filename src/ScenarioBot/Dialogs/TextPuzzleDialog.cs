@@ -43,8 +43,7 @@ namespace ScenarioBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string)stepContext.Result;
             puzzleDetails.SetAnswer(answer);
-            //var teamMessage = $"�� ������� ����� '{answer}'";
-            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, teamMessage, _conversationReferences, cancellationToken, false);
+
             if (puzzleDetails.IsRight)
             {
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -61,6 +60,10 @@ namespace ScenarioBot.Dialogs
 
             if (puzzleDetails.NumberOfAttemptsLimit.HasValue && puzzleDetails.NumberOfAttemptsLimit.Value > 0)
             {
+                var remainCount = puzzleDetails.NumberOfAttemptsLimit.Value - puzzleDetails.NumberOfAttempts;
+                string message = $"Количество оставшихся попыток {remainCount} ";
+                await stepContext.PromptAsync(nameof(TextPrompt),
+                    new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
                 return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
             }
 

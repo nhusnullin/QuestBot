@@ -52,7 +52,7 @@ namespace ScenarioBot.Dialogs
                     new PromptOptions {Prompt = MessageFactory.Text(text)}, cancellationToken);
             }
 
-            return await stepContext.ContinueDialogAsync(cancellationToken);
+            return await base.AskDialog(stepContext, cancellationToken);
         }
 
         protected override async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,
