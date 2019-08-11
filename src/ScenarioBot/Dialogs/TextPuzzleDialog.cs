@@ -52,7 +52,7 @@ namespace ScenarioBot.Dialogs
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
-                var message = "� ���������, �� ������������ ��� ������� ������ ���������� �����";
+                var message = "К сожалению, количество попыток дать правильный ответ закончилось";
                 //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);

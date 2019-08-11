@@ -87,7 +87,7 @@ namespace Core.Dialogs
 //
 //                    case "cancel":
 //                    case "quit":
-//                        await dialogContext.Context.SendActivityAsync($"Выполнение квеста прервано");
+//                        await dialogContext.Context.SendActivityAsync($"Р’С‹РїРѕР»РЅРµРЅРёРµ РєРІРµСЃС‚Р° РїСЂРµСЂРІР°РЅРѕ");
 //                        return await dialogContext.CancelAllDialogsAsync(cancellationToken);
 //                    //case "2edaab42-9871-4c9b-8039-fd262121f8e0":
 //                    //    await _userService.DeleteUsers();
@@ -205,7 +205,7 @@ namespace Core.Dialogs
 //            {
 //                var input = teams.FirstOrDefault(x => x.Id == id)?.Name ?? id;
 //
-//                string pattern = "[^A-Za-z0-9А-Яа-я]+";
+//                string pattern = "[^A-Za-z0-9Рђ-РЇР°-СЏ]+";
 //                string replacement = " ";
 //
 //                Regex regEx = new Regex(pattern);
@@ -230,7 +230,7 @@ namespace Core.Dialogs
 //
 //            if (!rates.Any())
 //            {
-//                htmlTable.Append($"Еще нет ответов");
+//                htmlTable.Append($"Р•С‰Рµ РЅРµС‚ РѕС‚РІРµС‚РѕРІ");
 //            }
 //
 //            foreach (var pair in rates)
