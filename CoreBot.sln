@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioBot", "src\Scenario
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioBotTestProject", "ScenarioBotTestProject\ScenarioBotTestProject.csproj", "{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioBotTestProject", "src\ScenarioBotTestProject\ScenarioBotTestProject.csproj", "{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
