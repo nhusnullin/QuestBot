@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
 using ScenarioBot.Domain;
@@ -38,6 +39,8 @@ namespace ScenarioBot.Service
         {
             var result = new Dictionary<string, int>();
 
+            
+            
 //            var allAnswers = _storage.GetAllAnswers();
 //
 //            foreach (var answer in allAnswers)

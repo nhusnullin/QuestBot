@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Domain;
+using Microsoft.Recognizers.Text.NumberWithUnit.Dutch;
 
 namespace ScenarioBot.Domain
 {
@@ -18,8 +19,10 @@ namespace ScenarioBot.Domain
             IsLastAnswer = scenarioDetails.LastPuzzleDetails.IsLastPuzzle;
             ActualAnswer = scenarioDetails.LastPuzzleDetails.ActualAnswer;
             Timestamp = DateTime.UtcNow;
+            Weight = scenarioDetails.LastPuzzleDetails.PuzzleWeight;
         }
 
+        public int Weight { get; }
         public UserId RespondentId { get; }
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
