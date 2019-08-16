@@ -12,7 +12,6 @@ namespace ScenarioBot.Service
         
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
-        bool IsScenarioIsOverByTeam(string teamId, string scenarioId);
         IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore);
     }
 }
