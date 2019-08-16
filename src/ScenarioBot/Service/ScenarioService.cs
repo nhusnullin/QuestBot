@@ -61,6 +61,13 @@ namespace ScenarioBot.Service
             }
 
             var puzzle = scenario.Collection.First(x=> string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
+
+            // для корректной работы переключения между сценариями,
+            // когда один начат и не закончан, переключились на другой, снова вернулись 
+            if (string.IsNullOrEmpty(lastAnswer))
+            {
+                return puzzle;
+            }
             
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
