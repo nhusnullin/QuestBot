@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
+using ScenarioBot.Dialogs;
 using ScenarioBot.Service;
 
 namespace ScenarioBot.BotCommands
@@ -29,13 +30,13 @@ namespace ScenarioBot.BotCommands
 
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId, CancellationToken cancellationToken)
         {
-            await dialogContext.Context.SendActivityAsync($"Show all scenarios...", cancellationToken: cancellationToken);
-            return new DialogTurnResult(DialogTurnStatus.Waiting);
+            await dialogContext.CancelAllDialogsAsync(cancellationToken);
+            return await dialogContext.BeginDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
         }
 
         public IList<ComponentDialog> GetComponentDialogs()
         {
-            return new List<ComponentDialog>(0);
+            return new List<ComponentDialog>();
         }
     }
 }

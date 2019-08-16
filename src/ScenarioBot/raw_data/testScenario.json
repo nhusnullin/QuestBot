@@ -93,7 +93,7 @@
             "IsLastPuzzle": true,
             "Weight": 5,
             "Id": "Game over",
-            "Question": "Обучение окончено",
+            "Question": "Обучение окончено, готовы продолжить?",
             "PuzzleType": 0,
             "PosibleBranches": []
         }

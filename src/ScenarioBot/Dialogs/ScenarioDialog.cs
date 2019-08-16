@@ -38,7 +38,7 @@ namespace ScenarioBot.Dialogs
             AddDialog(new TextPuzzleDialog(botCommands));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
-            AddDialog(new ScenarioListDialog(_scenarioService, _userService, _notificationService));
+            AddDialog(new ScenarioListDialog(_scenarioService));
             InitialDialogId = nameof(WaterfallDialog);
             
         }

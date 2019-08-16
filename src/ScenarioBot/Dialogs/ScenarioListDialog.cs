@@ -16,15 +16,10 @@ namespace ScenarioBot.Dialogs
     public class ScenarioListDialog : ComponentDialog
     {
         private readonly IScenarioService _scenarioService;
-        private readonly IUserService _userService;
-        private readonly INotificationService _notificationService;
 
-        public ScenarioListDialog(IScenarioService scenarioService, IUserService userService,
-            INotificationService notificationService) : base(nameof(ScenarioListDialog))
+        public ScenarioListDialog(IScenarioService scenarioService) : base(nameof(ScenarioListDialog))
         {
             _scenarioService = scenarioService;
-            _userService = userService;
-            _notificationService = notificationService ?? throw new System.ArgumentNullException(nameof(notificationService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
 
