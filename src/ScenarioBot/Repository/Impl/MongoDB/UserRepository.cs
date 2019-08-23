@@ -23,9 +23,11 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public async Task InsertOrUpdateAsync(User user)
         {
-            await Users.ReplaceOneAsync(u=>u.UserId == user.UserId,
-                    user, new UpdateOptions { IsUpsert = true })
-                    .ConfigureAwait(false);
+            if (await GetUserByIdAsync(user.UserId).ConfigureAwait(false) != null)
+                await Users.ReplaceOneAsync(u => u.UserId == user.UserId,
+                    user).ConfigureAwait(false);
+            else
+                await Users.InsertOneAsync(user).ConfigureAwait(false);
         }
 
         public async Task DeleteUsers()

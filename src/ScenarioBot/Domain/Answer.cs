@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Domain;
+using MongoDB.Bson;
 using Microsoft.Recognizers.Text.NumberWithUnit.Dutch;
 
 namespace ScenarioBot.Domain
@@ -22,7 +23,8 @@ namespace ScenarioBot.Domain
             Weight = scenarioDetails.LastPuzzleDetails.PuzzleWeight;
         }
 
-        public int Weight { get; }
+        public ObjectId Id { get; set; }
+        public int Weight { get; set; }
         public UserId RespondentId { get; }
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }

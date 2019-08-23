@@ -70,7 +70,7 @@ namespace ScenarioBot.Domain
             return (AnswerTimeNoLessThan - now).Minutes;
         }
 
-        public int PuzzleWeight => _puzzle.Weight;
+        public int PuzzleWeight => _puzzle?.Weight ?? 1;
 
         public string PuzzleId { get; set; }
         public string Question { get; set; }

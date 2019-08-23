@@ -1,9 +1,6 @@
 ﻿using Core.Domain;
 using MongoDB.Driver;
 using ScenarioBot.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScenarioBot.Repository.Impl.MongoDB
 {
@@ -14,14 +11,12 @@ namespace ScenarioBot.Repository.Impl.MongoDB
         protected IMongoCollection<User> Users { get; }
         protected IMongoCollection<Answer> Answers { get; }
 
-
-        /// <inheritdoc />
         public MongoConfiguration(IMongoClient client)
         {
             Client = client;
-           // Database = Client.GetDatabase(ConfigurationManager.AppSettings["mongoDbOrdersDatabase"]);
-           // Users = Database.GetCollection<User>(ConfigurationManager.AppSettings["mongoDbOrdersCollection"]);
-           // Answers = Database.GetCollection<Answer>(ConfigurationManager.AppSettings["mongoDbCountersCollection"]);
+            Database = Client.GetDatabase("questdb");
+            Users = Database.GetCollection<User>("Users");
+            Answers = Database.GetCollection<Answer>("Answers");
         }
     }
 }

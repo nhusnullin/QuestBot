@@ -5,6 +5,7 @@ namespace Core.Domain
 {
     public class UserId : IEquatable<UserId>
     {
+        public UserId() { } //use from mongo
         public UserId(Activity activity)
         {
             var id = activity.From.Id;
