@@ -1,0 +1,187 @@
+{
+    "ScenarioId": "welcometoenterprise",
+  "Collection": [
+    {
+      "IsLastPuzzle": false,
+      "Id": "Root",
+      "Weight": 3,
+      "Question": "Привет! Заказчик прислал новые требования - надо запилить новую фичу. Работать должно под mac os. А код должен быть написан на C#. Какой рантайм выберешь?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "CoreCLR",
+          "GoToId": "RuntimeSelected"
+        },
+        {
+          "Answer": "mono",
+          "GoToId": "RuntimeSelected"
+        }
+      ],
+      "ElseBranch": "IncorrectRuntime"
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "IncorrectRuntime",
+      "Weight": 3,
+      "Question": "Ты не знаешь, какие рантаймы бывают? Рекомендую спросить у ребят из компаний Arcadia и Контур",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "CoreCLR",
+          "GoToId": "RuntimeSelected"
+        },
+        {
+          "Answer": "mono",
+          "GoToId": "RuntimeSelected"
+        }
+      ],
+      "ElseBranch": "IncorrectRuntime"
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "RuntimeSelected",
+      "Weight": 1,
+      "Question": "Ok. Начинаем устанавливать .NET Core на mac os. Какой IDE будешь пользоваться?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "Visual Studio for Mac",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Visual Studio",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "VS",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Visual Studio Code",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "VS Code",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Rider",
+          "GoToId": "Rider"
+        }
+
+      ]
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "Rider",
+      "Weight": 3,
+      "Question": "Однако.. Твоя компания не закупает лицензии на Rider и пользоваться им - незаконно. Что будешь использовать?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "Visual Studio for Mac",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Visual Studio",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "VS",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Visual Studio Code",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "VS Code",
+          "GoToId": "vs"
+        },
+        {
+          "Answer": "Rider",
+          "GoToId": "Rider"
+        }
+      ]
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "vs",
+      "Weight": 3,
+      "Question": "Открываешь студию, добавлешь nuget, а nuget-ведь не грузится, это все корпоративный прокси! В каком файле настраивается прокси для nuget?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "nuget.config",
+          "GoToId": "nugetconfigured"
+        },
+        {
+          "Answer": "Nuget.config",
+          "GoToId": "nugetconfigured"
+        }
+      ],
+      "ElseBranch": "nugetfailed"
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "nugetfailed",
+      "Weight": 0,
+      "Question": "Тебе всегда могут подсказать ребята из компаний Arcadia и Контур. Какой файл?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": "nuget.config",
+          "GoToId": "nugetconfigured"
+        },
+        {
+          "Answer": "Nuget.config",
+          "GoToId": "nugetconfigured"
+        }
+      ],
+      "ElseBranch": "nugetfailed"
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "nugetconfigured",
+      "Weight": 5,
+      "Question": "Ты запилил REST-сервис и хочешь поднять его в Docker. Однако, до сервера Nuget мы все равно достучаться не можем. Какой еще файл будешь править?",
+      "PuzzleType": 0,
+      "PosibleBranches": [
+        {
+          "Answer": ".dockerfile",
+          "GoToId": "dockerfileconfigured"
+        },
+        {
+          "Answer": "dockerfile",
+          "GoToId": "dockerfileconfigured"
+        }
+      ],
+      "ElseBranch": "Game over"
+    },
+    {
+      "IsLastPuzzle": false,
+      "Id": "dockerfileconfigured",
+      "Weight": 3,
+      "Question": "Отлично, запустилось. Пора выводить фичу в прод! Одна проблема - старый TFS как страшный сон... Ожидание 10 минут...",
+      "PuzzleType": 0,
+      "WaitingTime": 10,
+      "ElseBranch": "dotnetru"
+    },
+    {
+      "IsLastPuzzle": true,
+      "Id": "win",
+      "Weight": 13,
+      "Question": "Тадададам! Ты прошел путь корпоративных прокси! Теперь ты можешь работать в кровавом... Ну ты понял :) Конец!",
+      "PuzzleType": 0,
+      "PosibleBranches": []
+    },
+    {
+      "IsLastPuzzle": true,
+      "Id": "Game over",
+      "Weight": 0,
+      "Question": "Не судьба тебе работать в больших компаниях...",
+      "PuzzleType": 0,
+      "PosibleBranches": []
+    }
+  ]
+}

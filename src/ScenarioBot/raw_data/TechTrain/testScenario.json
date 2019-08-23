@@ -79,11 +79,11 @@
             "NumberOfAttemptsLimit":3,
             "PosibleBranches": [
               {
-                "Answer": "DotNext",
+                "Answer": "TechTrain",
                 "GoToId": "Game over"
               },
               {
-                "Answer": "Dot Next",
+                "Answer": "Tech Train",
                 "GoToId": "Game over"
               }
             ],

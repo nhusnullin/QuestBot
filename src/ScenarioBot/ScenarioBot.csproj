@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="raw_data\WelcomeToEnterprise.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Dialogs\" />
     <Folder Include="Domain\" />
+    <Folder Include="NewFolder\" />
     <Folder Include="Service\" />
   </ItemGroup>
 
@@ -40,15 +45,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="raw_data\nukescenario.json">
+    <Content Include="raw_data\TechTrain\WelcomeToEnterprise.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="raw_data\DotNext\nukescenario.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="raw_data\testScenario.json">
+    <Content Include="raw_data\TechTrain\testScenario.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="raw_data\WelcomeToHellScenario.json">
+    <Content Include="raw_data\DotNext\WelcomeToHellScenario.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
