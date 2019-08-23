@@ -18,11 +18,13 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using ScenarioBot;
 using ScenarioBot.BotCommands;
 using ScenarioBot.Dialogs;
 using ScenarioBot.Repository;
 using ScenarioBot.Repository.Impl.InMemory;
+using ScenarioBot.Repository.Impl.MongoDB;
 using ScenarioBot.Service;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using IStorage = Microsoft.Bot.Builder.IStorage;
@@ -74,11 +76,13 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            services.AddSingleton<IAnswerRepository, AnswerRepositoryInMemory>();
+            services.AddSingleton<IAnswerRepository, AnswerRepository>();
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserRepository, UserRepositoryInMemory>();
-//            services.AddSingleton<IReportService, ReportService>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+
+            services.AddSingleton<IMongoClient, MongoClient>(
+                client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
 
             services.AddSingleton<HelpBotCommand, HelpBotCommand>();
             services.AddSingleton<ScenarioBotCommand, ScenarioBotCommand>();
