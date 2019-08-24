@@ -25,7 +25,7 @@ namespace ScenarioBot.Domain
 
         public ObjectId Id { get; set; }
         public int Weight { get; set; }
-        public UserId RespondentId { get; }
+        public UserId RespondentId { get; set; }
         public string ScenarioId { get; set; }
         public string PuzzleId { get; set; }
         public bool IsLastAnswer { get; set; }
