@@ -29,7 +29,7 @@ namespace Core.Domain
         }
 
         
-        public UserId UserId { get; private set; }
+        public UserId UserId { get; set; }
         public string Id => UserId.Id;
         public string ChannelId => UserId.ChannelId;
         public string Name { get; set; }

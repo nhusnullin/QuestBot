@@ -41,7 +41,7 @@
       "IsLastPuzzle": false,
       "Id": "RuntimeSelected",
       "Weight": 1,
-      "Question": "Ok. Начинаем устанавливать .NET Core на mac os. Какой IDE будешь пользоваться?",
+      "Question": "Ok. Начинаем устанавливать твой рантайм на mac os. Кстати, какой IDE будешь пользоваться?",
       "PuzzleType": 0,
       "PosibleBranches": [
         {
@@ -68,7 +68,6 @@
           "Answer": "Rider",
           "GoToId": "Rider"
         }
-
       ]
     },
     {

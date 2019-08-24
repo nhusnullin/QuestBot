@@ -71,7 +71,7 @@ namespace ScenarioBot.Service
             
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
-            return scenario.Collection.First(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
+            return scenario.Collection.FirstOrDefault(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase)) ?? puzzle;
         }
 
         public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)
