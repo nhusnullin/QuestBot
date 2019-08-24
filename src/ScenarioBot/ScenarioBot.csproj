@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="raw_data\TechTrain\Nuke.json" />
+    <None Remove="raw_data\TechTrain\NukeScenario.json" />
     <None Remove="raw_data\WelcomeToEnterprise.json" />
   </ItemGroup>
 
@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="raw_data\TechTrain\Nuke.json">
+    <Content Include="raw_data\TechTrain\NukeScenario.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
