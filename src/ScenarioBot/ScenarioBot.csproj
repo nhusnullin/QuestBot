@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="raw_data\TechTrain\NukeScenario.json" />
+    <None Remove="raw_data\WelcomeToEnterprise.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+    <Folder Include="Domain\" />
+    <Folder Include="NewFolder\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs">
+      <HintPath>..\..\..\Users\nhusnullin\.nuget\packages\microsoft.bot.builder.dialogs\4.4.3\lib\netstandard2.0\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.hosting.abstractions\2.1.0\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="BotCommands\ScenarioBotCommand.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.4.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Shields.GraphViz" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="raw_data\TechTrain\NukeScenario.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="raw_data\TechTrain\WelcomeToEnterprise.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="raw_data\DotNext\nukescenario.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="raw_data\TechTrain\testScenario.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="raw_data\DotNext\WelcomeToHellScenario.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

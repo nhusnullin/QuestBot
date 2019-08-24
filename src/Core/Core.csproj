@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Bot.Builder.Dialogs">
+      <HintPath>..\..\..\Users\nhusnullin\.nuget\packages\microsoft.bot.builder.dialogs\4.4.3\lib\netstandard2.0\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bot.Schema, Version=4.4.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\Users\nhusnullin\.nuget\packages\microsoft.bot.schema\4.4.4\lib\netstandard2.0\Microsoft.Bot.Schema.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="BotCommands\IBotCommand.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Domain\UserId.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.4.4" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.4.3" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,16 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot", "src\CoreBot.csproj", "{0793F52D-82C5-4C6E-967B-606676CF8B17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBot", "src\CoreBot\CoreBot.csproj", "{0793F52D-82C5-4C6E-967B-606676CF8B17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTest\UnitTestProject.csproj", "{09D27442-E266-4FFF-80AE-0C7FA3FA06A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestProject", "src\UnitTest\UnitTestProject.csproj", "{09D27442-E266-4FFF-80AE-0C7FA3FA06A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioBot", "src\ScenarioBot\ScenarioBot.csproj", "{605EB798-1576-4EAD-92E8-013AFB43840F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioBotTestProject", "src\ScenarioBotTestProject\ScenarioBotTestProject.csproj", "{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +26,18 @@ Global
 		{09D27442-E266-4FFF-80AE-0C7FA3FA06A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D27442-E266-4FFF-80AE-0C7FA3FA06A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D27442-E266-4FFF-80AE-0C7FA3FA06A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605EB798-1576-4EAD-92E8-013AFB43840F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605EB798-1576-4EAD-92E8-013AFB43840F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605EB798-1576-4EAD-92E8-013AFB43840F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605EB798-1576-4EAD-92E8-013AFB43840F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BA2610-EAE3-4417-8BC7-3E133AF0CEE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652EACF0-0D0C-4F92-BEED-121B11F0A4E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
