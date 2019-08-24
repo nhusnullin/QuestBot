@@ -18,16 +18,6 @@ namespace ScenarioBot.Service
             _answerRepository = answerRepository;
         }
 
-        
-
-        public bool IsScenarioIsOverByTeam(string teamId, string scenarioId)
-        {
-            return false;
-//            return _storage.GetAnswersByTeamId(teamId,
-//                answer => string.Equals(answer.ScenarioId, scenarioId, StringComparison.CurrentCultureIgnoreCase) &&
-//                          answer.IsLastAnswer).Any();
-        }
-
         public async Task<User> GetByAsync(string channelId, string userId)
         {
             return await _userRepository.GetUserByIdAsync(new UserId(channelId, userId));
