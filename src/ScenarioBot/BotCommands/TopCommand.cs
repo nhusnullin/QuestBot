@@ -35,9 +35,9 @@ namespace ScenarioBot.BotCommands
             var userWeights = await _userService.CalcUserWeightsAsync();
 
             var sb = new StringBuilder();
-            sb.AppendLine("Top 10");
+            sb.Append("Top 10 \r\n");
             
-            foreach (var userWeight in userWeights) sb.AppendLine($"{userWeight.Key} - {userWeight.Value}");
+            foreach (var userWeight in userWeights) sb.Append($"{userWeight.Key} - {userWeight.Value} \r\n");
 
             await dialogContext.Context.SendActivityAsync(sb.ToString(), cancellationToken: cancellationToken);
 
