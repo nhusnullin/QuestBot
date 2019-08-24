@@ -16,7 +16,12 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public async Task<IList<string>> GetCompletedScenarioIds(UserId userId)
         {
-            return Answers.Find(x => x.IsLastAnswer && x.RespondentId == userId).ToList()
+            if (userId == null)
+            {
+                return new List<string>();
+            }
+            
+            return Answers.Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id).ToList()
                 .GroupBy(x => x.ScenarioId)
                 .SelectMany(x => x.ToList())
                 .Select(x => x.ScenarioId)
@@ -37,12 +42,12 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                     x.ScenarioId,
                     x.RespondentId
                 })
-                .Where(x=>x.RespondentId != null)
+                .Where(x=>x.RespondentId.Id != null)
                 .Distinct()
-                .GroupBy(x => x.RespondentId)
+                .GroupBy(x => x.RespondentId.Id)
                 .Select(ag => new
                 {
-                    UserId = ag.Key.Id,
+                    UserId = new UserId("", ag.Key), // todo тут channel надо ставить
                     Weight = ag.Sum(x => x.Weight)
                 })
                 .OrderByDescending(x => x.Weight)
@@ -54,10 +59,15 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
+            if (userId == null)
+            {
+                return null;
+            }
+            
             var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
 
             return Answers
-                .Find(a => !a.IsLastAnswer && a.ScenarioId == scenarioId && a.RespondentId == userId &&
+                .Find(a => !a.IsLastAnswer && a.ScenarioId == scenarioId && a.RespondentId.Id == userId.Id &&
                            !completedScenarioIds.Contains(a.ScenarioId)) // не последний ответ сценария
                 // из списка не законченных сценариев
                 .SortByDescending(x => x.Timestamp)

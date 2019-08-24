@@ -43,7 +43,12 @@ namespace ScenarioBot.Service
             int index = 0;
             foreach (var answerWeight in answerWeights)
             {
-                User user = await _userRepository.GetUserByIdAsync(answerWeight.UserId);
+                User user = null;
+                if (answerWeight.UserId != null)
+                {
+                    user = await _userRepository.GetUserByIdAsync(answerWeight.UserId);
+                }
+
                 result[user?.Name ?? $"unknown {++index}"] = answerWeight.Weight;
             }
 

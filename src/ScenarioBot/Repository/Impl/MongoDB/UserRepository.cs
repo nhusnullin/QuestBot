@@ -13,7 +13,12 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public async Task<User> GetUserByIdAsync(UserId userId)
         {
-            var user = await Users.Find(x => x.UserId == userId)
+            if (userId == null)
+            {
+                return null;
+            }
+            
+            var user = await Users.Find(x => x.UserId.Id == userId.Id )
                 .SingleOrDefaultAsync()
                 .ConfigureAwait(false);
             return user;
@@ -21,8 +26,9 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public async Task InsertOrUpdateAsync(User user)
         {
+            // todo upsert
             if (await GetUserByIdAsync(user.UserId).ConfigureAwait(false) != null)
-                await Users.ReplaceOneAsync(u => u.UserId == user.UserId,
+                await Users.ReplaceOneAsync(u => u.UserId.Id == user.UserId.Id,
                     user).ConfigureAwait(false);
             else
                 await Users.InsertOneAsync(user).ConfigureAwait(false);

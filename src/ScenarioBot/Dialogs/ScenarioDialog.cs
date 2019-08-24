@@ -49,10 +49,10 @@ namespace ScenarioBot.Dialogs
             _userService.InsertOrMergeAsync(new User(stepContext.Context.Activity));
 #pragma warning restore 4014
 
+            var userId = new UserId(stepContext.Context.Activity);
+            
             if (scenarioDetails == null)
             {
-                var userId = new UserId(stepContext.Context.Activity);
-
                 // либо первый раз запускаем, либо надо дать пользователю шанс выбрать сценарий
                 if (scenarioDetails == null)
                     return await stepContext.ReplaceDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
@@ -85,6 +85,10 @@ namespace ScenarioBot.Dialogs
             var scenarioDetails = (ScenarioDetails) stepContext.Options;
             var puzzleDetails = (PuzzleDetails) stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
+            
+            // todo сейчас это затычка, но не поянтно почему userId пропадает тут
+            scenarioDetails.UserId = new UserId(stepContext.Context.Activity);
+            
             await _userService.SetAnswer(scenarioDetails);
 
             if (!_scenarioService.IsOver(scenarioDetails.UserId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
