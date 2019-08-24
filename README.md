@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_apis/build/status/awesomedotnextquestbot%20-%201%20-%20CI)](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_build/latest?definitionId=2)
+
 # SensativeInformation
 your new bot. You will find it at t.me/dotnextquestbot
 Use this token to access the HTTP API:
