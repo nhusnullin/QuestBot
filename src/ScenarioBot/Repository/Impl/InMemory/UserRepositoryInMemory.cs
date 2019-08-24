@@ -7,7 +7,6 @@ namespace ScenarioBot.Repository.Impl.InMemory
 {
     public class UserRepositoryInMemory : IUserRepository
     {
-
         private readonly IDictionary<UserId, User> _store;
 
         public UserRepositoryInMemory()

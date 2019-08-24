@@ -31,7 +31,8 @@ namespace CoreBot.Controllers
             try
             {
                 await _adapter.ProcessAsync(Request, Response, _bot);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message} -- {ex.StackTrace}");
             }

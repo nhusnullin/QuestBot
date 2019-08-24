@@ -50,7 +50,8 @@ function updateSettingsFile(appSettingPath, envPath, settings) {
     if (isNodeJSProject()) {
         const keys = Object.keys(settings);
         const lines = keys.reduce(function(cur, key) {
-            return [...cur, key + '=' + settings[key]];
+            return [...cur, key + '=' + settings[key];
+        ]
         }, []);
         fs.writeFileSync(envPath, lines.join('\n'), {encoding: 'utf-8'});
     } else {

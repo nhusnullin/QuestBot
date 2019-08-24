@@ -11,25 +11,26 @@
 </p>*@
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                Team
-            </th>
-            <th>Score</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Team
+        </th>
+        <th>Score</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TeamName)
             </td>
             <td>
-            @{
-                var sum = item.ScenarioScores.Sum(i => i.Value);
-             }
-             @Html.DisplayFor(modelItem => sum)
+                @{
+                    var sum = item.ScenarioScores.Sum(i => i.Value);
+                }
+                @Html.DisplayFor(modelItem => sum)
             </td>
             @*<td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
@@ -37,6 +38,6 @@
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>*@
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -13,8 +13,8 @@ namespace ScenarioBot.Service
 {
     public class ScenarioService : IScenarioService
     {
-        private readonly ILogger<ScenarioService> _logger;
         private readonly IAnswerRepository _answerRepository;
+        private readonly ILogger<ScenarioService> _logger;
         private readonly IDictionary<string, Scenario> _store;
 
         public ScenarioService(ILogger<ScenarioService> logger,
@@ -25,60 +25,65 @@ namespace ScenarioBot.Service
             _store = new Dictionary<string, Scenario>(StringComparer.CurrentCultureIgnoreCase);
         }
 
-        public  async Task<IList<string>> GetNotCompletedScenarioNames(UserId teamId)
+        public async Task<IList<string>> GetNotCompletedScenarioNames(UserId teamId)
         {
             var loadedScenarioNames = _store.Select(x => x.Key.ToLower()).ToArray();
             var completedScenarioNames = await _answerRepository.GetCompletedScenarioIds(teamId);
             return loadedScenarioNames.Except(completedScenarioNames).ToList();
         }
-        
+
         public ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId)
         {
             var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario(userId, scenarioId);
             if (answer == null)
-            {
                 // значит у пользователя нет начатого сценария
                 return null;
-            }
 
             var puzzle = GetNextPuzzle(userId, answer.ScenarioId, answer.PuzzleId, answer.ActualAnswer);
-            return new ScenarioDetails()
+            return new ScenarioDetails
             {
                 ScenarioId = answer.ScenarioId,
                 UserId = userId,
                 LastPuzzleDetails = new PuzzleDetails(puzzle)
             };
         }
-        
+
 
         public Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
             var scenario = _store[scenarioId];
 
             if (string.IsNullOrEmpty(lastPuzzleId))
-            {
-                return scenario.Collection.First(x => string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
-            }
+                return scenario.Collection.First(x =>
+                    string.Equals(x.Id, Puzzle.RootId, StringComparison.CurrentCultureIgnoreCase));
 
-            var puzzle = scenario.Collection.First(x=> string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
+            var puzzle = scenario.Collection.First(x =>
+                string.Equals(x.Id, lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
 
             // для корректной работы переключения между сценариями,
             // когда один начат и не закончан, переключились на другой, снова вернулись 
-            if (string.IsNullOrEmpty(lastAnswer))
-            {
-                return puzzle;
-            }
-            
+            if (string.IsNullOrEmpty(lastAnswer)) return puzzle;
+
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
-            return scenario.Collection.FirstOrDefault(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase)) ?? puzzle;
+            return scenario.Collection.FirstOrDefault(x =>
+                       string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase)) ?? puzzle;
         }
 
         public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)
         {
             var scenario = _store[scenarioId];
-            var puzzle = scenario.Collection.First(x => string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
+            var puzzle = scenario.Collection.First(x =>
+                string.Equals(x.Id, lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             return puzzle.IsLastPuzzle;
+        }
+
+        public void LoadAll()
+        {
+            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/TechTrain"));
+            dr.GetFiles("*.json").Select(x => Load(x.FullName))
+                .Where(x => x != null)
+                .ToList();
         }
 
         private Scenario Load(string path)
@@ -97,14 +102,6 @@ namespace ScenarioBot.Service
             }
 
             return null;
-        }
-
-        public void LoadAll()
-        {
-            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/TechTrain"));
-            dr.GetFiles("*.json").Select(x => Load(x.FullName))
-                .Where(x => x != null)
-                .ToList();
         }
     }
 }

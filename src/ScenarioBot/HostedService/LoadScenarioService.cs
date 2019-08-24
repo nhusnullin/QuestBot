@@ -24,5 +24,4 @@ namespace ScenarioBot
             return Task.CompletedTask;
         }
     }
-
 }

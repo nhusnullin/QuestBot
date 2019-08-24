@@ -7,7 +7,8 @@ namespace CoreBot
 {
     public static class DialogExtensions
     {
-        public static async Task Run(this Dialog dialog, ITurnContext turnContext, IStatePropertyAccessor<DialogState> accessor, CancellationToken cancellationToken)
+        public static async Task Run(this Dialog dialog, ITurnContext turnContext,
+            IStatePropertyAccessor<DialogState> accessor, CancellationToken cancellationToken)
         {
             var dialogSet = new DialogSet(accessor);
             dialogSet.Add(dialog);
@@ -15,9 +16,7 @@ namespace CoreBot
             var dialogContext = await dialogSet.CreateContextAsync(turnContext, cancellationToken);
             var results = await dialogContext.ContinueDialogAsync(cancellationToken);
             if (results.Status == DialogTurnStatus.Empty)
-            {
                 await dialogContext.BeginDialogAsync(dialog.Id, null, cancellationToken);
-            }
         }
     }
 }

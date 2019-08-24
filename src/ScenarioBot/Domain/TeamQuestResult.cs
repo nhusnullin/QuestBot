@@ -10,7 +10,8 @@ namespace ScenarioBot.Domain
             TeamName = teamName ?? throw new ArgumentNullException(nameof(teamName));
             ScenarioScores = scenarioScores ?? throw new ArgumentNullException(nameof(scenarioScores));
         }
-        public string TeamName {get;}
+
+        public string TeamName { get; }
         public IDictionary<string, decimal> ScenarioScores { get; }
     }
 }

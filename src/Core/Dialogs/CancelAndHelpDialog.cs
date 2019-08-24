@@ -13,63 +13,52 @@ namespace Core.Dialogs
     {
         private readonly IList<IBotCommand> _botCommands;
 
-        public CancelAndHelpDialog(string id, IList<IBotCommand> botCommands): base(id)
+        public CancelAndHelpDialog(string id, IList<IBotCommand> botCommands) : base(id)
         {
             _botCommands = botCommands;
         }
 
-        protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options, CancellationToken cancellationToken)
+        protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options,
+            CancellationToken cancellationToken)
         {
             var result = await InterruptAsync(innerDc, cancellationToken);
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             return await base.OnBeginDialogAsync(innerDc, options, cancellationToken);
         }
 
-        protected override async Task<DialogTurnResult> OnContinueDialogAsync(DialogContext innerDc, CancellationToken cancellationToken)
+        protected override async Task<DialogTurnResult> OnContinueDialogAsync(DialogContext innerDc,
+            CancellationToken cancellationToken)
         {
             var result = await InterruptAsync(innerDc, cancellationToken);
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             return await base.OnContinueDialogAsync(innerDc, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> InterruptAsync(DialogContext dialogContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> InterruptAsync(DialogContext dialogContext,
+            CancellationToken cancellationToken)
         {
-            if (dialogContext.Context.Activity.Type != ActivityTypes.Message)
-            {
-                return null;
-            }
-            
+            if (dialogContext.Context.Activity.Type != ActivityTypes.Message) return null;
+
             var text = dialogContext.Context.Activity.Text.ToLowerInvariant().Replace("/", "");
             var userId = new UserId(dialogContext.Context.Activity.ChannelId, dialogContext.Context.Activity.From.Id);
 
             var cmd = _botCommands.FirstOrDefault(x => x.IsApplicable(text, userId));
 
-            if (cmd == null)
-            {
-                return null;
-            }
-            
+            if (cmd == null) return null;
+
             if (!cmd.Validate(userId))
             {
-                await dialogContext.Context.SendActivityAsync($"Command is not allowed", cancellationToken: cancellationToken);
+                await dialogContext.Context.SendActivityAsync("Command is not allowed",
+                    cancellationToken: cancellationToken);
                 return null;
             }
 
-            foreach (var componentDialog in cmd.GetComponentDialogs())
-            {
-                AddDialog(componentDialog);
-            }
-            
+            foreach (var componentDialog in cmd.GetComponentDialogs()) AddDialog(componentDialog);
+
             return await cmd.ExecuteAsync(dialogContext, userId, cancellationToken);
-            
+
 //            try
 //            {
 //                switch (text)
@@ -149,6 +138,7 @@ namespace Core.Dialogs
 //
 //            var v = 1 + 1;
         }
+
 //
 //        public async Task SendTeamMessage(
 //            INotificationMessanger messenger,

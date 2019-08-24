@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
@@ -19,7 +18,7 @@ namespace CoreBot
                 .WriteTo.Console()
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
-            
+
             try
             {
                 Log.Information("Starting web host");
@@ -35,14 +34,16 @@ namespace CoreBot
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging((logging) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
                 {
                     logging.AddDebug();
                     logging.AddConsole();
                 })
                 .UseStartup<Startup>()
                 .UseSerilog();
+        }
     }
 }

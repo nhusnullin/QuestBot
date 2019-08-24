@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
@@ -11,17 +13,15 @@ namespace ScenarioBot.BotCommands
     public class TopCommand : IBotCommand
     {
         private readonly IUserService _userService;
-        private readonly ScenarioService _scenarioService;
 
-        public TopCommand(IUserService userService, ScenarioService scenarioService)
+        public TopCommand(IUserService userService)
         {
             _userService = userService;
-            _scenarioService = scenarioService;
         }
-        
+
         public bool IsApplicable(string message, UserId userId)
         {
-            return true;
+            return message.Equals("top", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public bool Validate(UserId userId)
@@ -29,11 +29,18 @@ namespace ScenarioBot.BotCommands
             return true;
         }
 
-        public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId, CancellationToken cancellationToken)
+        public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId,
+            CancellationToken cancellationToken)
         {
-            await dialogContext.Context.SendActivityAsync($"Top 10", cancellationToken: cancellationToken);
+            var userWeights = await _userService.CalcUserWeightsAsync();
 
+            var sb = new StringBuilder();
+            sb.AppendLine("Top 10");
             
+            foreach (var userWeight in userWeights) sb.AppendLine($"{userWeight.Key} - {userWeight.Value}");
+
+            await dialogContext.Context.SendActivityAsync(sb.ToString(), cancellationToken: cancellationToken);
+
             return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 

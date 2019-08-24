@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,8 +16,8 @@ namespace ScenarioBot.Dialogs
         private readonly INotificationService _notificationService;
 
         public WaitTextPuzzleDialog(IList<IBotCommand> botCommands,
-            INotificationService notificationService) 
-            : base(botCommands, nameof(WaitTextPuzzleDialog) )
+            INotificationService notificationService)
+            : base(botCommands, nameof(WaitTextPuzzleDialog))
         {
             _notificationService = notificationService;
         }
@@ -34,7 +33,7 @@ namespace ScenarioBot.Dialogs
                 puzzleDetails.SetQuestionAskedAt(DateTime.UtcNow);
 
                 // ставим себе напоминалку что надо сообщить команде о возможном продолжении квеста
-                await _notificationService.SendMessageInBackground(new BackgroundNotifyMsg()
+                await _notificationService.SendMessageInBackground(new BackgroundNotifyMsg
                 {
                     //TeamId = puzzleDetails.TeamId,
                     Msg = "Штрафное время закончилось, можно продолжить квест. Успехов и удачи! :)",
@@ -61,9 +60,8 @@ namespace ScenarioBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
 
             if (puzzleDetails.GetRemainMinutesToAnswer(DateTime.UtcNow) > 0)
-            {
-                return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
-            }
+                return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails,
+                    cancellationToken);
 
             return await base.CheckDialog(stepContext, cancellationToken);
         }

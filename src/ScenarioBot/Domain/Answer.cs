@@ -1,7 +1,6 @@
 ﻿using System;
 using Core.Domain;
 using MongoDB.Bson;
-using Microsoft.Recognizers.Text.NumberWithUnit.Dutch;
 
 namespace ScenarioBot.Domain
 {
@@ -9,7 +8,6 @@ namespace ScenarioBot.Domain
     {
         public Answer()
         {
-
         }
 
         public Answer(ScenarioDetails scenarioDetails)

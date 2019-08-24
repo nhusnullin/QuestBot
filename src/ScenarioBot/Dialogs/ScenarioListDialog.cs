@@ -1,8 +1,6 @@
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Domain;
-using Core.Service;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
@@ -21,7 +19,7 @@ namespace ScenarioBot.Dialogs
         {
             _scenarioService = scenarioService;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
-            AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) { Style = ListStyle.SuggestedAction });
+            AddDialog(new ChoicePrompt(nameof(ChoicePrompt)) {Style = ListStyle.SuggestedAction});
 
             var waterfallStep = new WaterfallStep[]
             {
@@ -36,14 +34,14 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> ShowChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var userId = (UserId)stepContext.Options;
+            var userId = (UserId) stepContext.Options;
 
             return await stepContext.PromptAsync(nameof(ChoicePrompt),
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
                     RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
-                    Choices = ChoiceFactory.ToChoices(await _scenarioService.GetNotCompletedScenarioNames(userId)),
+                    Choices = ChoiceFactory.ToChoices(await _scenarioService.GetNotCompletedScenarioNames(userId))
                 },
                 cancellationToken);
         }
@@ -51,19 +49,17 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> AnswerToChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var scenarioId = ((FoundChoice)stepContext.Result).Value;
-            var teamId = (UserId)stepContext.Options;
+            var scenarioId = ((FoundChoice) stepContext.Result).Value;
+            var teamId = (UserId) stepContext.Options;
 
             var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, scenarioId);
 
             if (scenarioDetails == null)
-            {
-                scenarioDetails = new ScenarioDetails()
+                scenarioDetails = new ScenarioDetails
                 {
                     ScenarioId = scenarioId,
                     UserId = teamId
                 };
-            }
 
             //var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, null);
             var replyMessage = $"Выбранный сценарий: {scenarioId}";
@@ -71,11 +67,10 @@ namespace ScenarioBot.Dialogs
             GenerateHideKeybordMarkupForTelegram(reply);
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, 
-                //replyMessage, _conversationReferences, cancellationToken, false);
+            //replyMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
-        
 
         private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
         {
@@ -90,11 +85,10 @@ namespace ScenarioBot.Dialogs
             var channelData = new
             {
                 method = "sendMessage",
-                parameters = replyMarkup,
+                parameters = replyMarkup
             };
 
             reply.ChannelData = JObject.FromObject(channelData);
         }
     }
-
 }

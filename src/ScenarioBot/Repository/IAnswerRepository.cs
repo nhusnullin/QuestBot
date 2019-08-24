@@ -11,5 +11,6 @@ namespace ScenarioBot.Repository
 
         Task AddAnswer(Answer answer);
         Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId);
+        dynamic CalcAnswerWeights(int take);
     }
 }

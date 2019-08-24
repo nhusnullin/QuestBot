@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
-using CoreBot;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using ScenarioBot.Domain;
@@ -14,7 +13,7 @@ namespace ScenarioBot.Dialogs
     {
         public TextPuzzleDialog(IList<IBotCommand> botCommands,
             string id = "TextPuzzleDialog"
-            ) 
+        )
             : base(id, botCommands)
         {
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -32,39 +31,38 @@ namespace ScenarioBot.Dialogs
         protected virtual async Task<DialogTurnResult> AskDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var puzzleDetails = (PuzzleDetails)stepContext.Options;
+            var puzzleDetails = (PuzzleDetails) stepContext.Options;
             //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(puzzleDetails.Question) }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(TextPrompt),
+                new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
         }
 
         protected virtual async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
-            var answer = (string)stepContext.Result;
+            var answer = (string) stepContext.Result;
             puzzleDetails.SetAnswer(answer);
 
-            if (puzzleDetails.IsRight)
-            {
-                return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
-            }
+            if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
                 var message = "К сожалению, количество попыток дать правильный ответ закончилось";
                 //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
+                    new PromptOptions {Prompt = MessageFactory.Text(message)}, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
             }
 
             if (puzzleDetails.NumberOfAttemptsLimit.HasValue && puzzleDetails.NumberOfAttemptsLimit.Value > 0)
             {
                 var remainCount = puzzleDetails.NumberOfAttemptsLimit.Value - puzzleDetails.NumberOfAttempts;
-                string message = $"Количество оставшихся попыток {remainCount} ";
+                var message = $"Количество оставшихся попыток {remainCount} ";
                 await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text(message) }, cancellationToken);
-                return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
+                    new PromptOptions {Prompt = MessageFactory.Text(message)}, cancellationToken);
+                return await stepContext.ReplaceDialogAsync(puzzleDetails.PuzzleType.ToString(), puzzleDetails,
+                    cancellationToken);
             }
 
             return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);

@@ -10,6 +10,6 @@ namespace ScenarioBot.Service
         Task SetAnswer(ScenarioDetails scenarioDetails);
         Task<User> GetByAsync(string channelId, string userId);
         Task InsertOrMergeAsync(User user);
-        IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore);
+        Task<IDictionary<string, int>> CalcUserWeightsAsync();
     }
 }

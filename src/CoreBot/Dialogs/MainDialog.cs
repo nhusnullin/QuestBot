@@ -3,12 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
-using Core.Domain;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Extensions.Logging;
-using ScenarioBot.Dialogs;
-using ScenarioBot.Domain;
 using ScenarioBot.Service;
 
 namespace CoreBot.Dialogs
@@ -19,7 +16,7 @@ namespace CoreBot.Dialogs
         private readonly IUserService _userService;
 
         public MainDialog(
-            ILogger<MainDialog> logger, 
+            ILogger<MainDialog> logger,
             IList<IBotCommand> botCommands,
             IUserService userService)
             : base(nameof(MainDialog), botCommands)
@@ -33,7 +30,7 @@ namespace CoreBot.Dialogs
             {
                 //IntroStepAsync,
 //                ScenarioLaunchStepAsync,
-                FinalStepAsync,
+                FinalStepAsync
             }));
 
             InitialDialogId = nameof(WaterfallDialog);
@@ -42,7 +39,6 @@ namespace CoreBot.Dialogs
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            
             // это на тот случай что человек уже себе поставил бота, но пользователя нет у нас в БД
 //            await _userService.GetOrCreateUser(stepContext.Context);
             return await stepContext.NextAsync(null, cancellationToken);

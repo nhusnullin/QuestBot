@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace ScenarioBotTestProject
@@ -8,7 +7,6 @@ namespace ScenarioBotTestProject
         [Fact]
         public void Test1()
         {
-            
         }
     }
 }

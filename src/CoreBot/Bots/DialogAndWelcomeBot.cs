@@ -1,14 +1,10 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Domain;
-using CoreBot.Properties;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
-using ScenarioBot.Service;
 
 namespace CoreBot.Bots
 {
@@ -20,14 +16,15 @@ namespace CoreBot.Bots
             T dialog, ILogger<DialogBot<T>> logger
 //            IUserService userService,
 //            ConcurrentDictionary<UserId, ConversationReference> conversationReferences
-            )
+        )
             : base(conversationState, userState, dialog, logger)
         {
 //            _userService = userService;
 //            _conversationReferences = conversationReferences;
         }
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded,
+            ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
             //await TurnContextExtensions.SendMessageAsync(turnContext, Resources.WelcomeMessage, cancellationToken);
             //await RunDialog(turnContext, cancellationToken);

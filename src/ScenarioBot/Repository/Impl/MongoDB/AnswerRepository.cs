@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
-using Microsoft.Recognizers.Text.Number;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using ScenarioBot.Domain;
@@ -29,16 +28,15 @@ namespace ScenarioBot.Repository.Impl.MongoDB
             await Answers.InsertOneAsync(answer).ConfigureAwait(false);
         }
 
-        public void CalcAnswerWeights(int take)
+        public dynamic CalcAnswerWeights(int take)
         {
-
             var calculatedAnswers = Answers.AsQueryable().Select(x => new
-            {
-                x.Weight,
-                x.PuzzleId,
-                x.ScenarioId,
-                x.RespondentId
-            })
+                {
+                    x.Weight,
+                    x.PuzzleId,
+                    x.ScenarioId,
+                    x.RespondentId
+                })
                 .Distinct()
                 .GroupBy(x => x.RespondentId)
                 .Select(ag => new
@@ -49,15 +47,19 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 .OrderByDescending(x => x.Weight)
                 .Take(take)
                 .ToList();
+
+            return calculatedAnswers;
         }
 
         public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
             var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
 
-            return Answers.Find(a=>!a.IsLastAnswer  && a.ScenarioId == scenarioId && a.RespondentId == userId && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
-                 // из списка не законченных сценариев
-                 .SortByDescending(x => x.Timestamp)
+            return Answers
+                .Find(a => !a.IsLastAnswer && a.ScenarioId == scenarioId && a.RespondentId == userId &&
+                           !completedScenarioIds.Contains(a.ScenarioId)) // не последний ответ сценария
+                // из списка не законченных сценариев
+                .SortByDescending(x => x.Timestamp)
                 .FirstOrDefault();
         }
     }

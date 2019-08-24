@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Domain;
-using CoreBot;
 using ScenarioBot.Domain;
 
 namespace ScenarioBot.Service

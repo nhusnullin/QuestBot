@@ -8,7 +8,8 @@ namespace CoreBot
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
-        public AdapterWithErrorHandler(ICredentialProvider credentialProvider, IChannelProvider channelProvider, ILogger<BotFrameworkHttpAdapter> logger, ConversationState conversationState = null)
+        public AdapterWithErrorHandler(ICredentialProvider credentialProvider, IChannelProvider channelProvider,
+            ILogger<BotFrameworkHttpAdapter> logger, ConversationState conversationState = null)
             : base(credentialProvider, channelProvider, logger)
         {
             OnTurnError = async (turnContext, exception) =>
@@ -19,7 +20,6 @@ namespace CoreBot
                 await turnContext.SendActivityAsync($"Sorry, it looks like something went wrong. {exception.Message} ");
 
                 if (conversationState != null)
-                {
                     try
                     {
                         // Delete the conversationState for the current conversation to prevent the
@@ -31,7 +31,6 @@ namespace CoreBot
                     {
                         logger.LogError($"Exception caught on attempting to Delete ConversationState : {e.Message}");
                     }
-                }
             };
         }
     }

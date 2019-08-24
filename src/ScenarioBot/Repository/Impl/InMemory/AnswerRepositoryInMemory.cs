@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
-using Microsoft.Recognizers.Text.Number;
 using ScenarioBot.Domain;
 
 namespace ScenarioBot.Repository.Impl.InMemory
 {
-    public class AnswerRepositoryInMemory:IAnswerRepository
+    public class AnswerRepositoryInMemory : IAnswerRepository
     {
         private readonly List<Answer> _store;
-        
+
         public AnswerRepositoryInMemory()
         {
             _store = new List<Answer>();
@@ -30,9 +29,8 @@ namespace ScenarioBot.Repository.Impl.InMemory
             _store.Add(answer);
         }
 
-        public void CalcAnswerWeights(int take)
+        public dynamic CalcAnswerWeights(int take)
         {
-
             var calculatedAnswers = _store.Select(x => new
                 {
                     x.Weight,
@@ -50,13 +48,18 @@ namespace ScenarioBot.Repository.Impl.InMemory
                 .OrderByDescending(x => x.Weight)
                 .Take(take)
                 .ToList();
+
+            return calculatedAnswers;
         }
-        
+
         public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
-            var completedScenarioIds = _store.Where(x => x.IsLastAnswer && x.RespondentId == userId).Select(x => x.ScenarioId).Distinct();
+            var completedScenarioIds = _store.Where(x => x.IsLastAnswer && x.RespondentId == userId)
+                .Select(x => x.ScenarioId).Distinct();
 
-            return _store.Where(x => !x.IsLastAnswer && x.RespondentId == userId && x.ScenarioId == scenarioId) // не последний ответ сценария
+            return _store
+                .Where(x => !x.IsLastAnswer && x.RespondentId == userId &&
+                            x.ScenarioId == scenarioId) // не последний ответ сценария
                 .Where(x => !completedScenarioIds.Contains(x.ScenarioId)) // из списка не законченных сценариев
                 .OrderBy(x => x.Timestamp)
                 .FirstOrDefault();

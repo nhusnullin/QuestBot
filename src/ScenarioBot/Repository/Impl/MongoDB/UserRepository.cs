@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
 using MongoDB.Driver;
@@ -8,11 +7,6 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 {
     public class UserRepository : MongoConfiguration, IUserRepository
     {
-        static UserRepository()
-        {
-           // UserMapping.Init();
-        }
-
         public UserRepository(IMongoClient client) : base(client)
         {
         }

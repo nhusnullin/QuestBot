@@ -15,14 +15,15 @@ namespace CoreBot.Bots
     // each with dependency on distinct IBot types, this way ASP Dependency Injection can glue everything together without ambiguity.
     // The ConversationState is used by the Dialog system. The UserState isn't, however, it might have been used in a Dialog implementation,
     // and the requirement is that all BotState objects are saved at the end of a turn.
-    public class DialogBot<T> : ActivityHandler where T : Dialog 
+    public class DialogBot<T> : ActivityHandler where T : Dialog
     {
-        protected readonly Dialog _dialog;
         protected readonly BotState _conversationState;
-        protected readonly BotState _userState;
+        protected readonly Dialog _dialog;
         protected readonly ILogger _logger;
+        protected readonly BotState _userState;
 
-        public DialogBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger)
+        public DialogBot(ConversationState conversationState, UserState userState, T dialog,
+            ILogger<DialogBot<T>> logger)
         {
             _conversationState = conversationState;
             _userState = userState;
@@ -39,7 +40,8 @@ namespace CoreBot.Bots
             await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
 
-        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext,
+            CancellationToken cancellationToken)
         {
             _logger.LogInformation("Running dialog with Message Activity.");
 
@@ -50,8 +52,8 @@ namespace CoreBot.Bots
         protected async Task RunDialog(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             // Run the Dialog with the new message Activity.
-            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
-
+            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"),
+                cancellationToken);
         }
     }
 }

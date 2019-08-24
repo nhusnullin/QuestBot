@@ -20,9 +20,10 @@ namespace CoreBot.BotCommands
             return true;
         }
 
-        public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId, CancellationToken cancellationToken)
+        public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId,
+            CancellationToken cancellationToken)
         {
-            await dialogContext.Context.SendActivityAsync($"Show Help...", cancellationToken: cancellationToken);
+            await dialogContext.Context.SendActivityAsync("Show Help...", cancellationToken: cancellationToken);
             return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 

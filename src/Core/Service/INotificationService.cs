@@ -7,7 +7,9 @@ namespace Core.Service
 {
     public interface INotificationService
     {
-        Task SendMessage(string message, ConversationReference conversationReference, CancellationToken cancellationToken);
+        Task SendMessage(string message, ConversationReference conversationReference,
+            CancellationToken cancellationToken);
+
         Task SendMessageInBackground(BackgroundNotifyMsg msg);
     }
 }

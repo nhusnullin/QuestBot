@@ -29,7 +29,7 @@ namespace ScenarioBot.Domain
     }
 
     /// <summary>
-    /// Дерево заданий квеста
+    ///     Дерево заданий квеста
     /// </summary>
     public class Puzzle
     {
@@ -40,11 +40,45 @@ namespace ScenarioBot.Domain
             PosibleBranches = new List<AnswerToBranch>();
         }
 
-        public Puzzle(string id):this()
+        public Puzzle(string id) : this()
         {
             Id = id;
         }
-        
+
+        public string Id { get; set; }
+        public string Question { get; set; }
+        public PuzzleType PuzzleType { get; set; }
+
+        /// <summary>
+        ///     кол-во попыток на получение правильного ответа
+        /// </summary>
+        public int? NumberOfAttemptsLimit { get; set; }
+
+        /// <summary>
+        ///     время ожидания перед тем как можно переходить на след шаг
+        /// </summary>
+        public int? WaitingTime { get; set; }
+
+        /// <summary>
+        ///     ветки развития. key - это ответ пользователя, value - ветка развития
+        /// </summary>
+        public IList<AnswerToBranch> PosibleBranches { get; set; }
+
+        /// <summary>
+        ///     ветка развития, когда не подошел ни один из ответов
+        /// </summary>
+        public string ElseBranch { get; set; }
+
+        /// <summary>
+        ///     признак что это последний шаг в квесте
+        /// </summary>
+        public bool IsLastPuzzle { get; set; }
+
+        /// <summary>
+        ///     вес шага
+        /// </summary>
+        public int Weight { get; set; }
+
         public Puzzle To(Scenario scenario)
         {
             return scenario.Add(this);
@@ -52,11 +86,11 @@ namespace ScenarioBot.Domain
 
         public Puzzle AddBranch(string answer, string goTo)
         {
-            PosibleBranches.Add(new AnswerToBranch()
+            PosibleBranches.Add(new AnswerToBranch
             {
                 Answer = answer,
                 GoToId = goTo
-            }); 
+            });
             return this;
         }
 
@@ -69,11 +103,9 @@ namespace ScenarioBot.Domain
 
         public string GetNextPossibleBranchId(string answer)
         {
-            var answerToBranches = PosibleBranches.FirstOrDefault(x => string.Equals(x.Answer, answer, StringComparison.InvariantCultureIgnoreCase));
-            if (answerToBranches != null)
-            {
-                return answerToBranches.GoToId;
-            }
+            var answerToBranches = PosibleBranches.FirstOrDefault(x =>
+                string.Equals(x.Answer, answer, StringComparison.InvariantCultureIgnoreCase));
+            if (answerToBranches != null) return answerToBranches.GoToId;
 
             return ElseBranch;
         }
@@ -86,23 +118,20 @@ namespace ScenarioBot.Domain
             var generatedPermutations = new List<string>();
 
             return null;
-
         }
 
-        private static void permute(String str,
+        private static void permute(string str,
             int l, int r)
         {
             if (l == r)
                 Console.WriteLine(str);
             else
-            {
-                for (int i = l; i <= r; i++)
+                for (var i = l; i <= r; i++)
                 {
                     str = swap(str, l, i);
                     permute(str, l + 1, r);
                     str = swap(str, l, i);
                 }
-            }
         }
 
         /** 
@@ -112,50 +141,16 @@ namespace ScenarioBot.Domain
         * @param j position 2 
         * @return swapped string 
         */
-        public static String swap(String a,
+        public static string swap(string a,
             int i, int j)
         {
             char temp;
-            char[] charArray = a.ToCharArray();
+            var charArray = a.ToCharArray();
             temp = charArray[i];
             charArray[i] = charArray[j];
             charArray[j] = temp;
-            string s = new string(charArray);
+            var s = new string(charArray);
             return s;
         }
-
-        public string Id { get; set; }
-        public string Question { get; set; }
-        public PuzzleType PuzzleType { get; set; }
-      
-        /// <summary>
-        /// кол-во попыток на получение правильного ответа
-        /// </summary>
-        public int? NumberOfAttemptsLimit { get; set; }
-
-        /// <summary>
-        /// время ожидания перед тем как можно переходить на след шаг
-        /// </summary>
-        public int? WaitingTime { get; set; }
-        
-        /// <summary>
-        /// ветки развития. key - это ответ пользователя, value - ветка развития
-        /// </summary>
-        public IList<AnswerToBranch> PosibleBranches { get; set; }
-
-        /// <summary>
-        /// ветка развития, когда не подошел ни один из ответов
-        /// </summary>
-        public string ElseBranch { get; set; }
-
-        /// <summary>
-        /// признак что это последний шаг в квесте
-        /// </summary>
-        public bool IsLastPuzzle { get; set; }
-
-        /// <summary>
-        /// вес шага
-        /// </summary>
-        public int Weight { get; set; }
     }
 }

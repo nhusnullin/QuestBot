@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
 using ScenarioBot.Domain;
@@ -10,8 +9,8 @@ namespace ScenarioBot.Service
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
         private readonly IAnswerRepository _answerRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserService(IUserRepository userRepository, IAnswerRepository answerRepository)
         {
@@ -35,12 +34,19 @@ namespace ScenarioBot.Service
             await _answerRepository.AddAnswer(new Answer(scenarioDetails));
         }
 
-        public IDictionary<string, int> CalcUserWeights(IDictionary<string, Scenario> scenarioStore)
+        public async Task<IDictionary<string, int>> CalcUserWeightsAsync()
         {
             var result = new Dictionary<string, int>();
 
-            
-            
+            var answerWeights = _answerRepository.CalcAnswerWeights(10);
+
+            int index = 0;
+            foreach (var answerWeight in answerWeights)
+            {
+                User user = await _userRepository.GetUserByIdAsync(answerWeight.UserId);
+                result[user?.Name ?? $"unknown {++index}"] = answerWeight.Weight;
+            }
+
 //            var allAnswers = _storage.GetAllAnswers();
 //
 //            foreach (var answer in allAnswers)

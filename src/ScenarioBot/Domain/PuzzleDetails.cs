@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace ScenarioBot.Domain
 {
     /// <summary>
-    /// Класс для передачи данных из диалога в диалог 
+    ///     Класс для передачи данных из диалога в диалог
     /// </summary>
     public class PuzzleDetails
     {
@@ -21,7 +21,7 @@ namespace ScenarioBot.Domain
         public PuzzleDetails(Puzzle puzzle)
         {
             _puzzle = puzzle;
-            
+
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
             PossibleAnswers = _puzzle.PosibleBranches.Select(x => x.Answer).ToList();
@@ -39,35 +39,14 @@ namespace ScenarioBot.Domain
 
 
         /// <summary>
-        /// Время когда задали вопрос (UTC)
+        ///     Время когда задали вопрос (UTC)
         /// </summary>
         public DateTime? QuestionAskedAt { get; set; }
 
-
-        public void SetQuestionAskedAt(DateTime value)
-        {
-            QuestionAskedAt = value;
-
-            if (!WaitnigTime.HasValue)
-            {
-                return;
-            }
-
-            AnswerTimeNoLessThan = QuestionAskedAt.Value.AddMinutes(WaitnigTime.Value);
-        }
-
         /// <summary>
-        /// Время когда можно дать ответ (UTC)
+        ///     Время когда можно дать ответ (UTC)
         /// </summary>
         public DateTime AnswerTimeNoLessThan { get; set; }
-
-        public int GetRemainMinutesToAnswer(DateTime now)
-        {
-#if DEBUG
-            return 1;
-#endif
-            return (AnswerTimeNoLessThan - now).Minutes;
-        }
 
         public int PuzzleWeight => _puzzle?.Weight ?? 1;
 
@@ -76,13 +55,14 @@ namespace ScenarioBot.Domain
         public IList<string> PossibleAnswers { get; set; }
         public string ActualAnswer { get; set; }
         public int? WaitnigTime { get; set; }
+
         /// <summary>
-        /// сколько раз пользователь вводил ответ 
+        ///     сколько раз пользователь вводил ответ
         /// </summary>
         public int NumberOfAttempts { get; set; }
 
         /// <summary>
-        /// сколько раз пользователь может вводить ответ 
+        ///     сколько раз пользователь может вводить ответ
         /// </summary>
         public int? NumberOfAttemptsLimit { get; set; }
 
@@ -130,21 +110,32 @@ namespace ScenarioBot.Domain
         {
             get
             {
-                if (PossibleAnswers == null || !PossibleAnswers.Any())
-                {
-                    return false;
-                }
+                if (PossibleAnswers == null || !PossibleAnswers.Any()) return false;
 
                 foreach (var answer in PossibleAnswers)
-                {
                     if (string.Equals(answer, ActualAnswer, StringComparison.CurrentCultureIgnoreCase))
-                    {
                         return true;
-                    }
-                }
 
                 return false;
             }
+        }
+
+
+        public void SetQuestionAskedAt(DateTime value)
+        {
+            QuestionAskedAt = value;
+
+            if (!WaitnigTime.HasValue) return;
+
+            AnswerTimeNoLessThan = QuestionAskedAt.Value.AddMinutes(WaitnigTime.Value);
+        }
+
+        public int GetRemainMinutesToAnswer(DateTime now)
+        {
+#if DEBUG
+            return 1;
+#endif
+            return (AnswerTimeNoLessThan - now).Minutes;
         }
 
         public void SetAnswer(string answer)
@@ -155,16 +146,13 @@ namespace ScenarioBot.Domain
 
         public static string VanishAnswer(string input)
         {
-            string pattern = " *[\\\\~#%&*{}/:<>?|\"-]+ *";
-            string replacement = " ";
+            var pattern = " *[\\\\~#%&*{}/:<>?|\"-]+ *";
+            var replacement = " ";
 
-            Regex regEx = new Regex(pattern);
-            string sanitized = Regex.Replace(regEx.Replace(input, replacement), @"\s+", " ");
+            var regEx = new Regex(pattern);
+            var sanitized = Regex.Replace(regEx.Replace(input, replacement), @"\s+", " ");
 
             return sanitized;
         }
-
-
-        
     }
 }

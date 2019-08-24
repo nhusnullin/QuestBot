@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,12 +14,12 @@ namespace ScenarioBot.Dialogs
 {
     public class ScenarioDialog : CancelAndHelpDialog
     {
+        private readonly INotificationService _notificationService;
         private readonly IScenarioService _scenarioService;
         private readonly IUserService _userService;
-        private readonly INotificationService _notificationService;
 
-        public ScenarioDialog(IScenarioService scenarioService, 
-            IUserService userService, 
+        public ScenarioDialog(IScenarioService scenarioService,
+            IUserService userService,
             INotificationService notificationService,
             IList<IBotCommand> botCommands)
             : base(nameof(ScenarioDialog), botCommands)
@@ -40,7 +39,6 @@ namespace ScenarioBot.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
             AddDialog(new ScenarioListDialog(_scenarioService));
             InitialDialogId = nameof(WaterfallDialog);
-            
         }
 
         private async Task<DialogTurnResult> Ask(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -50,20 +48,17 @@ namespace ScenarioBot.Dialogs
 #pragma warning disable 4014
             _userService.InsertOrMergeAsync(new User(stepContext.Context.Activity));
 #pragma warning restore 4014
-                
+
             if (scenarioDetails == null)
             {
                 var userId = new UserId(stepContext.Context.Activity);
 
                 // либо первый раз запускаем, либо надо дать пользователю шанс выбрать сценарий
                 if (scenarioDetails == null)
-                {
                     return await stepContext.ReplaceDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
-                }
 
                 //scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, null);
 
-                
 
                 // этот фин ушами чтобы пробросить scenarioDetails - вызывается один раз, когда происходит инициализация 
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
@@ -84,17 +79,16 @@ namespace ScenarioBot.Dialogs
                 puzzleDetails.PuzzleType.ToString(), puzzleDetails, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> Check(WaterfallStepContext stepContext, CancellationToken cancellationToken) {
-
-            var scenarioDetails = (ScenarioDetails)stepContext.Options;
-            var puzzleDetails =  (PuzzleDetails)stepContext.Result;
+        private async Task<DialogTurnResult> Check(WaterfallStepContext stepContext,
+            CancellationToken cancellationToken)
+        {
+            var scenarioDetails = (ScenarioDetails) stepContext.Options;
+            var puzzleDetails = (PuzzleDetails) stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
             await _userService.SetAnswer(scenarioDetails);
 
-            if(!_scenarioService.IsOver(scenarioDetails.UserId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
-            {
+            if (!_scenarioService.IsOver(scenarioDetails.UserId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-            }
 
             return await stepContext.EndDialogAsync(scenarioDetails, cancellationToken);
         }

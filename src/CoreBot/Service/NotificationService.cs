@@ -1,14 +1,11 @@
-﻿using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Integration;
-using Microsoft.Bot.Schema;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Domain;
 using Core.Service;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using ScenarioBot.Service;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Integration;
+using Microsoft.Bot.Schema;
 
 namespace CoreBot
 {
@@ -16,15 +13,17 @@ namespace CoreBot
     {
         private readonly IAdapterIntegration _adapter;
         private readonly string _botAppId;
+
         public NotificationService(string botAppId, IAdapterIntegration adapter)
         {
             _botAppId = botAppId ?? throw new ArgumentNullException(nameof(botAppId));
             _adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
         }
 
-        public async Task SendMessage(string message, ConversationReference conversationReference, CancellationToken cancellationToken)
+        public async Task SendMessage(string message, ConversationReference conversationReference,
+            CancellationToken cancellationToken)
         {
-            var teamMessage = new TeamMessage()
+            var teamMessage = new TeamMessage
             {
                 Message = message
             };
@@ -33,27 +32,26 @@ namespace CoreBot
 
         public async Task SendMessageInBackground(BackgroundNotifyMsg msg)
         {
-            return;
         }
 
 
-        class TeamMessage
+        private class TeamMessage
         {
             public string Message { get; set; }
 
-            public async Task SendMessage(IAdapterIntegration adapter, string botAppId, ConversationReference conversationReference, CancellationToken cancellationToken)
+            public async Task SendMessage(IAdapterIntegration adapter, string botAppId,
+                ConversationReference conversationReference, CancellationToken cancellationToken)
             {
-                await adapter.ContinueConversationAsync(botAppId, conversationReference, SendMessageAsync, default(CancellationToken));
+                await adapter.ContinueConversationAsync(botAppId, conversationReference, SendMessageAsync);
             }
 
             private async Task SendMessageAsync(ITurnContext turnContext, CancellationToken cancellationToken)
             {
                 await turnContext.SendActivityAsync(Message);
             }
-
         }
     }
-    
+
 //    static class UserServiceExtensions
 //    {
 //        public static async Task<User> GetOrCreateUser(this IUserService userService, ITurnContext context)
@@ -102,21 +100,19 @@ namespace CoreBot
 //
 //        
 //    }
-    
-    static class TurnContextExtensions
+
+    internal static class TurnContextExtensions
     {
-        public static async Task<ResourceResponse> SendMessageAsync(ITurnContext turnContext, string message, CancellationToken cancellationToken)
+        public static async Task<ResourceResponse> SendMessageAsync(ITurnContext turnContext, string message,
+            CancellationToken cancellationToken)
         {
-            if (turnContext == null)
-            {
-                throw new System.ArgumentNullException(nameof(turnContext));
-            }
+            if (turnContext == null) throw new ArgumentNullException(nameof(turnContext));
 
             var activity = MessageFactory.Text(message, null, InputHints.IgnoringInput);
             return await turnContext.SendActivityAsync(activity, cancellationToken);
         }
     }
-    
+
     //using CoreBot.Domain;
 //using CoreBot.Service;
 //using Microsoft.Bot.Builder;
@@ -172,5 +168,4 @@ namespace CoreBot
 //        }
 //    }
 //}
-
 }
