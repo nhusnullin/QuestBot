@@ -10,6 +10,6 @@ namespace ScenarioBot.Repository
         Task<IList<string>> GetCompletedScenarioIds(UserId userId);
 
         Task AddAnswer(Answer answer);
-        Answer GetLastAddedAnswerFromNotCompletedScenario(string scenarioId);
+        Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId);
     }
 }

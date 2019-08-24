@@ -17,7 +17,7 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 
         public async Task<IList<string>> GetCompletedScenarioIds(UserId userId)
         {
-            return Answers.Find(x => x.IsLastAnswer).ToList()
+            return Answers.Find(x => x.IsLastAnswer && x.RespondentId == userId).ToList()
                 .GroupBy(x => x.ScenarioId)
                 .SelectMany(x => x.ToList())
                 .Select(x => x.ScenarioId)
@@ -51,11 +51,11 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 .ToList();
         }
 
-        public Answer GetLastAddedAnswerFromNotCompletedScenario(string scenarioId)
+        public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
             var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
 
-            return Answers.Find(a=>!a.IsLastAnswer  && a.ScenarioId == scenarioId && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
+            return Answers.Find(a=>!a.IsLastAnswer  && a.ScenarioId == scenarioId && a.RespondentId == userId && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
                  // из списка не законченных сценариев
                  .SortByDescending(x => x.Timestamp)
                 .FirstOrDefault();

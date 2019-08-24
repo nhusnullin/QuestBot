@@ -34,7 +34,7 @@ namespace ScenarioBot.Service
         
         public ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId)
         {
-            var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario(scenarioId);
+            var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario(userId, scenarioId);
             if (answer == null)
             {
                 // значит у пользователя нет начатого сценария
