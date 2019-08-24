@@ -9,7 +9,7 @@ namespace ScenarioBot.Repository.Impl.MongoDB
         public MongoConfiguration(IMongoClient client)
         {
             Client = client;
-            Database = Client.GetDatabase("questdbtest");
+            Database = Client.GetDatabase("questdb");
             Users = Database.GetCollection<User>("Users");
             Answers = Database.GetCollection<Answer>("Answers");
         }
