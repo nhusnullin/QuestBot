@@ -37,6 +37,7 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                     x.ScenarioId,
                     x.RespondentId
                 })
+                .Where(x=>x.RespondentId != null)
                 .Distinct()
                 .GroupBy(x => x.RespondentId)
                 .Select(ag => new
