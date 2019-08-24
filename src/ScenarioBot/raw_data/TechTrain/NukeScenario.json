@@ -179,7 +179,7 @@
             "PuzzleType": 0,
             "PosibleBranches": [
                 {
-                    "Answer": "2014",
+                    "Answer": "DotNext",
                     "GoToId": "win"
                 }
             ],
