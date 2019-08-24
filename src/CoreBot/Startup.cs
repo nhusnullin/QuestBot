@@ -130,6 +130,9 @@ namespace CoreBot
 
             services.AddHostedService<LoadScenarioService>();
             //services.AddHostedService<SendNotifyInBackgroundService>();
+
+
+            services.AddHealthChecks();
         }
 
 //        public static async Task<IEnumerable<KeyValuePair<UserId, ConversationReference>>> LoadConversationReferences(ICloudStorage cloudStorage)
@@ -158,7 +161,9 @@ namespace CoreBot
             app.UseStaticFiles();
 
             //app.UseHttpsRedirection();
-            app.UseMvc();
+            app
+                .UseMvc()
+                .UseHealthChecks("/hc");
         }
     }
 }
