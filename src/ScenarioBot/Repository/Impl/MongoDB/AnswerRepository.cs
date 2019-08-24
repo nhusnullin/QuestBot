@@ -51,13 +51,13 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 .ToList();
         }
 
-        public Answer GetLastAddedAnswerFromNotCompletedScenario()
+        public Answer GetLastAddedAnswerFromNotCompletedScenario(string scenarioId)
         {
             var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
 
-            return Answers.Find(a=>!a.IsLastAnswer && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
+            return Answers.Find(a=>!a.IsLastAnswer  && a.ScenarioId == scenarioId && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
                  // из списка не законченных сценариев
-                 .SortBy(x => x.Timestamp)
+                 .SortByDescending(x => x.Timestamp)
                 .FirstOrDefault();
         }
     }

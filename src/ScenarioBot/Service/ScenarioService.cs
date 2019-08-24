@@ -32,9 +32,9 @@ namespace ScenarioBot.Service
             return loadedScenarioNames.Except(completedScenarioNames).ToList();
         }
         
-        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId)
+        public ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId)
         {
-            var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario();
+            var answer = _answerRepository.GetLastAddedAnswerFromNotCompletedScenario(scenarioId);
             if (answer == null)
             {
                 // значит у пользователя нет начатого сценария

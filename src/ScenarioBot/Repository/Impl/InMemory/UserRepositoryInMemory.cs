@@ -9,7 +9,7 @@ namespace ScenarioBot.Repository.Impl.InMemory
     {
 
         private readonly IDictionary<UserId, User> _store;
-        
+
         public UserRepositoryInMemory()
         {
             _store = new Dictionary<UserId, User>();

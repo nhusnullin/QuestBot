@@ -54,9 +54,9 @@ namespace ScenarioBot.Dialogs
             var scenarioId = ((FoundChoice)stepContext.Result).Value;
             var teamId = (UserId)stepContext.Options;
 
-            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId);
+            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, scenarioId);
 
-            if (scenarioDetails == null || scenarioDetails.ScenarioId != scenarioId)
+            if (scenarioDetails == null)
             {
                 scenarioDetails = new ScenarioDetails()
                 {
@@ -64,6 +64,8 @@ namespace ScenarioBot.Dialogs
                     UserId = teamId
                 };
             }
+
+            //var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, null);
             var replyMessage = $"Выбранный сценарий: {scenarioId}";
             var reply = stepContext.Context.Activity.CreateReply(replyMessage);
             GenerateHideKeybordMarkupForTelegram(reply);

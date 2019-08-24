@@ -54,13 +54,16 @@ namespace ScenarioBot.Dialogs
             if (scenarioDetails == null)
             {
                 var userId = new UserId(stepContext.Context.Activity);
-                scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId);
 
                 // либо первый раз запускаем, либо надо дать пользователю шанс выбрать сценарий
                 if (scenarioDetails == null)
                 {
                     return await stepContext.ReplaceDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
                 }
+
+                //scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, null);
+
+                
 
                 // этот фин ушами чтобы пробросить scenarioDetails - вызывается один раз, когда происходит инициализация 
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);

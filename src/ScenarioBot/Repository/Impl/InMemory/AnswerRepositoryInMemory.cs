@@ -52,11 +52,11 @@ namespace ScenarioBot.Repository.Impl.InMemory
                 .ToList();
         }
         
-        public Answer GetLastAddedAnswerFromNotCompletedScenario()
+        public Answer GetLastAddedAnswerFromNotCompletedScenario(string scenarioId)
         {
             var completedScenarioIds = _store.Where(x => x.IsLastAnswer).Select(x => x.ScenarioId).Distinct();
 
-            return _store.Where(x => !x.IsLastAnswer) // не последний ответ сценария
+            return _store.Where(x => !x.IsLastAnswer && x.ScenarioId == scenarioId) // не последний ответ сценария
                 .Where(x => !completedScenarioIds.Contains(x.ScenarioId)) // из списка не законченных сценариев
                 .OrderBy(x => x.Timestamp)
                 .FirstOrDefault();
