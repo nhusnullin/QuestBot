@@ -1,9 +1,20 @@
 ﻿using System;
+using Microsoft.Bot.Schema;
 
 namespace Core.Domain
 {
     public class UserId : IEquatable<UserId>
     {
+        public UserId() { } //use from mongo
+        public UserId(Activity activity)
+        {
+            var id = activity.From.Id;
+            var channelId = activity.ChannelId;
+            
+            ChannelId = channelId ?? throw new ArgumentNullException(nameof(channelId));
+            Id = id ?? throw new ArgumentNullException(nameof(id));
+        }
+        
         public UserId(string channelId, string id)
         {
             ChannelId = channelId ?? throw new ArgumentNullException(nameof(channelId));

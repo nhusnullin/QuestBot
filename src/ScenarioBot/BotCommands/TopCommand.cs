@@ -1,26 +1,27 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
-using ScenarioBot.Dialogs;
 using ScenarioBot.Service;
 
 namespace ScenarioBot.BotCommands
 {
-    public class ScenarioBotCommand : IBotCommand
+    public class TopCommand : IBotCommand
     {
-        private readonly IScenarioService _scenarioService;
+        private readonly IUserService _userService;
+        private readonly ScenarioService _scenarioService;
 
-        public ScenarioBotCommand(IScenarioService scenarioService)
+        public TopCommand(IUserService userService, ScenarioService scenarioService)
         {
+            _userService = userService;
             _scenarioService = scenarioService;
         }
+        
         public bool IsApplicable(string message, UserId userId)
         {
-            return message.Equals("scenario", StringComparison.InvariantCultureIgnoreCase);
+            return true;
         }
 
         public bool Validate(UserId userId)
@@ -30,8 +31,10 @@ namespace ScenarioBot.BotCommands
 
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId, CancellationToken cancellationToken)
         {
-            await dialogContext.CancelAllDialogsAsync(cancellationToken);
-            return await dialogContext.BeginDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
+            await dialogContext.Context.SendActivityAsync($"Top 10", cancellationToken: cancellationToken);
+
+            
+            return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 
         public IList<ComponentDialog> GetComponentDialogs()

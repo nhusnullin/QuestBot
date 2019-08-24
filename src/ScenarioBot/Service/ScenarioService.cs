@@ -61,10 +61,17 @@ namespace ScenarioBot.Service
             }
 
             var puzzle = scenario.Collection.First(x=> string.Equals(x.Id , lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
+
+            // для корректной работы переключения между сценариями,
+            // когда один начат и не закончан, переключились на другой, снова вернулись 
+            if (string.IsNullOrEmpty(lastAnswer))
+            {
+                return puzzle;
+            }
             
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
-            return scenario.Collection.First(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
+            return scenario.Collection.FirstOrDefault(x => string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase)) ?? puzzle;
         }
 
         public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)
@@ -94,7 +101,7 @@ namespace ScenarioBot.Service
 
         public void LoadAll()
         {
-            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data"));
+            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/TechTrain"));
             dr.GetFiles("*.json").Select(x => Load(x.FullName))
                 .Where(x => x != null)
                 .ToList();

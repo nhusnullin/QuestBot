@@ -3,22 +3,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Domain;
 using Microsoft.Recognizers.Text.Number;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using ScenarioBot.Domain;
 
-namespace ScenarioBot.Repository.Impl.InMemory
+namespace ScenarioBot.Repository.Impl.MongoDB
 {
-    public class AnswerRepositoryInMemory:IAnswerRepository
+    public class AnswerRepository : MongoConfiguration, IAnswerRepository
     {
-        private readonly List<Answer> _store;
-        
-        public AnswerRepositoryInMemory()
+        public AnswerRepository(IMongoClient client) : base(client)
         {
-            _store = new List<Answer>();
         }
 
         public async Task<IList<string>> GetCompletedScenarioIds(UserId userId)
         {
-            return _store.Where(x => x.IsLastAnswer)
+            return Answers.Find(x => x.IsLastAnswer).ToList()
                 .GroupBy(x => x.ScenarioId)
                 .SelectMany(x => x.ToList())
                 .Select(x => x.ScenarioId)
@@ -27,19 +26,19 @@ namespace ScenarioBot.Repository.Impl.InMemory
 
         public async Task AddAnswer(Answer answer)
         {
-            _store.Add(answer);
+            await Answers.InsertOneAsync(answer).ConfigureAwait(false);
         }
 
         public void CalcAnswerWeights(int take)
         {
 
-            var calculatedAnswers = _store.Select(x => new
-                {
-                    x.Weight,
-                    x.PuzzleId,
-                    x.ScenarioId,
-                    x.RespondentId
-                })
+            var calculatedAnswers = Answers.AsQueryable().Select(x => new
+            {
+                x.Weight,
+                x.PuzzleId,
+                x.ScenarioId,
+                x.RespondentId
+            })
                 .Distinct()
                 .GroupBy(x => x.RespondentId)
                 .Select(ag => new
@@ -51,14 +50,14 @@ namespace ScenarioBot.Repository.Impl.InMemory
                 .Take(take)
                 .ToList();
         }
-        
+
         public Answer GetLastAddedAnswerFromNotCompletedScenario()
         {
-            var completedScenarioIds = _store.Where(x => x.IsLastAnswer).Select(x => x.ScenarioId).Distinct();
+            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
 
-            return _store.Where(x => !x.IsLastAnswer) // не последний ответ сценария
-                .Where(x => !completedScenarioIds.Contains(x.ScenarioId)) // из списка не законченных сценариев
-                .OrderBy(x => x.Timestamp)
+            return Answers.Find(a=>!a.IsLastAnswer && !completedScenarioIds.Contains(a.ScenarioId))// не последний ответ сценария
+                 // из списка не законченных сценариев
+                 .SortBy(x => x.Timestamp)
                 .FirstOrDefault();
         }
     }

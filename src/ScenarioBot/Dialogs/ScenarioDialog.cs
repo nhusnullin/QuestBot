@@ -38,7 +38,7 @@ namespace ScenarioBot.Dialogs
             AddDialog(new TextPuzzleDialog(botCommands));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
-            AddDialog(new ScenarioListDialog(_scenarioService, _userService, _notificationService));
+            AddDialog(new ScenarioListDialog(_scenarioService));
             InitialDialogId = nameof(WaterfallDialog);
             
         }
@@ -47,11 +47,13 @@ namespace ScenarioBot.Dialogs
         {
             var scenarioDetails = (ScenarioDetails) stepContext.Options;
 
+#pragma warning disable 4014
+            _userService.InsertOrMergeAsync(new User(stepContext.Context.Activity));
+#pragma warning restore 4014
+                
             if (scenarioDetails == null)
             {
-                var id = stepContext.Context.Activity.From.Id;
-                var channelId = stepContext.Context.Activity.ChannelId;
-                var userId = new UserId(channelId, id);
+                var userId = new UserId(stepContext.Context.Activity);
                 scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId);
 
                 // либо первый раз запускаем, либо надо дать пользователю шанс выбрать сценарий

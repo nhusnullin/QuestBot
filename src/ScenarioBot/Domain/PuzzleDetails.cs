@@ -64,10 +64,12 @@ namespace ScenarioBot.Domain
         public int GetRemainMinutesToAnswer(DateTime now)
         {
 #if DEBUG
-            return 0;
+            return 1;
 #endif
             return (AnswerTimeNoLessThan - now).Minutes;
         }
+
+        public int PuzzleWeight => _puzzle?.Weight ?? 1;
 
         public string PuzzleId { get; set; }
         public string Question { get; set; }
