@@ -66,7 +66,6 @@ namespace ScenarioBot.Domain
 #if DEBUG
             return 1;
 #endif
-            
             return (AnswerTimeNoLessThan - now).Minutes;
         }
 
