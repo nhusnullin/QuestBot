@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Domain;
@@ -34,31 +35,42 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> ShowChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var userId = (UserId) stepContext.Options;
+            var userId = new UserId(stepContext.Context.Activity);
 
-            return await stepContext.PromptAsync(nameof(ChoicePrompt),
-                new PromptOptions
-                {
-                    Prompt = MessageFactory.Text("Пожалуйста, выберите сценарий:"),
-                    RetryPrompt = MessageFactory.Text("Пожалуйста, выберите сценарий :"),
-                    Choices = ChoiceFactory.ToChoices(await _scenarioService.GetNotCompletedScenarioNames(userId))
-                },
-                cancellationToken);
+            var notCompletedScenarioNames = await _scenarioService.GetNotCompletedScenarioNames(userId);
+
+            if (notCompletedScenarioNames.Any())
+            {
+                await stepContext.Context.SendActivityAsync("Доступные сценарии:",
+                    cancellationToken: cancellationToken);
+                return await stepContext.PromptAsync(nameof(ChoicePrompt),
+                    new PromptOptions
+                    {
+                        Choices = ChoiceFactory.ToChoices(notCompletedScenarioNames)
+                    },
+                    cancellationToken);
+            }
+            else
+            {
+                await stepContext.Context.SendActivityAsync("Поздравляем! Вы прошли все сценарии",
+                    cancellationToken: cancellationToken);
+                return new DialogTurnResult(DialogTurnStatus.Waiting);
+            }
         }
 
         private async Task<DialogTurnResult> AnswerToChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
             var scenarioId = ((FoundChoice) stepContext.Result).Value;
-            var teamId = (UserId) stepContext.Options;
+            var userId = new UserId(stepContext.Context.Activity);
 
-            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, scenarioId);
+            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
 
             if (scenarioDetails == null)
                 scenarioDetails = new ScenarioDetails
                 {
                     ScenarioId = scenarioId,
-                    UserId = teamId
+                    UserId = userId
                 };
 
             //var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(teamId, null);

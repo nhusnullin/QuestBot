@@ -21,11 +21,16 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 return new List<string>();
             }
             
-            return Answers.Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id).ToList()
-                .GroupBy(x => x.ScenarioId)
-                .SelectMany(x => x.ToList())
-                .Select(x => x.ScenarioId)
-                .ToList();
+            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList()
+                .Distinct().ToList();
+
+            return completedScenarioIds;
+            
+//            return Answers.Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id).ToList()
+//                .GroupBy(x => x.ScenarioId)
+//                .SelectMany(x => x.ToList())
+//                .Select(x => x.ScenarioId)
+//                .ToList();
         }
 
         public async Task AddAnswer(Answer answer)
@@ -64,7 +69,8 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 return null;
             }
             
-            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList();
+            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList()
+                    .Distinct();
 
             return Answers
                 .Find(a => !a.IsLastAnswer && a.ScenarioId == scenarioId && a.RespondentId.Id == userId.Id &&

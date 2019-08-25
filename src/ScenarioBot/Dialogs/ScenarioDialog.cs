@@ -64,7 +64,8 @@ namespace ScenarioBot.Dialogs
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
             }
 
-            var puzzle = _scenarioService.GetNextPuzzle(scenarioDetails.UserId, scenarioDetails.ScenarioId,
+            scenarioDetails.UserId = userId;
+            var puzzle = _scenarioService.GetNextPuzzle(userId, scenarioDetails.ScenarioId,
                 scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
             var puzzleDetails = new PuzzleDetails(puzzle);
 
@@ -85,8 +86,6 @@ namespace ScenarioBot.Dialogs
             var scenarioDetails = (ScenarioDetails) stepContext.Options;
             var puzzleDetails = (PuzzleDetails) stepContext.Result;
             scenarioDetails.LastPuzzleDetails = puzzleDetails;
-            
-            // todo сейчас это затычка, но не поянтно почему userId пропадает тут
             scenarioDetails.UserId = new UserId(stepContext.Context.Activity);
             
             await _userService.SetAnswer(scenarioDetails);
