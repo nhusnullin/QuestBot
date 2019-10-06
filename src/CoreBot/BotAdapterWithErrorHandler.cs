@@ -6,11 +6,31 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreBot
 {
-    public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
+    public class BotAdapterWithErrorHandler : BotFrameworkAdapter
     {
-        public AdapterWithErrorHandler(ICredentialProvider credentialProvider, IChannelProvider channelProvider,
-            ILogger<BotFrameworkHttpAdapter> logger, ConversationState conversationState = null)
-            : base(credentialProvider, channelProvider, logger)
+        public BotAdapterWithErrorHandler(ICredentialProvider credentialProvider, 
+            ILogger logger,
+            IChannelProvider channelProvider = null,
+            ConversationState conversationState = null)
+            : base(credentialProvider, channelProvider, logger:logger)
+        {
+            OnTurnError = async (turnContext, exception) =>
+            {
+                // Log any leaked exception from the application.
+                logger.LogError($"Exception caught : {exception.Message}  {exception.StackTrace}");
+                // Send a catch-all appology to the user.
+                await turnContext.SendActivityAsync($"Sorry, It looks like something went wrong. {exception.Message} ");
+            };
+        }
+    }
+    
+    public class BotHttpAdapterWithErrorHandler : BotFrameworkHttpAdapter
+    {
+        public BotHttpAdapterWithErrorHandler(ICredentialProvider credentialProvider, 
+            ILogger<BotFrameworkHttpAdapter> logger,
+            IChannelProvider channelProvider = null,
+            ConversationState conversationState = null)
+            : base(credentialProvider, channelProvider, logger:logger)
         {
             OnTurnError = async (turnContext, exception) =>
             {

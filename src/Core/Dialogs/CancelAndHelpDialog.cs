@@ -42,7 +42,7 @@ namespace Core.Dialogs
             if (dialogContext.Context.Activity.Type != ActivityTypes.Message) return null;
 
             var text = dialogContext.Context.Activity.Text.ToLowerInvariant().Replace("/", "");
-            var userId = new UserId(dialogContext.Context.Activity.ChannelId, dialogContext.Context.Activity.From.Id);
+            var userId = new UserId(dialogContext.Context.Activity);
 
             var cmd = _botCommands.FirstOrDefault(x => x.IsApplicable(text, userId));
 

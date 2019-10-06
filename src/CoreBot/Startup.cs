@@ -19,6 +19,7 @@ using ScenarioBot;
 using ScenarioBot.BotCommands;
 using ScenarioBot.Dialogs;
 using ScenarioBot.Repository;
+using ScenarioBot.Repository.Impl.InMemory;
 using ScenarioBot.Repository.Impl.MongoDB;
 using ScenarioBot.Service;
 
@@ -58,7 +59,7 @@ namespace CoreBot
             services.AddSingleton<IChannelProvider, ConfigurationChannelProvider>();
 
             // Create the Bot Framework Adapter with error handling enabled. 
-            services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
+            services.AddSingleton<IBotFrameworkHttpAdapter, BotHttpAdapterWithErrorHandler>();
 
             // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.) 
             services.AddSingleton<IStorage, MemoryStorage>();
@@ -69,14 +70,23 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            var inMemoryRepositories = Configuration.GetSection("InMemoryRepositories").Value == "true";
+            if (inMemoryRepositories)
+            {
+                services.AddSingleton<IAnswerRepository, AnswerRepositoryInMemory>();
+                services.AddSingleton<IUserRepository, UserRepositoryInMemory>();
+            }
+            else
+            {
+                services.AddSingleton<IAnswerRepository, AnswerRepository>();
+                services.AddSingleton<IUserRepository, UserRepository>();
+                services.AddSingleton<IMongoClient, MongoClient>(
+                    client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
+            }
+
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserRepository, UserRepository>();
-
-            services.AddSingleton<IMongoClient, MongoClient>(
-                client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
-
+            
             services.AddSingleton<HelpBotCommand, HelpBotCommand>();
             services.AddSingleton<ScenarioBotCommand, ScenarioBotCommand>();
             services.AddSingleton<TopCommand, TopCommand>();
@@ -98,30 +108,16 @@ namespace CoreBot
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, DialogAndWelcomeBot<ScenarioDialog>>();
 
-            const string botAppId = "9b6857ad-5e19-4ed6-9dc0-c53d39105a97";
+            string botAppId = Configuration.GetSection("MicrosoftAppId").Value;//"9b6857ad-5e19-4ed6-9dc0-c53d39105a97";
+            string password = Configuration.GetSection("MicrosoftAppPassword").Value;//"V}a5YJQbR4kE836G-Yv*K409p.>5";
             services.AddSingleton<IAdapterIntegration>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<IAdapterIntegration>>();
-
-                var adapter = new BotFrameworkAdapter(
-                    new SimpleCredentialProvider(botAppId, "V}a5YJQbR4kE836G-Yv*K409p.>5"),
-                    logger: logger)
-                {
-                    OnTurnError = async (context, exception) =>
-                    {
-                        logger.LogError(exception, "Bot adapter error");
-                        await context.SendActivityAsync(
-                            "Sorry, it looks like something went wrong." + exception.Message);
-                    }
-                };
-
+                var adapter = new BotAdapterWithErrorHandler(new SimpleCredentialProvider(botAppId, password),logger);
                 return adapter;
             });
 
-            services.AddSingleton<INotificationService>(sp =>
-            {
-                return new NotificationService(botAppId, sp.GetRequiredService<IAdapterIntegration>());
-            });
+            services.AddSingleton<INotificationService>(sp => new NotificationService(botAppId, sp.GetRequiredService<IAdapterIntegration>()));
 
             services.AddHostedService<LoadScenarioService>();
             //services.AddHostedService<SendNotifyInBackgroundService>();
