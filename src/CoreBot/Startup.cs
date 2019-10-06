@@ -19,6 +19,7 @@ using ScenarioBot;
 using ScenarioBot.BotCommands;
 using ScenarioBot.Dialogs;
 using ScenarioBot.Repository;
+using ScenarioBot.Repository.Impl.InMemory;
 using ScenarioBot.Repository.Impl.MongoDB;
 using ScenarioBot.Service;
 
@@ -69,14 +70,23 @@ namespace CoreBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
-            services.AddSingleton<IAnswerRepository, AnswerRepository>();
+            var inMemoryRepositories = Configuration.GetSection("InMemoryRepositories").Value == "true";
+            if (inMemoryRepositories)
+            {
+                services.AddSingleton<IAnswerRepository, AnswerRepositoryInMemory>();
+                services.AddSingleton<IUserRepository, UserRepositoryInMemory>();
+            }
+            else
+            {
+                services.AddSingleton<IAnswerRepository, AnswerRepository>();
+                services.AddSingleton<IUserRepository, UserRepository>();
+                services.AddSingleton<IMongoClient, MongoClient>(
+                    client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
+            }
+
             services.AddSingleton<IScenarioService, ScenarioService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IUserRepository, UserRepository>();
-
-            services.AddSingleton<IMongoClient, MongoClient>(
-                client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
-
+            
             services.AddSingleton<HelpBotCommand, HelpBotCommand>();
             services.AddSingleton<ScenarioBotCommand, ScenarioBotCommand>();
             services.AddSingleton<TopCommand, TopCommand>();
