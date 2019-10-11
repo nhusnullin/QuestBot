@@ -133,7 +133,7 @@ namespace ScenarioBot.Domain
         public int GetRemainMinutesToAnswer(DateTime now)
         {
 #if DEBUG
-            return 1;
+            return 0;
 #endif
             return (AnswerTimeNoLessThan - now).Minutes;
         }

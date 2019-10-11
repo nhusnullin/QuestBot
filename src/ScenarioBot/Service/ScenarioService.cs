@@ -48,6 +48,11 @@ namespace ScenarioBot.Service
             };
         }
 
+        public bool IsExist(string scenarioId)
+        {
+            return _store.ContainsKey(scenarioId);
+        }
+
 
         public Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
@@ -66,8 +71,17 @@ namespace ScenarioBot.Service
 
             var puzzleId = puzzle.GetNextPossibleBranchId(lastAnswer);
 
-            return scenario.Collection.FirstOrDefault(x =>
-                       string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase)) ?? puzzle;
+            var retPuzzle = scenario.Collection.FirstOrDefault(x =>
+                string.Equals(x.Id, puzzleId, StringComparison.CurrentCultureIgnoreCase));
+
+            if (retPuzzle == null)
+            {
+                _logger.LogError("Seems, that infinite loop detected in scenario {@scenarioId} in the puzzle {@puzzleId}." +
+                                 "One of the reasons is unfinished node in the scenario", puzzleId, scenarioId);
+                retPuzzle = puzzle;
+            }
+
+            return retPuzzle;
         }
 
         public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)

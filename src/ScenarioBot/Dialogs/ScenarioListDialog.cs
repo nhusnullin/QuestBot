@@ -67,7 +67,15 @@ namespace ScenarioBot.Dialogs
         {
             var scenarioId = (string) stepContext.Result;
             var userId = new UserId(stepContext.Context.Activity);
-
+            
+            // сделаем проверку чего ввел пользователь
+            if (!_scenarioService.IsExist(scenarioId))
+            {
+                // если такого сценария не существует, выведим список еще раз
+                await stepContext.CancelAllDialogsAsync(cancellationToken);
+                return await stepContext.BeginDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
+            }
+            
             var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
 
             if (scenarioDetails == null)
