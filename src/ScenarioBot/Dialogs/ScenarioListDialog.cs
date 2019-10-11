@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,12 +44,28 @@ namespace ScenarioBot.Dialogs
             {
                 await stepContext.Context.SendActivityAsync($"Доступныx сценариев ({notCompletedScenarioNames.Count}):",
                     cancellationToken: cancellationToken);
-                return await stepContext.PromptAsync(nameof(ChoicePrompt),
-                    new PromptOptions
+//                return await stepContext.PromptAsync(nameof(TextPrompt),
+//                    new PromptOptions
+//                    {
+//                        Choices = ChoiceFactory.ToChoices(notCompletedScenarioNames)
+//                    },
+//                    cancellationToken);
+                
+                var reply = MessageFactory.Text("What is your favorite color?");
+
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = new List<CardAction>()
                     {
-                        Choices = ChoiceFactory.ToChoices(notCompletedScenarioNames)
+                        new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red" },
+                        new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow" },
+                        new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue" },
                     },
-                    cancellationToken);
+                };
+                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+                return new DialogTurnResult(DialogTurnStatus.Waiting);
+                
+                    
             }
             else
             {
@@ -83,7 +100,33 @@ namespace ScenarioBot.Dialogs
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
 
+        private void GenerateInlineKeyboardMarkup(IActivity reply, IEnumerable<string> names)
+        {
+            var inlineKeyboardButton = new
+            {
+                text = "opt1",
+                callback_data = "dt1"
+            };
 
+            var replyMarkup = new
+            {
+                reply_markup = new
+                {
+                    hide_keyboard = true
+                }
+            };
+
+            var channelData = new
+            {
+                method = "sendMessage",
+                parameters = replyMarkup
+            };
+
+            reply.ChannelData = JObject.FromObject(channelData);
+            
+           
+        }
+        
         private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
         {
             var replyMarkup = new
