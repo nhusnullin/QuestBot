@@ -41,14 +41,18 @@ namespace ScenarioBot.Dialogs
 
             if (notCompletedScenarioNames.Any())
             {
-                await stepContext.Context.SendActivityAsync("Доступные сценарии:",
-                    cancellationToken: cancellationToken);
-                return await stepContext.PromptAsync(nameof(ChoicePrompt),
-                    new PromptOptions
-                    {
-                        Choices = ChoiceFactory.ToChoices(notCompletedScenarioNames)
-                    },
-                    cancellationToken);
+                var reply = MessageFactory.Text($"Доступныx сценариев ({notCompletedScenarioNames.Count}):");
+
+                
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = notCompletedScenarioNames
+                        .Select(name => new CardAction() {Title = name, Type = ActionTypes.ImBack, Value = name})
+                        .ToList()
+                };
+                
+                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+                return new DialogTurnResult(DialogTurnStatus.Waiting);
             }
             else
             {
@@ -61,7 +65,7 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> AnswerToChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var scenarioId = ((FoundChoice) stepContext.Result).Value;
+            var scenarioId = (string) stepContext.Result;
             var userId = new UserId(stepContext.Context.Activity);
 
             var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
@@ -82,8 +86,7 @@ namespace ScenarioBot.Dialogs
             //replyMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
         }
-
-
+        
         private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
         {
             var replyMarkup = new
