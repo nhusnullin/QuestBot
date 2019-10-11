@@ -10,7 +10,7 @@ namespace ScenarioBot.Repository
         Task<IList<string>> GetCompletedScenarioIds(UserId userId);
 
         Task AddAnswer(Answer answer);
-        Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId);
+        Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId);
         dynamic CalcAnswerWeights(int take);
     }
 }

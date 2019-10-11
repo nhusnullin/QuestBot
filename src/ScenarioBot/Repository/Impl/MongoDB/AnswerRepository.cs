@@ -21,16 +21,14 @@ namespace ScenarioBot.Repository.Impl.MongoDB
                 return new List<string>();
             }
             
-            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList()
-                .Distinct().ToList();
+            var completedScenarioIds = Answers
+                .Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id)
+                .Project(x => x.ScenarioId)
+                .ToList()
+                .Distinct()
+                .ToList();
 
             return completedScenarioIds;
-            
-//            return Answers.Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id).ToList()
-//                .GroupBy(x => x.ScenarioId)
-//                .SelectMany(x => x.ToList())
-//                .Select(x => x.ScenarioId)
-//                .ToList();
         }
 
         public async Task AddAnswer(Answer answer)
@@ -62,15 +60,14 @@ namespace ScenarioBot.Repository.Impl.MongoDB
             return calculatedAnswers;
         }
 
-        public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
+        public async Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
             if (userId == null)
             {
                 return null;
             }
-            
-            var completedScenarioIds = Answers.Find(x => x.IsLastAnswer).Project(x => x.ScenarioId).ToList()
-                    .Distinct();
+
+            var completedScenarioIds = await GetCompletedScenarioIds(userId);
 
             return Answers
                 .Find(a => !a.IsLastAnswer && a.ScenarioId == scenarioId && a.RespondentId.Id == userId.Id &&

@@ -58,7 +58,7 @@ namespace ScenarioBot.Dialogs
             {
                 await stepContext.Context.SendActivityAsync("Поздравляем! Вы прошли все сценарии",
                     cancellationToken: cancellationToken);
-                return new DialogTurnResult(DialogTurnStatus.Waiting);
+                return await stepContext.EndDialogAsync(null, cancellationToken);
             }
         }
 
@@ -76,7 +76,7 @@ namespace ScenarioBot.Dialogs
                 return await stepContext.BeginDialogAsync(nameof(ScenarioListDialog), userId, cancellationToken);
             }
             
-            var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
+            var scenarioDetails = await _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
 
             if (scenarioDetails == null)
                 scenarioDetails = new ScenarioDetails

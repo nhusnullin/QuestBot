@@ -11,7 +11,7 @@ namespace ScenarioBot.Service
         bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId);
         void LoadAll();
         Task<IList<string>> GetNotCompletedScenarioNames(UserId userId);
-        ScenarioDetails GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId);
+        Task<ScenarioDetails> GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId);
         bool IsExist(string scenarioId);
     }
 }

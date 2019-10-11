@@ -52,7 +52,7 @@ namespace ScenarioBot.Repository.Impl.InMemory
             return calculatedAnswers;
         }
 
-        public Answer GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
+        public async Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
             var completedScenarioIds = _store.Where(x => x.IsLastAnswer && x.RespondentId == userId)
                 .Select(x => x.ScenarioId).Distinct();
