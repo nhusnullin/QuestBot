@@ -164,7 +164,7 @@
       "Question": "Отлично, запустилось. Пора выводить фичу в прод! Одна проблема - старый TFS как страшный сон... Ожидание 10 минут...",
       "PuzzleType": 0,
       "WaitingTime": 10,
-      "ElseBranch": "dotnetru"
+      "ElseBranch": "win"
     },
     {
       "IsLastPuzzle": true,
