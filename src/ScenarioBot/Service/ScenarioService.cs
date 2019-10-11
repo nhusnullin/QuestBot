@@ -48,6 +48,11 @@ namespace ScenarioBot.Service
             };
         }
 
+        public bool IsExist(string scenarioId)
+        {
+            return _store.ContainsKey(scenarioId);
+        }
+
 
         public Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer)
         {
