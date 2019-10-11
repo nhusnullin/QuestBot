@@ -69,6 +69,15 @@ namespace ScenarioBot.Dialogs
                 scenarioDetails.LastPuzzleDetails?.PuzzleId, scenarioDetails.LastPuzzleDetails?.ActualAnswer);
             var puzzleDetails = new PuzzleDetails(puzzle);
 
+            // грязный хак с пробрасыванием времени, которое проставляется при вопросах с задержкой
+            if (scenarioDetails.LastPuzzleDetails != null && puzzleDetails.PuzzleId == scenarioDetails.LastPuzzleDetails.PuzzleId)
+            {
+                // такой кейс возникает, когда мы пробрасываем  PuzzleDetails из WaitingDialog в методе Check
+                // и потом его заменем парой строчек выше
+                puzzleDetails.QuestionAskedAt = scenarioDetails.LastPuzzleDetails.QuestionAskedAt;
+                puzzleDetails.AnswerTimeNoLessThan = scenarioDetails.LastPuzzleDetails.AnswerTimeNoLessThan;
+            }
+
             if (puzzleDetails.IsLastPuzzle)
             {
                 await stepContext.PromptAsync(nameof(TextPrompt),
