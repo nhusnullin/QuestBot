@@ -41,7 +41,7 @@ namespace ScenarioBot.Dialogs
 
             if (notCompletedScenarioNames.Any())
             {
-                await stepContext.Context.SendActivityAsync("Доступные сценарии:",
+                await stepContext.Context.SendActivityAsync($"Доступныx сценариев ({notCompletedScenarioNames.Count}):",
                     cancellationToken: cancellationToken);
                 return await stepContext.PromptAsync(nameof(ChoicePrompt),
                     new PromptOptions
