@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,6 +43,7 @@ namespace ScenarioBot.Dialogs
             {
                 var reply = MessageFactory.Text($"Доступныx сценариев ({notCompletedScenarioNames.Count}):");
 
+                
                 reply.SuggestedActions = new SuggestedActions()
                 {
                     Actions = notCompletedScenarioNames
@@ -85,33 +85,6 @@ namespace ScenarioBot.Dialogs
             //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, teamId, 
             //replyMessage, _conversationReferences, cancellationToken, false);
             return await stepContext.BeginDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
-        }
-
-        private void GenerateInlineKeyboardMarkup(IActivity reply, IEnumerable<string> names)
-        {
-            var inlineKeyboardButton = new
-            {
-                text = "opt1",
-                callback_data = "dt1"
-            };
-
-            var replyMarkup = new
-            {
-                reply_markup = new
-                {
-                    hide_keyboard = true
-                }
-            };
-
-            var channelData = new
-            {
-                method = "sendMessage",
-                parameters = replyMarkup
-            };
-
-            reply.ChannelData = JObject.FromObject(channelData);
-            
-           
         }
         
         private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
