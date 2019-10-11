@@ -42,30 +42,17 @@ namespace ScenarioBot.Dialogs
 
             if (notCompletedScenarioNames.Any())
             {
-                await stepContext.Context.SendActivityAsync($"Доступныx сценариев ({notCompletedScenarioNames.Count}):",
-                    cancellationToken: cancellationToken);
-//                return await stepContext.PromptAsync(nameof(TextPrompt),
-//                    new PromptOptions
-//                    {
-//                        Choices = ChoiceFactory.ToChoices(notCompletedScenarioNames)
-//                    },
-//                    cancellationToken);
-                
-                var reply = MessageFactory.Text("What is your favorite color?");
+                var reply = MessageFactory.Text($"Доступныx сценариев ({notCompletedScenarioNames.Count}):");
 
                 reply.SuggestedActions = new SuggestedActions()
                 {
-                    Actions = new List<CardAction>()
-                    {
-                        new CardAction() { Title = "Red", Type = ActionTypes.ImBack, Value = "Red" },
-                        new CardAction() { Title = "Yellow", Type = ActionTypes.ImBack, Value = "Yellow" },
-                        new CardAction() { Title = "Blue", Type = ActionTypes.ImBack, Value = "Blue" },
-                    },
+                    Actions = notCompletedScenarioNames
+                        .Select(name => new CardAction() {Title = name, Type = ActionTypes.ImBack, Value = name})
+                        .ToList()
                 };
+                
                 await stepContext.Context.SendActivityAsync(reply, cancellationToken);
                 return new DialogTurnResult(DialogTurnStatus.Waiting);
-                
-                    
             }
             else
             {
@@ -78,7 +65,7 @@ namespace ScenarioBot.Dialogs
         private async Task<DialogTurnResult> AnswerToChoiceDialog(WaterfallStepContext stepContext,
             CancellationToken cancellationToken)
         {
-            var scenarioId = ((FoundChoice) stepContext.Result).Value;
+            var scenarioId = (string) stepContext.Result;
             var userId = new UserId(stepContext.Context.Activity);
 
             var scenarioDetails = _scenarioService.GetLastScenarioDetailsExceptGameOver(userId, scenarioId);
