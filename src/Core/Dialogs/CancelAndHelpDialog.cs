@@ -39,14 +39,26 @@ namespace Core.Dialogs
         private async Task<DialogTurnResult> InterruptAsync(DialogContext dialogContext,
             CancellationToken cancellationToken)
         {
-            if (dialogContext.Context.Activity.Type != ActivityTypes.Message) return null;
+            if (dialogContext.Context.Activity.Type != ActivityTypes.Message)
+            {
+                return null;
+            }
 
-            var text = dialogContext.Context.Activity.Text.ToLowerInvariant().Replace("/", "");
+            var text = dialogContext.Context.Activity.Text?.ToLowerInvariant().Replace("/", "");
+
+            if (text == null)
+            {
+                return null;
+            }
+            
             var userId = new UserId(dialogContext.Context.Activity);
 
             var cmd = _botCommands.FirstOrDefault(x => x.IsApplicable(text, userId));
 
-            if (cmd == null) return null;
+            if (cmd == null)
+            {
+                return null;
+            }
 
             if (!cmd.Validate(userId))
             {
