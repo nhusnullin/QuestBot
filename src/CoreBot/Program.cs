@@ -1,4 +1,6 @@
 using System;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,13 +13,30 @@ namespace CoreBot
     {
         public static void Main(string[] args)
         {
+            //TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = true;
+            TelemetryConfiguration.Active.InstrumentationKey = "2b5097d8-ec90-4e24-a412-0d5cb1429d8f";
+
+
+            //var telemetryClient = new TelemetryClient()
+            //{
+            //    InstrumentationKey = "2b5097d8-ec90-4e24-a412-0d5cb1429d8f"
+            //};
+            //telemetryClient.TrackException(new ApplicationException("nhusnullin exception"));
+            //telemetryClient.Flush();
+
+            
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
                 .CreateLogger();
+
+//            Log.Logger = new LoggerConfiguration()
+//                .ReadFrom.Configuration(configuration)
+//                .CreateLogger();
 
             try
             {
@@ -42,6 +61,7 @@ namespace CoreBot
                     logging.AddDebug();
                     logging.AddConsole();
                 })
+                
                 .UseStartup<Startup>()
                 .UseSerilog();
         }

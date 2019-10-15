@@ -32,14 +32,14 @@ namespace CoreBot
         public Startup(IHostingEnvironment env)
         {
             var _isProduction = env.IsProduction();
-            var builder = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                     .SetBasePath(env.ContentRootPath)
                     .AddJsonFile("appsettings.json", true, true)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                     .AddEnvironmentVariables()
+                    .Build()
                 ;
 
-            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
