@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
 
 namespace CoreBot
 {
@@ -31,7 +36,7 @@ namespace CoreBot
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
-                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
+                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, new CustomConverter())
                 .CreateLogger();
 
 //            Log.Logger = new LoggerConfiguration()
@@ -64,6 +69,25 @@ namespace CoreBot
                 
                 .UseStartup<Startup>()
                 .UseSerilog();
+        }
+    }
+    
+    public class CustomConverter : TraceTelemetryConverter
+    {
+        // пока оставим как идею, может чуток попзже пригодится
+        public override IEnumerable<ITelemetry> Convert(LogEvent logEvent, IFormatProvider formatProvider)
+        {
+            foreach (ITelemetry telemetry in base.Convert(logEvent, formatProvider))
+            {
+
+
+                if (logEvent.Level != LogEventLevel.Information)
+                {
+                    yield return telemetry;
+                }
+
+                yield return telemetry;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace CoreBot
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
-                logger.LogError($"Exception caught : {exception.Message}  {exception.StackTrace}");
+                logger.LogError(exception, $"Exception caught : {exception.Message}  {exception.StackTrace}");
                 // Send a catch-all appology to the user.
                 await turnContext.SendActivityAsync($"Sorry, It looks like something went wrong. {exception.Message} ");
             };
@@ -35,7 +35,7 @@ namespace CoreBot
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
-                logger.LogError($"Exception caught : {exception.Message}  {exception.StackTrace}");
+                logger.LogError(exception, $"Exception caught : {exception.Message}  {exception.StackTrace}");
                 // Send a catch-all appology to the user.
                 await turnContext.SendActivityAsync($"Sorry, it looks like something went wrong. {exception.Message} ");
 
@@ -49,7 +49,7 @@ namespace CoreBot
                     }
                     catch (Exception e)
                     {
-                        logger.LogError($"Exception caught on attempting to Delete ConversationState : {e.Message}");
+                        logger.LogError(e,$"Exception caught on attempting to Delete ConversationState : {e.Message}");
                     }
             };
         }
