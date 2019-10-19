@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace ScenarioBot.BotCommands
     public class TopCommand : IBotCommand
     {
         private readonly IUserService _userService;
+        private const string TopCommandPrefix = "top";
+        private const int DefaultUserCount = 10;
 
         public TopCommand(IUserService userService)
         {
@@ -21,7 +24,11 @@ namespace ScenarioBot.BotCommands
 
         public bool IsApplicable(string message, UserId userId)
         {
-            return message.Equals("top", StringComparison.InvariantCultureIgnoreCase);
+            const int maxAllowedUserCountLength = 6;
+            message = message.Trim();
+            return message.StartsWith(TopCommandPrefix, StringComparison.InvariantCultureIgnoreCase) &&
+                   message.Length < TopCommandPrefix.Length + maxAllowedUserCountLength &&
+                   message.Substring(TopCommandPrefix.Length).All(Char.IsDigit);
         }
 
         public bool Validate(UserId userId)
@@ -32,16 +39,28 @@ namespace ScenarioBot.BotCommands
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId,
             CancellationToken cancellationToken)
         {
-            var userWeights = await _userService.CalcUserWeightsAsync();
+            var userCount = GetUserCount();
+            var userWeights = await _userService.CalcUserWeightsAsync(userCount);
 
             var sb = new StringBuilder();
-            sb.Append("Top 10 \r\n");
+            sb.Append($"Top {userCount} \r\n");
             
             foreach (var userWeight in userWeights) sb.Append($"{userWeight.Key} - {userWeight.Value} \r\n");
 
             await dialogContext.Context.SendActivityAsync(sb.ToString(), cancellationToken: cancellationToken);
 
             return new DialogTurnResult(DialogTurnStatus.Waiting);
+
+            int GetUserCount()
+            {
+                var userCountString = dialogContext.Context
+                    .Activity
+                    .Text?.Substring(TopCommandPrefix.Length);
+            
+                return string.IsNullOrWhiteSpace(userCountString) 
+                    ? DefaultUserCount
+                    : Convert.ToInt32(userCountString);
+            }
         }
 
         public IList<ComponentDialog> GetComponentDialogs()

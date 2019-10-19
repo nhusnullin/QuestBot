@@ -34,11 +34,11 @@ namespace ScenarioBot.Service
             await _answerRepository.AddAnswer(new Answer(scenarioDetails));
         }
 
-        public async Task<IDictionary<string, int>> CalcUserWeightsAsync()
+        public async Task<IDictionary<string, int>> CalcUserWeightsAsync(int userCount)
         {
             var result = new Dictionary<string, int>();
 
-            var answerWeights = _answerRepository.CalcAnswerWeights(10);
+            var answerWeights = _answerRepository.CalcAnswerWeights(userCount);
 
             int index = 0;
             foreach (var answerWeight in answerWeights)
