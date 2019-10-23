@@ -16,6 +16,7 @@ namespace ScenarioBot.BotCommands
         private readonly IUserService _userService;
         private const string TopCommandPrefix = "top";
         private const int DefaultUserCount = 10;
+        private const int MaxAllowedUserCountLength = 6;
 
         public TopCommand(IUserService userService)
         {
@@ -24,10 +25,9 @@ namespace ScenarioBot.BotCommands
 
         public bool IsApplicable(string message, UserId userId)
         {
-            const int maxAllowedUserCountLength = 6;
             message = message.Trim();
             return message.StartsWith(TopCommandPrefix, StringComparison.InvariantCultureIgnoreCase) &&
-                   message.Length < TopCommandPrefix.Length + maxAllowedUserCountLength &&
+                   message.Length < TopCommandPrefix.Length + MaxAllowedUserCountLength &&
                    message.Substring(TopCommandPrefix.Length).All(Char.IsDigit);
         }
 
