@@ -7,10 +7,18 @@ namespace ScenarioBot.Repository
 {
     public interface IAnswerRepository
     {
-        Task<IList<string>> GetCompletedScenarioIds(UserId userId);
+        Task<IEnumerable<string>> GetCompletedScenarioIds(UserId userId);
 
         Task AddAnswer(Answer answer);
         Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId);
         dynamic CalcAnswerWeights(int take);
+        
+        /// <summary>
+        /// Закончен ли сценарий пользователем
+        /// </summary>
+        /// <param name="userId">идентификатор пользователя</param>
+        /// <param name="scenarioId">идентификатор сценария</param>
+        /// <returns></returns>
+        Task<bool> IsScenarioCompletedByAsync(UserId userId, string scenarioId);
     }
 }

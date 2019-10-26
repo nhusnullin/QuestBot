@@ -10,25 +10,42 @@ namespace ScenarioBot.Repository.Impl.MongoDB
 {
     public class AnswerRepository : MongoConfiguration, IAnswerRepository
     {
+        
+        private readonly FindOptions<Answer> _findOptions = new FindOptions<Answer>
+            {Collation = new Collation("en", strength: CollationStrength.Primary)};
+        
         public AnswerRepository(IMongoClient client) : base(client)
         {
         }
 
-        public async Task<IList<string>> GetCompletedScenarioIds(UserId userId)
+        public async Task<IEnumerable<string>> GetCompletedScenarioIds(UserId userId)
         {
             if (userId == null)
             {
                 return new List<string>();
             }
-            
+
             var completedScenarioIds = Answers
                 .Find(x => x.IsLastAnswer && x.RespondentId.Id == userId.Id)
                 .Project(x => x.ScenarioId)
                 .ToList()
-                .Distinct()
-                .ToList();
+                .Distinct();
 
             return completedScenarioIds;
+        }
+
+        public async Task<bool> IsScenarioCompletedByAsync(UserId userId, string scenarioId)
+        {
+            if (userId == null)
+            {
+                return true;
+            }
+            var completedCollection = await Answers
+                .FindAsync(x => x.IsLastAnswer &&
+                                x.RespondentId.Id == userId.Id &&
+                                x.ScenarioId == scenarioId, _findOptions);
+
+            return await completedCollection.AnyAsync();
         }
 
         public async Task AddAnswer(Answer answer)

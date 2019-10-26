@@ -99,7 +99,7 @@ namespace ScenarioBot.Dialogs
             
             await _userService.SetAnswer(scenarioDetails);
 
-            if (!_scenarioService.IsOver(scenarioDetails.UserId, scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
+            if (!_scenarioService.IsOver(scenarioDetails.ScenarioId, puzzleDetails.PuzzleId))
                 return await stepContext.ReplaceDialogAsync(nameof(ScenarioDialog), scenarioDetails, cancellationToken);
 
             return await stepContext.EndDialogAsync(scenarioDetails, cancellationToken);
