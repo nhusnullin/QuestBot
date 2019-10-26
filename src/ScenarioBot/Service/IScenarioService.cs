@@ -8,7 +8,16 @@ namespace ScenarioBot.Service
     public interface IScenarioService
     {
         Puzzle GetNextPuzzle(UserId teamId, string scenarioId, string lastPuzzleId, string lastAnswer);
-        bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId);
+        bool IsOver(string scenarioId, string lastPuzzleId);
+        
+        /// <summary>
+        /// Прохождение сценария пользователем окончено   
+        /// </summary>
+        /// <param name="userId">идентификатор пользователя</param>
+        /// <param name="scenarioId">идентификатор сценария</param>
+        /// <returns>закончил ли пользователь прохождение сценария</returns>
+        Task<bool> IsOverByUserAsync(UserId userId, string scenarioId);
+        
         void LoadAll();
         Task<IList<string>> GetNotCompletedScenarioNames(UserId userId);
         Task<ScenarioDetails> GetLastScenarioDetailsExceptGameOver(UserId userId, string scenarioId);

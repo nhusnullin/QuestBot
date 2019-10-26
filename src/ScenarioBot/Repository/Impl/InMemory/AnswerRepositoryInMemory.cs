@@ -15,14 +15,14 @@ namespace ScenarioBot.Repository.Impl.InMemory
             _store = new List<Answer>();
         }
 
-        public async Task<IList<string>> GetCompletedScenarioIds(UserId userId)
+        public async Task<IEnumerable<string>> GetCompletedScenarioIds(UserId userId)
         {
             return _store.Where(x => x.IsLastAnswer)
                 .GroupBy(x => x.ScenarioId)
                 .SelectMany(x => x.ToList())
-                .Select(x => x.ScenarioId)
-                .ToList();
+                .Select(x => x.ScenarioId);
         }
+
 
         public async Task AddAnswer(Answer answer)
         {
@@ -50,6 +50,13 @@ namespace ScenarioBot.Repository.Impl.InMemory
                 .ToList();
 
             return calculatedAnswers;
+        }
+
+        public async Task<bool> IsScenarioCompletedByAsync(UserId userId, string scenarioId)
+        {
+            return _store.Any(x => x.IsLastAnswer &&
+                                   x.ScenarioId == scenarioId &&
+                                   x.RespondentId.Id == userId.Id);
         }
 
         public async Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
