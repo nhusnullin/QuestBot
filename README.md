@@ -1,19 +1,8 @@
 [![Build status](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_apis/build/status/awesomedotnextquestbot%20-%201%20-%20CI)](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_build/latest?definitionId=2)
 
-# SensativeInformation
-your new bot. You will find it at t.me/dotnextquestbot
-Use this token to access the HTTP API:
-881337585:AAEHJxvwI2PziblkJjvAl1ytm1J_mvkg8VA
-Keep your token secure and store it safely, it can be used by anyone to control your bot.
 
 # CoreBot
 Bot Framework v4 core bot sample.
-
-This bot has been created using [Bot Framework][1], it shows how to:
-- Use [LUIS][11] to implement core AI capabilities
-- Implement a multi-turn conversation using Dialogs
-- Handle user interruptions for such things as `Help` or `Cancel`
-- Prompt for and validate requests for information from the user
 
 ## Prerequisites
 - [.NET Core SDK][4] version 2.1
