@@ -16,7 +16,7 @@ namespace CoreBot
         public static void Main(string[] args)
         {
             //TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = true;
-            TelemetryConfiguration.Active.InstrumentationKey = "2b5097d8-ec90-4e24-a412-0d5cb1429d8f";
+//            TelemetryConfiguration.Active.InstrumentationKey = "2b5097d8-ec90-4e24-a412-0d5cb1429d8f";
 
 
             //var telemetryClient = new TelemetryClient()
