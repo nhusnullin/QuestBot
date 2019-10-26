@@ -27,7 +27,7 @@ namespace ScenarioBot.BotCommands
         {
             message = message.Trim();
             return message.StartsWith(TopCommandPrefix, StringComparison.InvariantCultureIgnoreCase) &&
-                   message.Length < TopCommandPrefix.Length + MaxAllowedUserCountLength &&
+                   message.Length <= TopCommandPrefix.Length + MaxAllowedUserCountLength &&
                    message.Substring(TopCommandPrefix.Length).All(char.IsDigit);
         }
 

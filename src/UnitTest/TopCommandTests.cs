@@ -15,5 +15,17 @@ namespace UnitTestProject
             var actualOutput = TopCommand.GetUserCount(input);
             Assert.AreEqual(expectedOutput, actualOutput);
         }
+        
+        [TestMethod]
+        [DataRow("top5", true)]
+        [DataRow("top", true)]
+        [DataRow("topN", false)]
+        [DataRow("top99", true)]
+        [DataRow("top100", false)]
+        public void IsApplicableTest(string input, bool expectedOutput)
+        {
+            var actualOutput = new TopCommand(null).IsApplicable(input, null);
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
     }
 }
