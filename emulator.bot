@@ -1,0 +1,26 @@
+{
+    "name": "http://localhost:3978/api/messages",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "8adfe820-69ce-11e9-9c21-bd88409b00f6",
+            "name": "localhost"
+        },
+        {
+            "type": "endpoint",
+            "appId": "9b6857ad-5e19-4ed6-9dc0-c53d39105a97",
+            "appPassword": "V}a5YJQbR4kE836G-Yv*K409p.>5",
+            "endpoint": "https://awesomedotnextquestbot.azurewebsites.net/api/messages",
+            "id": "166",
+            "name": "https://awesomedotnextquestbot.azurewebsites.net/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\projects\\bot\\httplocalhost3978apimessages.bot",
+    "overrides": null
+}
