@@ -108,8 +108,8 @@ namespace CoreBot
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, DialogAndWelcomeBot<ScenarioDialog>>();
 
-            string botAppId = Configuration.GetSection("MicrosoftAppId").Value;//"9b6857ad-5e19-4ed6-9dc0-c53d39105a97";
-            string password = Configuration.GetSection("MicrosoftAppPassword").Value;//"V}a5YJQbR4kE836G-Yv*K409p.>5";
+            string botAppId = Configuration.GetSection("MicrosoftAppId").Value;
+            string password = Configuration.GetSection("MicrosoftAppPassword").Value;
             services.AddSingleton<IAdapterIntegration>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<IAdapterIntegration>>();
