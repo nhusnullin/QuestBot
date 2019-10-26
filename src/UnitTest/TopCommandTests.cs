@@ -9,6 +9,7 @@ namespace UnitTestProject
         [TestMethod]
         [DataRow("/top5", 5)]
         [DataRow("/top", 10)]
+        [DataRow("/topN", 10)]
         public void GetUserCountTest(string input, int expectedOutput)
         {
             var actualOutput = TopCommand.GetUserCount(input);

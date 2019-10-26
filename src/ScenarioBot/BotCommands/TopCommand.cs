@@ -50,8 +50,6 @@ namespace ScenarioBot.BotCommands
             await dialogContext.Context.SendActivityAsync(sb.ToString(), cancellationToken: cancellationToken);
 
             return new DialogTurnResult(DialogTurnStatus.Waiting);
-
-            
         }
 
         public IList<ComponentDialog> GetComponentDialogs()
@@ -59,13 +57,10 @@ namespace ScenarioBot.BotCommands
             return new List<ComponentDialog>();
         }
         
-        public static int GetUserCount(string commnadText)
+        public static int GetUserCount(string commandText)
         {
-            var userCountString = commnadText?.Substring(TopCommandPrefix.Length + 1);
-            
-            return string.IsNullOrWhiteSpace(userCountString) 
-                ? DefaultUserCount
-                : Convert.ToInt32(userCountString);
+            var userCountString = commandText?.Substring(TopCommandPrefix.Length + 1);
+            return int.TryParse(userCountString, out var count) ? count : DefaultUserCount;
         }
     }
 }
