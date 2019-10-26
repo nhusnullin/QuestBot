@@ -12,7 +12,6 @@
   <ItemGroup>
     <Folder Include="Dialogs\" />
     <Folder Include="Domain\" />
-    <Folder Include="NewFolder\" />
     <Folder Include="Service\" />
   </ItemGroup>
 
