@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Core.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ScenarioBot.BotCommands;
 
 namespace UnitTestProject
@@ -26,6 +27,19 @@ namespace UnitTestProject
         {
             var actualOutput = new TopCommand(null).IsApplicable(input, null);
             Assert.AreEqual(expectedOutput, actualOutput);
+        }
+        
+        [TestMethod]
+        [DataRow("channel_id", "1")]
+        [DataRow("fake_channel_id", "-1")]
+        [DataRow("dotnext", "0")]
+        [DataRow("channel", "10")]
+        public void ValidateTests(string channelId, string userId)
+        {
+            var validateResult = new TopCommand(null)
+                .Validate(new UserId(channelId, userId.ToString()));
+            
+            Assert.IsTrue(validateResult);
         }
     }
 }

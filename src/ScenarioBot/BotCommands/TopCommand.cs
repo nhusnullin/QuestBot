@@ -59,8 +59,15 @@ namespace ScenarioBot.BotCommands
         
         public static int GetUserCount(string commandText)
         {
-            //здесь нужен +1 потому текст команды приходит /top<номер>,  а в метод IsApplicable текст команды приходит без /
-            var userCountString = commandText?.Substring(TopCommandPrefix.Length + 1);
+            if (string.IsNullOrWhiteSpace(commandText) || commandText.Length < TopCommandPrefix.Length)
+                return DefaultUserCount;
+            
+            //здесь нужно нормализовать строку, потому текст команды приходит /top<номер>,  а в метод IsApplicable текст команды приходит без /
+            var normalizedCommand = commandText.StartsWith("/") 
+                ? commandText.Substring(1)
+                : commandText;
+            
+            var userCountString = normalizedCommand.Substring(TopCommandPrefix.Length);
             return int.TryParse(userCountString, out var count) ? count : DefaultUserCount;
         }
     }
