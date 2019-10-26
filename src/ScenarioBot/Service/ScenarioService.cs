@@ -84,12 +84,18 @@ namespace ScenarioBot.Service
             return retPuzzle;
         }
 
-        public bool IsOver(UserId teamId, string scenarioId, string lastPuzzleId)
+        public bool IsOver(string scenarioId, string lastPuzzleId)
         {
             var scenario = _store[scenarioId];
             var puzzle = scenario.Collection.First(x =>
                 string.Equals(x.Id, lastPuzzleId, StringComparison.CurrentCultureIgnoreCase));
             return puzzle.IsLastPuzzle;
+        }
+        
+        public async Task<bool> IsOverByUserAsync(UserId userId, string scenarioId)
+        {
+            var isOver = await _answerRepository.IsScenarioCompletedByAsync(userId, scenarioId);
+            return isOver;
         }
 
         public void LoadAll()

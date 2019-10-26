@@ -1,0 +1,101 @@
+{
+    "ScenarioId": "TestScenario",
+    "Collection": [
+        {
+            "IsLastPuzzle": false,
+            "Id": "Root",
+            "Weight": 1,
+            "Question": "Добро пожаловать на dotQUEST. Это наш обучающий сценарий. Начать обучение? (Напишите ответ на вопрос, например - да)",
+            "PuzzleType": 0,
+            "PosibleBranches": [
+                {
+                    "Answer": "да",
+                    "GoToId": "Question"
+                },
+                {
+                    "Answer": "yes",
+                    "GoToId": "Question"
+                }
+            ],
+            "ElseBranch": "Game over"
+        },
+        {
+            "IsLastPuzzle": false,
+            "Id": "Question",
+            "Weight": 1,
+            "Question": "Каждый квест в разделе /scenario - отдельная история. Квест выбираете Вы. Затем телеграм-бот отправляет задание. На задание необходимо дать ответ 1-2 словами, например: алгоритм, Джеффри Рихтер, идиома. Давайте потренируемся и я задам вам простой вопрос: какой сейчас год?",
+            "PuzzleType": 0,
+            "PosibleBranches": [
+                {
+                    "Answer": "2019",
+                    "GoToId": "SuccessStory"
+                }
+            ],
+            "ElseBranch":"FailedStory"
+        },
+        {
+            "IsLastPuzzle": false,
+            "Id": "SuccessStory",
+            "Weight": 3,
+            "Question": "И это правильный ответ! Если бы ты ответил не верно - твоя история бы выглядела иначе. Так же наш квест предусматривает возможность временно заблокировать пользователя, например на 3 минуты. В это время пользователь не может написать ответ боту. Давайте проверим? ",
+            "PuzzleType": 0,
+            "WaitingTime": 3,
+            "ElseBranch": "RepeatBranch"
+        },
+        {
+            "IsLastPuzzle": false,
+            "Id": "FailedStory",
+            "Weight": 0,
+            "Question": "И это неверный ответ! Если бы ты ответил верно - твоя история бы выглядела иначе. Так же наш квест предусматривает возможность временно заблокировать пользователя, например на 3 минуты. В это время пользователь не может написать ответ боту. Давайте проверим?",
+            "PuzzleType": 0,
+            "ElseBranch": "RepeatBranch"
+        },
+        {
+            "IsLastPuzzle": false,
+            "Id": "RepeatBranch",
+            "Weight": 1,
+            "Question": "Еще наши сценарии могут переспрашивать у тебя ответы, если ты неправильно отвечаешь. Этот сценарий будет переспрашивать тебя 3 раза. Вопрос простой, как называется наше сообщество? Попробуй пару раз ответить неверно, чтобы посмотреть, как работает механизм повторов.",
+            "PuzzleType": 0,
+            "PosibleBranches": [
+              {
+                "Answer": "DotNetRu",
+                "GoToId": "WaitingAndRepeat"
+              },
+              {
+                "Answer": "Dot Net Ru",
+                "GoToId": "WaitingAndRepeat"
+              }
+            ],
+            "NumberOfAttemptsLimit": 3,
+            "ElseBranch": "WaitingAndRepeat"
+        },
+        {
+            "IsLastPuzzle": false,
+            "Id": "WaitingAndRepeat",
+            "Weight": 3,
+            "Question": "Отлично! Мы потестировали повторы, потестировали ожидание. А что если у нас будут и повторы, и ожидания? На данный вопрос мы даем 3 попытки ответить с таймаутами между ними в 3 минуты. Попробуй первый раз ответить неверно. Как называется конференция, на который ты сейчас находишься?",
+            "PuzzleType": 0,
+            "WaitingTime": 3,
+            "NumberOfAttemptsLimit":3,
+            "PosibleBranches": [
+              {
+                "Answer": "TechTrain",
+                "GoToId": "Game over"
+              },
+              {
+                "Answer": "Tech Train",
+                "GoToId": "Game over"
+              }
+            ],
+            "ElseBranch": "Game over"
+        },
+        {
+            "IsLastPuzzle": true,
+            "Weight": 5,
+            "Id": "Game over",
+            "Question": "Обучение окончено, выбирайте сценарии и дерзайте :)",
+            "PuzzleType": 0,
+            "PosibleBranches": []
+        }
+    ]
+}
