@@ -16,7 +16,7 @@ namespace ScenarioBot.BotCommands
         private readonly IUserService _userService;
         private const string TopCommandPrefix = "top";
         private const int DefaultUserCount = 10;
-        private const int MaxAllowedUserCountLength = 6;
+        private const int MaxAllowedUserCountLength = 2;
 
         public TopCommand(IUserService userService)
         {
@@ -28,7 +28,7 @@ namespace ScenarioBot.BotCommands
             message = message.Trim();
             return message.StartsWith(TopCommandPrefix, StringComparison.InvariantCultureIgnoreCase) &&
                    message.Length < TopCommandPrefix.Length + MaxAllowedUserCountLength &&
-                   message.Substring(TopCommandPrefix.Length).All(Char.IsDigit);
+                   message.Substring(TopCommandPrefix.Length).All(char.IsDigit);
         }
 
         public bool Validate(UserId userId)
@@ -59,6 +59,7 @@ namespace ScenarioBot.BotCommands
         
         public static int GetUserCount(string commandText)
         {
+            //здесь нужен +1 потому текст команды приходит /top<номер>,  а в метод IsApplicable текст команды приходит без /
             var userCountString = commandText?.Substring(TopCommandPrefix.Length + 1);
             return int.TryParse(userCountString, out var count) ? count : DefaultUserCount;
         }
