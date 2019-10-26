@@ -19,7 +19,7 @@ namespace CoreBot
                 // Log any leaked exception from the application.
                 logger.LogError(exception, $"Exception caught : {exception.Message}  {exception.StackTrace}");
                 // Send a catch-all appology to the user.
-                await turnContext.SendActivityAsync($"Sorry, It looks like something went wrong. {exception.Message} ");
+                await turnContext.SendActivityAsync($"Oops! Sorry, it looks like something went wrong. We've already informed.");
             };
         }
     }
@@ -37,7 +37,7 @@ namespace CoreBot
                 // Log any leaked exception from the application.
                 logger.LogError(exception, $"Exception caught : {exception.Message}  {exception.StackTrace}");
                 // Send a catch-all appology to the user.
-                await turnContext.SendActivityAsync($"Sorry, it looks like something went wrong. {exception.Message} ");
+                await turnContext.SendActivityAsync($"Oops! Sorry, it looks like something went wrong. We've already informed.");
 
                 if (conversationState != null)
                     try
