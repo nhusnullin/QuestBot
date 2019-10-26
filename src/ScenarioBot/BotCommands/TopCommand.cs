@@ -39,7 +39,7 @@ namespace ScenarioBot.BotCommands
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId,
             CancellationToken cancellationToken)
         {
-            var userCount = GetUserCount();
+            var userCount = GetUserCount(dialogContext.Context.Activity.Text);
             var userWeights = await _userService.CalcUserWeightsAsync(userCount);
 
             var sb = new StringBuilder();
@@ -51,21 +51,21 @@ namespace ScenarioBot.BotCommands
 
             return new DialogTurnResult(DialogTurnStatus.Waiting);
 
-            int GetUserCount()
-            {
-                var userCountString = dialogContext.Context
-                    .Activity
-                    .Text?.Substring(TopCommandPrefix.Length);
             
-                return string.IsNullOrWhiteSpace(userCountString) 
-                    ? DefaultUserCount
-                    : Convert.ToInt32(userCountString);
-            }
         }
 
         public IList<ComponentDialog> GetComponentDialogs()
         {
             return new List<ComponentDialog>();
+        }
+        
+        public static int GetUserCount(string commnadText)
+        {
+            var userCountString = commnadText?.Substring(TopCommandPrefix.Length + 1);
+            
+            return string.IsNullOrWhiteSpace(userCountString) 
+                ? DefaultUserCount
+                : Convert.ToInt32(userCountString);
         }
     }
 }
