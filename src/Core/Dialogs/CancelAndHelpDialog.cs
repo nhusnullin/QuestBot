@@ -12,6 +12,7 @@ namespace Core.Dialogs
     public class CancelAndHelpDialog : ComponentDialog
     {
         private readonly IList<IBotCommand> _botCommands;
+        private const string CommandPrefix = "/";
 
         public CancelAndHelpDialog(string id, IList<IBotCommand> botCommands) : base(id)
         {
@@ -43,13 +44,19 @@ namespace Core.Dialogs
             {
                 return null;
             }
-
-            var text = dialogContext.Context.Activity.Text?.ToLowerInvariant().Replace("/", "");
-
+            
+            var text = dialogContext.Context.Activity.Text?.ToLowerInvariant();
             if (text == null)
             {
                 return null;
             }
+
+            if (!text.StartsWith(CommandPrefix))
+            {
+                return null;
+            }
+
+            text = text.Replace(CommandPrefix, string.Empty);
             
             var userId = new UserId(dialogContext.Context.Activity);
 
