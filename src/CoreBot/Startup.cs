@@ -18,6 +18,7 @@ using MongoDB.Driver;
 using ScenarioBot;
 using ScenarioBot.BotCommands;
 using ScenarioBot.Dialogs;
+using ScenarioBot.HostedService;
 using ScenarioBot.Repository;
 using ScenarioBot.Repository.Impl.InMemory;
 using ScenarioBot.Repository.Impl.MongoDB;
@@ -120,6 +121,12 @@ namespace CoreBot
             services.AddSingleton<INotificationService>(sp => new NotificationService(botAppId, sp.GetRequiredService<IAdapterIntegration>()));
 
             services.AddHostedService<LoadScenarioService>();
+            
+            services.AddHostedService<BackgroundNotificationsService>();
+            services.AddTransient<IScheduledMessagesRepository, ScheduledMessagesRepositoryInMemory>();
+            services.AddSingleton<IDateTimeProvider, DefaultDateTimeProvider>();
+            services.AddTransient<IScheduledMessagesService, ScheduledMessagesService>();
+            
             //services.AddHostedService<SendNotifyInBackgroundService>();
 
 
