@@ -11,7 +11,7 @@ namespace ScenarioBot.HostedService
     {
         private readonly ILogger<BackgroundNotificationsService> _logger;
         private readonly IScheduledMessagesService _scheduledMessagesService;
-        private static readonly TimeSpan NotificationInterval = TimeSpan.FromSeconds(90);
+        private static readonly TimeSpan SendInterval = TimeSpan.FromSeconds(30);
 
         public BackgroundNotificationsService(IScheduledMessagesService scheduledMessagesService,
             ILogger<BackgroundNotificationsService> logger)
@@ -28,10 +28,10 @@ namespace ScenarioBot.HostedService
                 while (true)
                 {
                     stoppingToken.ThrowIfCancellationRequested();
-                    await Task.Delay(NotificationInterval, stoppingToken);
+                    await Task.Delay(SendInterval, stoppingToken);
                     try
                     {
-                        await _scheduledMessagesService.Send(stoppingToken);
+                        await _scheduledMessagesService.SendScheduled(stoppingToken);
                     }
                     catch (Exception ex) when (ex.GetType() != typeof(OperationCanceledException))
                     {

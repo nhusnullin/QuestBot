@@ -17,7 +17,7 @@ namespace ScenarioBot.Repository.Impl.InMemory
             {
                 var messages = Messages
                     .Select(m => m.Value)
-                    .Where(m => !m.Sent.HasValue && m.WhenToSend < periodEnd && m.WhenToSend > periodStart)
+                    .Where(m => !m.Sent.HasValue && m.Scheduled < periodEnd && m.Scheduled > periodStart)
                     .ToList();
 
                 return Task.FromResult(new ReadOnlyCollection<ScheduledMessage>(messages));

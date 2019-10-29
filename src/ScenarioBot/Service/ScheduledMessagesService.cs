@@ -28,7 +28,7 @@ namespace ScenarioBot.Service
             _logger = logger;
         }
         
-        public async Task Send(CancellationToken cancellationToken)
+        public async Task SendScheduled(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Started sending scheduled message");
             var messagesToSend = await GetMessagesToSend();
@@ -62,11 +62,13 @@ namespace ScenarioBot.Service
         public Task Schedule(string messageText, ConversationReference conversationReference, TimeSpan delay)
         {
             _logger.LogInformation($"Scheduling message for user '{conversationReference.User.Id}' with delay '{delay}'");
+            var now = _dateTimeProvider.UtcNow();
             return _messagesRepository.Add(new ScheduledMessage
             {
                 Text = messageText,
                 ConversationReference = conversationReference,
-                WhenToSend = _dateTimeProvider.UtcNow() + delay
+                Scheduled = now + delay,
+                Created = now
             });
         }
     }

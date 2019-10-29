@@ -7,7 +7,7 @@ namespace ScenarioBot.Service
 {
     public interface IScheduledMessagesService
     {
-        Task Send(CancellationToken cancellationToken);
+        Task SendScheduled(CancellationToken cancellationToken);
         Task Schedule(string messageText, ConversationReference conversationReference, TimeSpan delay);
     }
 }
