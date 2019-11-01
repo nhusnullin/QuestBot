@@ -100,7 +100,7 @@ namespace ScenarioBot.Service
 
         public void LoadAll()
         {
-            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/TechTrain"));
+            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/2019.DotNext.Msk"));
             dr.GetFiles("*.json").Select(x => Load(x.FullName))
                 .Where(x => x != null)
                 .ToList();
