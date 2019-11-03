@@ -1,0 +1,1456 @@
+{
+    "ScenarioId": "Robbery",
+    "Collection": [
+		{
+			"IsLastPuzzle": false,
+			"Id": "Root",
+			"Weight": 3,
+			"Question": "Срочный выпуск новостей. В городе DotNext совершено ограбление. Граждане, будьте осторожны. Личность вора еще не установлена. Если вы увидите подозрительного человека – сообщите властям\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "2"
+			}],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "2",
+			"Weight": 3,
+			"Question": "Среда. 6 ноября 2097 года. Вы <никнейм> являетесь частным детективом. Мир охватила кибернетика. Люди постоянно пытаются себя как-то улучшать. Вы один из тех, кто досих пор сохраняет целостный человеческий облик.\nПоследние пару месяцев нет ни одного дела и вы отчаявшись сидите не своем кресле, выпивая виски, и изучаете новости.\nВдруг к вам в кабинет вбегает запыхавшийся офицер полиции и просит вас его выслушать\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "3"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "3",
+			"Weight": 3,
+			"Question": "<никнейм>, нужна ваша помощь. Сегодня утром было совершено ограбление. Был украден экспериментальный чип, позволяющий его владельцу считывать модуль памяти другого человека, и таким образом не только воровать воспоминания, но и опережать своего оппонента в любых его действиях.\nМы бессильны. У всех наших офицеров установлены чипы и мы никак не можем отыскать вора. Он постоянно от нас ускользает. Вы возьметесь за дело?\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Да1",
+				"GoToId": "4"
+			},
+			{
+				"Answer": "Да2",
+				"GoToId": "35"
+			},
+			{
+				"Answer": "Нет",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "4",
+			"Weight": 3,
+			"Question": "Узнав место кражи, вы решаете сразу направиться по данному адресу\n«Вдруг что-то они не заметили. Да и людей нужно бы опросить», - размышляете вы.\nРайон, который назвал вам офицер, ничем особо не выделяется. Банк рядом, бар, небольшие улочки и не так много людей.\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "5"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "5",
+			"Weight": 3,
+			"Question": "Долго не колеблясь, вы решаете опросить людей, замечая при этом парня-рекламшика\n«Простите, не видели ли вы ничего странного этим утром», - спрашиваете вы у паренька.\n«Нет, я пришел совсем недавно. Но вы можете спросить у Неда. Он приходит сюда рано утром и сидит на скамейке на другой стороне улицы. Знаете, я его боюсь. Особенно после того, как недавно он заменил себе глаза»\nотсюда», говорит Нед.\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "6"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "6",
+			"Weight": 3,
+			"Question": "И правда, на лавочке, по другую сторону улицы сидит мужчина. Вы, не колеблясь, направляетесь прямиком к нему.\n«Мистер, можно задать вам пару вопросов?», - кричите вы.\nМужчина поворачивает к вам лицом и вы видите ярко красные глаза.\n«Даааа, парень был прав. Это правда жутко» - проскальзывает мысль у вас в голове\nОпросив Неда вы получаете две очень важные зацепки: утром приехал на такси человек, который куда-то очень спешил и постоянно оглядывался.\n«Не запомнил ли ты номер машины?, - спрашиваете вы.\n«И не только номер», - отвечает Нед и проецирует на стену дома утренний момент.\n«А еще я знаю где этот человек живет. Всего в паре кварталов отсюда», говорит Нед.\n\n Куда пойти?",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Таксопарк",
+				"GoToId": "8"
+			},
+			{
+				"Answer": "Квартира",
+				"GoToId": "34"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "8",
+			"Weight": 3,
+			"Question": "Прибыв в таксопарк вы застываете в удивлении. Обслуживанием всей техники занимается специальная программа. Людей совершенно нет. Но вам необходимо как-то найти нужную вам машину. В комнате вы замечаете терминал и решаете им воспользоваться\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "9"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "9",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "10"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "11"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "10",
+			"Weight": 3,
+			"Question": "Найдя нужную машину вы пытаетесь разобраться в ее маршрутах. Утром многие люди любят воспользоваться услугами такси, чтобы доехать до работы. Просмотрев записи поездок и конечные точки маршрутов, вы находите именно тот, что вам нужен. В заказе кроме конечного пункта у вас теперь есть и пункт отправки, а так же данные о пассажире.\n\n Куда поехать?",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Найденный адрес",
+				"GoToId": "12"
+			},
+			{
+				"Answer": "Квартира",
+				"GoToId": "34"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "11",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "10"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "34",
+			"Weight": 3,
+			"Question": "Квартира",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Пришел до 13",
+				"GoToId": "26"
+			},
+			{
+				"Answer": "Пришел с 13 до 15",
+				"GoToId": "27"
+			},
+			{
+				"Answer": "Пришел после 15",
+				"GoToId": "28"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "26",
+			"Weight": 3,
+			"Question": "Адрес, который сообщил вам Нед, оказался верным. Но вот незадача – у двери электронный замок с паролем\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "29"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "29",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "33"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "30"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "33",
+			"Weight": 3,
+			"Question": "Обыскав квартиру вы находите бейдж компании и ее адрес\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "12"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "30",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "33"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "12",
+			"Weight": 3,
+			"Question": "По указанному  адресу располагается большой бизнес центр. Найти нужного человека тут – как иголку в стоге сена. Но попытаться стоит.\nПодойдя на ресепшен вы представляетесь детективом и интересуетесь о местонахождении кабинета интресующего вас человека.\nКак не странно, но андроид сообщает вам кабинет и вы сразу направляетесь туда.\nЗайдя в кабинет вы видите большой интерактивный рабочий стол и несколько ящиков",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Обыскать ящики",
+				"GoToId": "13"
+			},
+			{
+				"Answer": "Обыскать компьютер",
+				"GoToId": "14"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "13",
+			"Weight": 3,
+			"Question": "Большинство ящиков открыты, но в них нет ничего кроме кучи бумаг или просто мусора, но один ящик оказывается закрыт. Ключа рядом нет\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Открыть силой",
+				"GoToId": "EndGame"
+			},
+			{
+				"Answer": "Не открывать",
+				"GoToId": "14"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "14",
+			"Weight": 3,
+			"Question": "Прикоснувшись к рабочей поверхности стола, загорается экран приветствия и запрос пароля",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "15"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "15",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "16"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "17"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "16",
+			"Weight": 3,
+			"Question": "В почтовом ящике вы находите письмо с указанием адреса. А на рабочем столе файл со странным именем.\nОткрылся ящик стола, который был закрыт. Внутри вы видите баллон с газом, который сработал бы в ином случае\nВнутри ящика блокнот, который исписан одним единственным словом\nУлик больше нет. Вы решаете поехать по адресу, который нашли на почте.",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "18"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "17",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "16"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "27",
+			"Weight": 3,
+			"Question": "Адрес, который сообщил вам Нед, оказался верным. Подойдя к входной двери вы видите что она не заперта. Заглянув внутрь вы видите человека, в руках которого горючая смесь. Похоже он собирается сжечь улики\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Напасть",
+				"GoToId": "31"
+			},
+			{
+				"Answer": "Крикнуть",
+				"GoToId": "32"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "31",
+			"Weight": 3,
+			"Question": "Человек явно не ожидал вас и вы быстро его обезвредили",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "33"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "32",
+			"Weight": 3,
+			"Question": "Человек повернулся в вашу сторону. В руках у него был пистолет. Вы ничего не успели сделать",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "28",
+			"Weight": 3,
+			"Question": "Адрес, который сообщил вам Нед, оказался верным. У дома стоит пожарная машина. По разговорам пожарных вы понимаете, что сгорела именно та квартира, в которую вам и надо было попасть\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Таксопарк",
+				"GoToId": "8"
+			},
+			{
+				"Answer": "Вернуться в офис",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "35",
+			"Weight": 3,
+			"Question": "Первым делом вы решаете заехать в полицейский участок, чтобы узнать более подробно об этом уникальном случае\n«Сколько же людей, сколько же мыслей и личных данных. Это золотая жила для нашего вора», - размышляете вы, направляясь в участок.\nПрибыв на место вас сразу перехватывает начальник полиции.\n«Думаю мен не надо говорить, зачем я здесь?», говорите вы\n«Да, <никнейм>, вы мыслите в верном направлении. Впервые за свою карьеру я бессилен. Я готов вам предоставить всю информацию, которую мои люди смогли раздобыть»\nУзнав те же детали дела, что вам были сообщены у вас в офисе, вы огорчены, но тут начальник полиции достает старую перьевую ручку и чек на некоего «Марка М»\n«Это мы нашли рядом с местом кражи. Рядом расположены лишь два места – банк и бар. Мои люди побывали там, но ничего не нашли».\n\n Куда пойти?",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Банк",
+				"GoToId": "38"
+			},
+			{
+				"Answer": "Бар",
+				"GoToId": "37"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "38",
+			"Weight": 3,
+			"Question": "Зайдя в банк к вам сразу обращается андроид\n«За консультацией обращаться к свободному сотруднику или можно воспользоваться терминалом»\nПонимая, что сотрудник ничем вам не поможет, вы решаете подойти к терминалу.\nПролистав все возможные меню и не найдя ничего полезного вы уже собираетесь уйти проверять другую наводку, но достав чек из кармана, вы роняете ручку на стол терминала и перед вами открывается окно «Введите пароль»\nРучкой оказывается идентификационный ключ, но нужно понять, какой пароль может быть. И чем быстрее, тем лучше\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "39"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "39",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "41"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "40"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "41",
+			"Weight": 3,
+			"Question": "Введя корректный пароль, перед вами появляется папка со странным именем. Попытавшись открыть эту папку, перед вами появляется еще одно окно, в которое необходимо ввести кодовое слово",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "42"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "42",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "44"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "43"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "44",
+			"Weight": 3,
+			"Question": "Экран стал заполняться повторяющимся словом",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "37"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "40",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "41"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "43",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "44"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "37",
+			"Weight": 3,
+			"Question": "Вы пришли в бар",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "До 13",
+				"GoToId": "45"
+			},
+			{
+				"Answer": "C 13 до 15",
+				"GoToId": "46"
+			},
+			{
+				"Answer": "После 15",
+				"GoToId": "47"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "45",
+			"Weight": 3,
+			"Question": "В такое раннее время в баре очень мало людей. Все либо еще дома, либо на работе.\nТолько бармен постоянно что-то делает.\nВы подходите к барной стойке\n«Налей шот виски, пожалуйста», - обращаетесь вы к бармену\nБармен поворачивается к вам и достает из под стола бутылку\n«Что тебя сюда привело в такую рань?», - обращается к вам бармен\nВы показываете ему чек. «Не знаешь ли ты такого человека?»\nБармен внимательно изучает бумагу. «Да, это я выдал чек сегодня утром. Странный был парень. Пришел, кстати с этим мужчиной», - показывает вам на человека, одиноко сидящего за столом\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "51"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "51",
+			"Weight": 3,
+			"Question": "Начав разговор, вы удивляетесь его спокойствию. Спросив про его утреннего компаньона он начинает несвязно отвечать. Нужно что-то делать, чтобы понять его.\nВ какой-то момент он берет салфетку и рисует на нем. После вручает вам.\nЧто же это может значить?\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "52"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "52",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "54"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "53"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "54",
+			"Weight": 3,
+			"Question": "Человек начинает быстро кивать. Забирает у вас салфетку и уже отчетливо пишет на ней адрес.\n\n Вы решаете направиться в",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Банк",
+				"GoToId": "36"
+			},
+			{
+				"Answer": "Адрес",
+				"GoToId": "18"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "18",
+			"Weight": 3,
+			"Question": "По адресу, который вы узнали, находится старый многоквартирный дом. Подойдя к нужной вам квартире вы слышите шаги\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Взломать замок",
+				"GoToId": "19"
+			},
+			{
+				"Answer": "Вломиться",
+				"GoToId": "20"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "19",
+			"Weight": 3,
+			"Question": "Дождавшись тишины в квартире, вы тихо взломали замок и зашли в квартиру. По квартире разбросаны вещи, словно тут кто-то что-то искали\nВдруг из соседней комнаты выходит человек. Вы понимаете что это андроид. Сражаться с ним бесполезно. Но можно попробовать его взломать",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Взломать",
+				"GoToId": "21"
+			},
+			{
+				"Answer": "Крикнуть",
+				"GoToId": "23"
+			},
+			{
+				"Answer": "Сражаться",
+				"GoToId": "22"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "21",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "25"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "24"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "25",
+			"Weight": 3,
+			"Question": "Андроид зависает и через мгновение произносит адрес и добавляет - 7 ноября. Утро",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Ждем ДЕНЬ 2",
+				"GoToId": "55"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "24",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "25"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "23",
+			"Weight": 3,
+			"Question": "Вы говорите слово, которое узнали ранее",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "25"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "22",
+			"Weight": 3,
+			"Question": "Как и предполагалось - андроид слишком силен. Нужно что-то придумать другое",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Крикнуть",
+				"GoToId": "23"
+			},
+			{
+				"Answer": "Взломать",
+				"GoToId": "21"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "20",
+			"Weight": 3,
+			"Question": "Несколько попыток выбить дверь не дали никакого успеха",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "53",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "54"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "46",
+			"Weight": 3,
+			"Question": "Обеденный перерыв. Бар оживился. Вокруг много народу. Вам тут не очень комфортно и вы решаете сразу узнать у бармена про чек.\nПодойдя к нему вы показываете чек: «Не знаешь ли ты такого человека?»\nБармен внимательно изучает бумагу. «Да, это я выдал чек сегодня утром. Странный был парень. Пришел, кстати с мужчиной. Он не так давно вышел. Если поспешишь, можешь его догнать»\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Побежать за мужчиной",
+				"GoToId": "49"
+			},
+			{
+				"Answer": "Остаться в баре",
+				"GoToId": "EndGame"
+			},
+			{
+				"Answer": "Банк",
+				"GoToId": "36"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "49",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "51"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "50"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "50",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "51"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "47",
+			"Weight": 3,
+			"Question": "Вечер. В баре играет музыка начала века. В воздухе аромат хлебных напитков. Сделав заказ вы решаете поговорить с барменом и узнать про чек, полученный в участке.\nПодойдя к нему вы показываете чек: «Не знаешь ли ты такого человека?»\nБармен внимательно изучает бумагу. «Да, это я выдал чек сегодня утром. Странный был парень. Пришел, кстати с мужчиной. Они сидели за столом и о чем-то разговаривали. Но это было рано утром. Больше я ничем тебе не могу помочь»\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Банк",
+				"GoToId": "36"
+			},
+			{
+				"Answer": "Остаться в баре",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "55",
+			"Weight": 3,
+			"Question": "Среда. 8 ноября 2097 года. Спать этой ночью вы не могли. В голове проносились картины того, как человек может использовать чип и что вас может ждать по полученному от андроида адресу\nСобравшись и взяв с собой оружие вы поехали заранее по адресу.\nПрибыв за 15 минут на место вы встали перед выбором\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Вломиться",
+				"GoToId": "56"
+			},
+			{
+				"Answer": "Выжидать",
+				"GoToId": "57"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "56",
+			"Weight": 3,
+			"Question": "Подойдя к двери и готовясь ее выбить, вы обнаружили, что она не заперта\nЗайдя внутрь квартиры вы ужаснулись. В ней находилось несколько отключенных андроидов. Судя по всему, вор тестировал чип на памяти андроидов и доводил их до обнуления\nИсследовав квартиру вы нашли планшет, который прошлым днем забыли в офисе.\nРазблокировать не получается – похоже пароль был изменен\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "58"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "58",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "60"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "59"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "60",
+			"Weight": 3,
+			"Question": "Разблокировав планшет вы заметили что он был полностью сдублирован с вашим телефоном и собирал данные о ваших перемещениях и людях, с которыми вы контактировали. Изучив перемещения планшета вы заметили, что единственной точкой, которая не была зафиксирована – ваш офис\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "61"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "61",
+			"Weight": 3,
+			"Question": "Направляясь в офис вас останавливает человек с просьбой помочь ему. Вы утверждаете, что спешите, но вдруг он называет ваше имя\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Поговорить с человеком",
+				"GoToId": "62"
+			},
+			{
+				"Answer": "Я спешу",
+				"GoToId": "75"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "62",
+			"Weight": 3,
+			"Question": "Отойдя в сторону вместе с человеком и пытаясь его как-то отвлечь вы понимаете, что он находится под контролем вора чипа. ПО поведению человека видно, что чип был не доработан и сопротивление модулей достаточно велико.",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Взлом",
+				"GoToId": "63"
+			},
+			{
+				"Answer": "Крикнуть",
+				"GoToId": "64"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "63",
+			"Weight": 3,
+			"Question": "С опаской того, что вор мог исправить свою оплошность, вы не решаетесь произносить слово и пытаетесь его взломать\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "65"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "64",
+			"Weight": 3,
+			"Question": "Все таки вор исправил свою оплошность. Человек поменялся в лице. Освободился и напал на вас",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "59",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "60"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "65",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "66"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "67"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "66",
+			"Weight": 3,
+			"Question": "Человек завис на некоторое время, перезагрузился и с удивлением посмотрел на вас.\n«Где я? Что я тут делаю? Я должен быть на работе. Где моя жена? А вы кто такой?»\nВы успокаиваете человека, вызываете врача и быстрым темпом направляетесь в офис\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "75"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "67",
+			"Weight": 3,
+			"Question": "Найти и привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "66"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "57",
+			"Weight": 3,
+			"Question": "Просидев в укрытии некоторое время, вы начали ощущать пристальное внимание на себе\nПовернувшись назад вас вырубили.\nОчнувшись вы оказались прикованы наручниками к стулу. Напротив вас сидел человек. Он находился под контролем чипа, но по глазам было видно, что он пытается бороться. Чип был не доработан\nНужно как то освободиться\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "82"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "82",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "68"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "69"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "69",
+			"Weight": 3,
+			"Question": "Привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "68"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "68",
+			"Weight": 3,
+			"Question": "Удачно освободившись, вы приковываете человека этими же наручниками и вызываете скорую. Осмотревшись, вы понимаете, что находитесь в квартире, за которой наблюдали. Внутри нее находится куча отключенных андроидов. Повернувшись к человеку, вы видите слезы на его глазах – его надо спасать. Вы вспоминаете андроида, на которого подействовало спец.слово, но не уверены, получится ли это сейчас\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Крикнуть",
+				"GoToId": "70"
+			},
+			{
+				"Answer": "Взломать",
+				"GoToId": "71"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "70",
+			"Weight": 3,
+			"Question": "Все таки вор исправил свою оплошность. Человек поменялся в лице. Освободился и напал на вас",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "EndGame"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "71",
+			"Weight": 3,
+			"Question": "С опаской того, что вор мог исправить свою оплошность, вы не решаетесь произносить слово и пытаетесь его взломать",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "72"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "72",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "74"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "73"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "73",
+			"Weight": 3,
+			"Question": "Привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "74"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "74",
+			"Weight": 3,
+			"Question": "Человек завис на некоторое время, перезагрузился и с удивлением посмотрел на вас.\n«Где я? Что я тут делаю?»\nВы успокаиваете человека и интересуетесь, что он помнит последнее\nЧеловек задумывается на мгновение, и описывает в мельчайших подробностях ваш кабинет.\nВы вызываете врача и быстро направляетесь в офис\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "75"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "75",
+			"Weight": 3,
+			"Question": "Прибыв в офис вы видите в нем уже знакомого вам офицера, сидящего в вашем кресле\n«Почему?», спрашиваете вы\n«Память это очень интересная штука. Если суметь правильно ей воспользоваться, то можно не только скачивать данные, но и контролировать сознание. Уже полгода я скрывал некоторые свои преступления андроидами, приезжав на место и застреливая их. Взлом их безумно прост. Но мне этого было мало. Знаешь, сколько данных хранит человек, сколько знаний, информации. А управлять ими одно удовольствие. Споры, конфликты и подставы друг друга»\n«Но почему я?»\n«Меня стали подозревать, и мне нужен был подставной, на которого можно все скинуть. Я много думал о причине и если удастся доказать, что чип тебе необходим ради контроля людей – я останусь чист»\n«Тебе это не удастся»\n«Уже удалось»\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "76"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "76",
+			"Weight": 3,
+			"Question": "После этой фразы из темных углов офиса стали выходить люди, которых вы встречали в течении прошлого дня. Они стояли и не двигались.\n«Я уже вызвал полицию. Они едут сюда. Но надо избавится от улик», - говорит офицер, «Убейте себя»\nВидно по лицам людей их сопротивление каждому действию, но противится чипу не получается\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Взломать людей",
+				"GoToId": "77"
+			},
+			{
+				"Answer": "Наброситься на офицера",
+				"GoToId": "80"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "77",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "78"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "100"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "78",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "79"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "100"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "79",
+			"Weight": 3,
+			"Question": "Задача по dotnet",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Правильно",
+				"GoToId": "90"
+			},
+			{
+				"Answer": "Ошибка",
+				"GoToId": "100"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "80",
+			"Weight": 3,
+			"Question": "Выхватив пистолет, вы набросились на офицера\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Далее",
+				"GoToId": "81"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": false,
+			"Id": "81",
+			"Weight": 3,
+			"Question": "Привести человека <имя> к стенду <название>\n\n",
+			"PuzzleType": 0,
+			"WaitingTime": 3,
+			"NumberOfAttemptsLimit":3,
+			"PosibleBranches": [
+			{
+				"Answer": "Password",
+				"GoToId": "77"
+			}
+			],
+			"ElseBranch": "EndGame"
+		},
+		{
+			"IsLastPuzzle": true,
+			"Weight": 5,
+			"Id": "90",
+			"Question": "Вы всех спасли и обезвредили преступника",
+			"PuzzleType": 0,
+			"PosibleBranches": []
+		},
+		{
+			"IsLastPuzzle": true,
+			"Weight": 5,
+			"Id": "100",
+			"Question": "Заложники мертвы",
+			"PuzzleType": 0,
+			"PosibleBranches": []
+		},
+		{
+			"IsLastPuzzle": true,
+			"Weight": 5,
+			"Id": "EndGame",
+			"Question": "End Game",
+			"PuzzleType": 0,
+			"PosibleBranches": []
+		}
+    ]
+}

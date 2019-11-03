@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="raw_data\2019.DotNext.Msk\testScenario.json">
+    <Content Include="raw_data\2019.DotNext.Msk\Education.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
