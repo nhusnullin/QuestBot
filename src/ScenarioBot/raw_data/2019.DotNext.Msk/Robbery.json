@@ -42,11 +42,11 @@
 			"NumberOfAttemptsLimit":3,
 			"PosibleBranches": [
 			{
-				"Answer": "Да1",
+				"Answer": "Свидетели",
 				"GoToId": "4"
 			},
 			{
-				"Answer": "Да2",
+				"Answer": "Полицейский участок",
 				"GoToId": "35"
 			},
 			{
