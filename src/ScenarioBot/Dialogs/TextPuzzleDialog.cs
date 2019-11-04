@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.BotCommands;
 using Core.Dialogs;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
+using Newtonsoft.Json.Linq;
 using ScenarioBot.Domain;
 
 namespace ScenarioBot.Dialogs
@@ -32,9 +35,21 @@ namespace ScenarioBot.Dialogs
             CancellationToken cancellationToken)
         {
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
-            //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, puzzleDetails.Question, _conversationReferences, cancellationToken, false);
-            return await stepContext.PromptAsync(nameof(TextPrompt),
-                new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
+
+            if (!puzzleDetails.ShowPosibleBranches)
+            {   return await stepContext.PromptAsync(nameof(TextPrompt),
+                    new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
+            }
+            
+            var reply = MessageFactory.Text(puzzleDetails.Question);
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = puzzleDetails.PossibleAnswers
+                    .Select(name => new CardAction() {Title = name, Type = ActionTypes.ImBack, Value = name})
+                    .ToList()
+            };
+            await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+            return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 
         protected virtual async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,
@@ -43,13 +58,15 @@ namespace ScenarioBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string) stepContext.Result;
             puzzleDetails.SetAnswer(answer);
-
+            
+            // хак для тг чтобы скриывать подсказки от клавиатуры
+            GenerateHideKeybordMarkupForTelegram(stepContext.Context.Activity.CreateReply());
+            
             if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
             {
                 var message = "К сожалению, количество попыток дать правильный ответ закончилось";
-                //await TeamUtils.SendTeamMessage(_teamService, stepContext.Context, _notificationMessanger, puzzleDetails.TeamId, message, _conversationReferences, cancellationToken, false);
                 await stepContext.PromptAsync(nameof(TextPrompt),
                     new PromptOptions {Prompt = MessageFactory.Text(message)}, cancellationToken);
                 return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -66,6 +83,25 @@ namespace ScenarioBot.Dialogs
             }
 
             return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
+        }
+        
+        private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
+        {
+            var replyMarkup = new
+            {
+                reply_markup = new
+                {
+                    hide_keyboard = true
+                }
+            };
+
+            var channelData = new
+            {
+                method = "sendMessage",
+                parameters = replyMarkup
+            };
+
+            reply.ChannelData = JObject.FromObject(channelData);
         }
     }
 }

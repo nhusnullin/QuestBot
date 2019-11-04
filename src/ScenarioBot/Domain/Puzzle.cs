@@ -60,6 +60,11 @@ namespace ScenarioBot.Domain
         public int? WaitingTime { get; set; }
 
         /// <summary>
+        /// Необходимость показать пользователю возможные ответы
+        /// </summary>
+        public bool ShowPosibleBranches { get; set; }
+
+        /// <summary>
         ///     ветки развития. key - это ответ пользователя, value - ветка развития
         /// </summary>
         public IList<AnswerToBranch> PosibleBranches { get; set; }

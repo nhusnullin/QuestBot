@@ -28,7 +28,7 @@ namespace ScenarioBot.Domain
             NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
             WaitnigTime = puzzle.WaitingTime;
             IsLastPuzzle = puzzle.IsLastPuzzle;
-
+            ShowPosibleBranches = puzzle.ShowPosibleBranches;
             // для режима ожидания у нас свой диалог
             PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
         }
@@ -53,6 +53,12 @@ namespace ScenarioBot.Domain
         public string PuzzleId { get; set; }
         public string Question { get; set; }
         public IList<string> PossibleAnswers { get; set; }
+        
+        /// <summary>
+        /// Необходимость показать пользователю возможные ответы
+        /// </summary>
+        public bool ShowPosibleBranches { get; set; }
+        
         public string ActualAnswer { get; set; }
         public int? WaitnigTime { get; set; }
 
