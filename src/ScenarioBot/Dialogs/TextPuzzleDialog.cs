@@ -58,11 +58,15 @@ namespace ScenarioBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string) stepContext.Result;
             puzzleDetails.SetAnswer(answer);
+
+            if (puzzleDetails.ShowPosibleBranches)
+            {
+                // хак для тг чтобы скрывать подсказки от клавиатуры
+                var reply = GenerateHideKeyboardMarkupForTelegram(stepContext.Context.Activity.CreateReply(""));
+                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+            }
             
-            // хак для тг чтобы скрывать подсказки от клавиатуры
-            var reply = GenerateHideKeybordMarkupForTelegram(stepContext.Context.Activity.CreateReply(""));
-            await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            
+
             if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
@@ -86,7 +90,7 @@ namespace ScenarioBot.Dialogs
             return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
         }
         
-        private IActivity GenerateHideKeybordMarkupForTelegram(IActivity reply)
+        private IActivity GenerateHideKeyboardMarkupForTelegram(IActivity reply)
         {
             var replyMarkup = new
             {
@@ -98,7 +102,6 @@ namespace ScenarioBot.Dialogs
 
             var channelData = new
             {
-                text = "",
                 method = "sendMessage",
                 parameters = replyMarkup
             };
