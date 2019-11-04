@@ -20,5 +20,10 @@ namespace ScenarioBot.Repository
         /// <param name="scenarioId">идентификатор сценария</param>
         /// <returns></returns>
         Task<bool> IsScenarioCompletedByAsync(UserId userId, string scenarioId);
+
+        /// <summary>
+        /// Удалить все ответы из хранилища
+        /// </summary>
+        void RemoveBy(UserId userId);
     }
 }

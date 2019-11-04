@@ -59,6 +59,11 @@ namespace ScenarioBot.Repository.Impl.InMemory
                                    x.RespondentId.Id == userId.Id);
         }
 
+        public void RemoveBy(UserId userId)
+        {
+            _store.RemoveAll(answer => answer.RespondentId.Id == userId.Id);
+        }
+
         public async Task<Answer> GetLastAddedAnswerFromNotCompletedScenario(UserId userId, string scenarioId)
         {
             var completedScenarioIds = _store.Where(x => x.IsLastAnswer && x.RespondentId == userId)

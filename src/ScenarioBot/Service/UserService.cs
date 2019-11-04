@@ -18,6 +18,11 @@ namespace ScenarioBot.Service
             _answerRepository = answerRepository;
         }
 
+        public void RemoveUserAnswers(UserId userId)
+        {
+            _answerRepository.RemoveBy(userId);
+        }
+
         public async Task<User> GetByAsync(string channelId, string userId)
         {
             return await _userRepository.GetUserByIdAsync(new UserId(channelId, userId));

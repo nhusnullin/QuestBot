@@ -90,11 +90,13 @@ namespace CoreBot
             services.AddSingleton<HelpBotCommand, HelpBotCommand>();
             services.AddSingleton<ScenarioBotCommand, ScenarioBotCommand>();
             services.AddSingleton<TopCommand, TopCommand>();
+            services.AddSingleton<ClearCommand, ClearCommand>();
             services.AddSingleton<IList<IBotCommand>>(x => new List<IBotCommand>
             {
                 x.GetRequiredService<HelpBotCommand>(),
                 x.GetRequiredService<ScenarioBotCommand>(),
-                x.GetRequiredService<TopCommand>()
+                x.GetRequiredService<TopCommand>(),
+                x.GetRequiredService<ClearCommand>(),
             });
 
 

@@ -48,6 +48,11 @@ namespace ScenarioBot.Repository.Impl.MongoDB
             return await completedCollection.AnyAsync();
         }
 
+        public void RemoveBy(UserId userId)
+        {
+            Answers.DeleteMany(answer => answer.RespondentId.Id == userId.Id);
+        }
+
         public async Task AddAnswer(Answer answer)
         {
             await Answers.InsertOneAsync(answer).ConfigureAwait(false);
