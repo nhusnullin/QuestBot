@@ -60,8 +60,7 @@ namespace ScenarioBot.Dialogs
             puzzleDetails.SetAnswer(answer);
             
             // хак для тг чтобы скрывать подсказки от клавиатуры
-            var reply = stepContext.Context.Activity.CreateReply("");
-            GenerateHideKeybordMarkupForTelegram(reply);
+            var reply = GenerateHideKeybordMarkupForTelegram(stepContext.Context.Activity.CreateReply(""));
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             
             if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
@@ -87,7 +86,7 @@ namespace ScenarioBot.Dialogs
             return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
         }
         
-        private void GenerateHideKeybordMarkupForTelegram(IActivity reply)
+        private IActivity GenerateHideKeybordMarkupForTelegram(IActivity reply)
         {
             var replyMarkup = new
             {
@@ -99,11 +98,13 @@ namespace ScenarioBot.Dialogs
 
             var channelData = new
             {
+                text = "",
                 method = "sendMessage",
                 parameters = replyMarkup
             };
 
             reply.ChannelData = JObject.FromObject(channelData);
+            return reply;
         }
     }
 }
