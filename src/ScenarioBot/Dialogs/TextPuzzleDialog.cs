@@ -59,8 +59,10 @@ namespace ScenarioBot.Dialogs
             var answer = (string) stepContext.Result;
             puzzleDetails.SetAnswer(answer);
             
-            // хак для тг чтобы скриывать подсказки от клавиатуры
-            GenerateHideKeybordMarkupForTelegram(stepContext.Context.Activity.CreateReply());
+            // хак для тг чтобы скрывать подсказки от клавиатуры
+            var reply = stepContext.Context.Activity.CreateReply("");
+            GenerateHideKeybordMarkupForTelegram(reply);
+            await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             
             if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
 
