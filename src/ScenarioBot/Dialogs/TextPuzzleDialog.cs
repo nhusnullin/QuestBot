@@ -36,26 +36,28 @@ namespace ScenarioBot.Dialogs
         {
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
 
-            var reply = MessageFactory.Text(puzzleDetails.Question);
-            if (!puzzleDetails.ShowPosibleBranches)
+            var reply = stepContext.Context.Activity.CreateReply(puzzleDetails.Question);
+            if (puzzleDetails.ShowPosibleBranches)
             {   
-                //return await stepContext.PromptAsync(nameof(TextPrompt),
-                //    new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
-                
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = puzzleDetails.PossibleAnswers
+                        .Select(name => new CardAction() {Title = name, Type = ActionTypes.ImBack, Value = name})
+                        .ToList()
+                };
+            }
+            else
+            {
                 // хак скриыть клавиатуру в тг
                 GenerateHideKeyboardMarkupForTelegram(reply);
-                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-                return new DialogTurnResult(DialogTurnStatus.Waiting);
             }
-            
-            reply.SuggestedActions = new SuggestedActions()
-            {
-                Actions = puzzleDetails.PossibleAnswers
-                    .Select(name => new CardAction() {Title = name, Type = ActionTypes.ImBack, Value = name})
-                    .ToList()
-            };
+
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             return new DialogTurnResult(DialogTurnStatus.Waiting);
+            
+            //return await stepContext.PromptAsync(nameof(TextPrompt),
+            //    new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
+
         }
 
         protected virtual async Task<DialogTurnResult> CheckDialog(WaterfallStepContext stepContext,
