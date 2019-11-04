@@ -65,6 +65,7 @@
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"NumberOfAttemptsLimit":3,
+			"ShowPosibleBranches": true,
 			"PosibleBranches": [
 				{
 					"Answer": "Да",
