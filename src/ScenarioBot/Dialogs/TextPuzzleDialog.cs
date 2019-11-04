@@ -36,12 +36,18 @@ namespace ScenarioBot.Dialogs
         {
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
 
+            var reply = MessageFactory.Text(puzzleDetails.Question);
             if (!puzzleDetails.ShowPosibleBranches)
-            {   return await stepContext.PromptAsync(nameof(TextPrompt),
-                    new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
+            {   
+                //return await stepContext.PromptAsync(nameof(TextPrompt),
+                //    new PromptOptions {Prompt = MessageFactory.Text(puzzleDetails.Question)}, cancellationToken);
+                
+                // хак скриыть клавиатуру в тг
+                GenerateHideKeyboardMarkupForTelegram(reply);
+                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+                return new DialogTurnResult(DialogTurnStatus.Waiting);
             }
             
-            var reply = MessageFactory.Text(puzzleDetails.Question);
             reply.SuggestedActions = new SuggestedActions()
             {
                 Actions = puzzleDetails.PossibleAnswers
@@ -58,15 +64,7 @@ namespace ScenarioBot.Dialogs
             var puzzleDetails = (PuzzleDetails) stepContext.Options;
             var answer = (string) stepContext.Result;
             puzzleDetails.SetAnswer(answer);
-
-            if (puzzleDetails.ShowPosibleBranches)
-            {
-                // хак для тг чтобы скрывать подсказки от клавиатуры
-                var reply = GenerateHideKeyboardMarkupForTelegram(stepContext.Context.Activity.CreateReply(""));
-                await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            }
             
-
             if (puzzleDetails.IsRight) return await stepContext.EndDialogAsync(puzzleDetails, cancellationToken);
 
             if (puzzleDetails.NumberOfAttempts >= puzzleDetails.NumberOfAttemptsLimit)
