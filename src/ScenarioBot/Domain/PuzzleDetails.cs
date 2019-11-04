@@ -10,8 +10,6 @@ namespace ScenarioBot.Domain
     /// </summary>
     public class PuzzleDetails
     {
-        private readonly Puzzle _puzzle;
-
         // пустой конструктор необходим для дессериализации bot framework
         public PuzzleDetails()
         {
@@ -20,15 +18,15 @@ namespace ScenarioBot.Domain
 
         public PuzzleDetails(Puzzle puzzle)
         {
-            _puzzle = puzzle;
-
             PuzzleId = puzzle.Id;
             Question = puzzle.Question;
-            PossibleAnswers = _puzzle.PosibleBranches.Select(x => x.Answer).ToList();
+            PossibleAnswers = puzzle.PosibleBranches.Select(x => x.Answer).ToList();
             NumberOfAttemptsLimit = puzzle.NumberOfAttemptsLimit;
             WaitnigTime = puzzle.WaitingTime;
             IsLastPuzzle = puzzle.IsLastPuzzle;
             ShowPosibleBranches = puzzle.ShowPosibleBranches;
+            PuzzleWeight = puzzle.Weight;
+            
             // для режима ожидания у нас свой диалог
             PuzzleType = WaitnigTime.HasValue ? PuzzleType.WaitTextPuzzleDialog : puzzle.PuzzleType;
         }
@@ -48,7 +46,7 @@ namespace ScenarioBot.Domain
         /// </summary>
         public DateTime AnswerTimeNoLessThan { get; set; }
 
-        public int PuzzleWeight => _puzzle?.Weight ?? 1;
+        public int PuzzleWeight { get; set; }
 
         public string PuzzleId { get; set; }
         public string Question { get; set; }
