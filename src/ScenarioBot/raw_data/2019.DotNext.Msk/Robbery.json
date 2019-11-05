@@ -138,7 +138,7 @@
 			"Question": "На терминале загорается экран и вы с трудом распознаете слова среди последовательности строк которые бегут у вас перед глазами.\nВы начинаете замечать, как слова образуют загадку.\n«Если измерить робота с головы до ног его длинна будет равна 122 см. Если с ног до головы (вдоль всех инструментов) - 152 см. Статистически робот имеет плотность на единицу боковой проекции 8 гр./кв.см. Средняя высота робота вдоль боковой поверхности 120 см.\nСколько весит килограмм робота?»\r\n",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "Килограмм",
@@ -241,7 +241,7 @@
 			"Question": "Электронный взломщик модели 9000 требует корректной настройки, для этого необходимо пройти калибровку.\nНазовем натуральное число удивительным, если в его записи встречаются только четные цифры.\nСколько существует удивительных четырехзначных чисел?",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "500",
@@ -371,7 +371,7 @@
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"ShowPosibleBranches": true,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "5 Киборгов",
@@ -388,7 +388,7 @@
 			"IsLastPuzzle": false,
 			"Id": "16",
 			"Weight": 1,
-			"Question": "Успешно справившись с авторизацией, в почтовом ящике вы находите письмо с указанием адреса. А на рабочем столе файл со странным именем.\nОткрылся ящик стола, который был закрыт. Внутри вы видите баллон с газом, который сработал бы в ином случае\nВнутри ящика блокнот, который исписан одним единственным словом\nУлик больше нет. Вы решаете поехать по адресу, который нашли на почте.\r\n",
+			"Question": "Успешно справившись с авторизацией, в почтовом ящике вы находите письмо с указанием адреса. А на рабочем столе файл со странным именем.\nОткрылся ящик стола, который был закрыт. Внутри вы видите баллон с газом, который сработал бы в ином случае\nВнутри ящика блокнот, который исписан одним единственным словом.\nУлик больше нет. Вы решаете поехать по адресу, который нашли на почте.\r\n",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"ShowPosibleBranches": true,
@@ -592,7 +592,7 @@
 			"Question": "Назовите точное число сообществ которые было в DotNetRu в далеком ноябре 2019 года",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "12",
@@ -724,7 +724,7 @@
 			"Question": "На салфетке нарисован Андроид и управляющие команды,\nКак мы знаем, управляющие команды Андроидов состоят из трех букв: A, B и C.\nУправляющей командой называется любая последовательность, состоящая не более, чем из 4 букв. Сколько управляющий команд у Андроидов? ",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "120",
@@ -762,7 +762,7 @@
 			"IsLastPuzzle": false,
 			"Id": "18",
 			"Weight": 1,
-			"Question": "По адресу, который вы узнали, находится старый многоквартирный дом. Подойдя к нужной вам квартире вы слышите шаги\r\n-Ваши дейсвтия?-",
+			"Question": "По адресу, который вы узнали, находится старый многоквартирный дом. Подойдя к нужной вам квартире вы слышите шаги за дверью\r\n-Ваши дейсвтия?-",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"NumberOfAttemptsLimit":3,
@@ -811,7 +811,7 @@
 			"Question": "Эта чертова машина была создана лет 40 назад,\nбыстро использовав Электронный взламщик 9000 вы мгновенно подключились к системе авторизации,\nв очередной раз вам повезло и перед вами появилось всего 1 строчка\nЧему равен х?\n(х:2 − 3):2 − 1 = 3\n",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "22",
@@ -860,10 +860,11 @@
 			"IsLastPuzzle": false,
 			"Id": "23",
 			"Weight": 1,
-			"Question": "Вы говорите слово, которое узнали ранее\n",
+			"Question": "Вы говорите слово, которое узнали ранее в блокноте\n",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"NumberOfAttemptsLimit":3,
+			"ShowPosibleBranches": true,
 			"PosibleBranches": [
 				{
 					"Answer": "Далее",
@@ -958,7 +959,7 @@
 			"Question": "Из Бара до ближайшей автобусной остановки ведут три улицы, а от автобусной остановки до железнодорожного вокзала — четыре улицы. Сколько существует путей из Бара до железнодорожного вокзала?",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "12",
@@ -978,7 +979,7 @@
 			"Question": "Найти и привести спикера с именем Алексей к стенду Кастис",
 			"PuzzleType": 0,
 			"WaitingTime": 3,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "Intermedia",
@@ -1053,8 +1054,7 @@
 			"Question": "В очередной раз вы воспользовались электронным взломщиком 9000\r\nКажется у создателя девайса было крайне специфичное чувство юмора,«Желаете взломать пароль, где «Нет» это «Да»?»\r\n",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
-			"ShowPosibleBranches": true,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "Нет",
@@ -1154,7 +1154,7 @@
 			"ShowPosibleBranches": true,
 			"PosibleBranches": [
 				{
-					"Answer": "Да",
+					"Answer": "Game Over",
 					"GoToId": "EndGame"
 				}
 			],
@@ -1253,7 +1253,7 @@
 			"Question": "И вновь, Вы, взломщик 9000 и подсказка.\r\nВ каком количестве трехначных чисел средней цифрой является 0?",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":3,
+			"NumberOfAttemptsLimit":5,
 			"PosibleBranches": [
 				{
 					"Answer": "90",
@@ -1432,13 +1432,13 @@
 			"IsLastPuzzle": false,
 			"Id": "77",
 			"Weight": 2,
-			"Question": "Вы с удивлением уставились на экран взломщика 9000, на нем всего 1 слово:«kcHa»",
+			"Question": "Вы с удивлением уставились на экран взломщика 9000, на нем всего 1 слово:«kcha»",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"NumberOfAttemptsLimit":3,
 			"PosibleBranches": [
 				{
-					"Answer": "Hack",
+					"Answer": "hack",
 					"GoToId": "78"
 				},
 				{
@@ -1455,8 +1455,7 @@
 			"Question": "т8 д9м6ш2 ч10 с78ж37ь 8о7я3ть к6к в23м4ть 3г4? 0к:Рфджфро гхёжф пжщфр пждрргтвйкорж, пвсткожт унрдр: Стрёрникфю",
 			"PuzzleType": 0,
 			"WaitingTime": 1,
-			"NumberOfAttemptsLimit":5,
-			"ShowPosibleBranches": true,
+			"NumberOfAttemptsLimit":10,
 			"PosibleBranches": [
 				{
 					"Answer": "Продолжить",
@@ -1477,7 +1476,6 @@
 			"PuzzleType": 0,
 			"WaitingTime": 1,
 			"NumberOfAttemptsLimit":10,
-			"ShowPosibleBranches": true,
 			"PosibleBranches": [
 				{
 					"Answer": "Опять",
