@@ -44,7 +44,7 @@ namespace ScenarioBot.BotCommands
             var userWeights = await _userService.CalcUserWeightsAsync(userCount);
 
             var sb = new StringBuilder();
-            sb.Append(HttpUtility.UrlEncode($"Top ({userCount}) \n"));
+            sb.Append($"Top {userCount} \r\n");
             
             foreach (var userWeight in userWeights) sb.Append($"{userWeight.Key} - {userWeight.Value} \r\n");
 
