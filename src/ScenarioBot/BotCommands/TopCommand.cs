@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Core.BotCommands;
 using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
@@ -43,7 +44,7 @@ namespace ScenarioBot.BotCommands
             var userWeights = await _userService.CalcUserWeightsAsync(userCount);
 
             var sb = new StringBuilder();
-            sb.Append($"Top users {userCount} \"\n\"");
+            sb.Append($"Top {userCount} {HttpUtility.UrlEncode("\n")}");
             
             foreach (var userWeight in userWeights) sb.Append($"{userWeight.Key} - {userWeight.Value} \r\n");
 
