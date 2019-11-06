@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Core.BotCommands;
 using Core.Domain;
 using Microsoft.Bot.Builder.Dialogs;
