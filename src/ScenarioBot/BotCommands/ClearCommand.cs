@@ -23,13 +23,6 @@ namespace ScenarioBot.BotCommands
         public bool IsApplicable(string message, UserId userId)
         {
             var today = DateTime.UtcNow;
-            
-            // на всякий случай в дни проведения конференции запретим команду
-            if (today >= new DateTime(2019, 11, 6))
-            {
-                return false;
-            }
-            
             return message.Equals(CommandPrefix, StringComparison.InvariantCultureIgnoreCase);
         }
 
