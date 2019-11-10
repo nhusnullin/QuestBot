@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Configuration;
 using Core.BotCommands;
 using Core.Service;
 using CoreBot.BotCommands;
@@ -81,7 +82,11 @@ namespace CoreBot
                 services.AddSingleton<IAnswerRepository, AnswerRepository>();
                 services.AddSingleton<IUserRepository, UserRepository>();
                 services.AddSingleton<IMongoClient, MongoClient>(
-                    client => new MongoClient(Configuration.GetSection("MongoConnection:ConnectionString").Value));
+                    client =>
+                    {
+                        var connectionString = Configuration.GetConnectionString("MongoConnection");
+                        return new MongoClient(connectionString);
+                    });
             }
 
             services.AddSingleton<IScenarioService, ScenarioService>();
