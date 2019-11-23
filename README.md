@@ -1,47 +1,17 @@
 [![Build status](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_apis/build/status/awesomedotnextquestbot%20-%201%20-%20CI)](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_build/latest?definitionId=2)
 
+Бот для проведения квестов. Писался под Telegram, с использованием [Bot Framework][20].
+Набор заданий для прохождения и возможные ветки развития событий хранится в [json][50].
+Использовался для проведения активностей на стенде сообщества [.NetRu][51] на конференциях TechTrain 2019, DotNext 2018 и 2019.
 
-# CoreBot
-Bot Framework v4 core bot sample.
+# Для тестирования  можно использовать Bot Framework Emulator 
+[Bot Framework Emulator][5]  - это дестктоп приложение, которое помогает тестировать и дебажить бота. Установить можно из [here][6]
 
-## Prerequisites
-- [.NET Core SDK][4] version 2.1
-	```bash
-	# determine dotnet version
-	dotnet --version
-	```
+## Подключиться к боту используя Bot Framework Emulator
+- После запуска приложения ввести в эмуляторе `http://localhost:3978/api/messages`
+- Или открыть в эмуляторе [файл][52]
 
-# To run this bot locally
-- Download the bot code from the Build blade in the Azure Portal (make sure you click "Yes" when asked "Include app settings in the downloaded zip file?").
-    - If you clicked "No" you will need to copy all the Application Settings properties from your App Service to your local appsettings.json file.
-
-## Visual Studio
-- Open the .sln file with Visual Studio.
-- Run the project (press `F5` key)
-
-## .NET Core CLI
-- Install the [.NET Core CLI tools](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x). 
-- Using the command line, navigate to your project folder.
-- Type `dotnet run`.
-
-# Testing the bot using Bot Framework Emulator 
-[Bot Framework Emulator][5] is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
-
-- Install the Bot Framework Emulator version 4.3.0 or greater from [here][6]
-
-## Connect to the bot using Bot Framework Emulator
-- Launch Bot Framework Emulator
-- File -> Open Bot
-- Enter a Bot URL of `http://localhost:3978/api/messages`
-
-# Deploy the bot to Azure
-## Publish from Visual Studio
-- Open the .PublishSettings file you find in the PostDeployScripts folder
-- Copy the userPWD value
-- Right click on the Project and click on "Publish..."
-- Paste the password you just copied and publish
-
-# Further reading
+# Так же можно почитать
 - [Bot Framework Documentation][20]
 - [Bot Basics][32]
 - [Prompt types][23]
@@ -79,3 +49,6 @@ Bot Framework v4 core bot sample.
 [31]: https://www.npmjs.com/package/dotenv
 [32]: https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0
 [40]: https://aka.ms/azuredeployment
+[50]:https://github.com/nhusnullin/QuestBot/blob/master/src/ScenarioBot/raw_data/2019.DotNext.Msk/Robbery.json
+[51]:https://dotnet.ru/communities
+[52]:https://github.com/nhusnullin/QuestBot/blob/master/emulator.bot
