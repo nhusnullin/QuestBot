@@ -1,6 +1,6 @@
 [![Build status](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_apis/build/status/awesomedotnextquestbot%20-%201%20-%20CI)](https://dev.azure.com/dotnetquestbot/AwesomeDotNextQuestBot-/_build/latest?definitionId=2)
 
-# Бот для проведения квестов. 
+# Бот для проведения квестов
 Писался под Telegram, с использованием [Bot Framework][20].
 Набор заданий для прохождения и возможные ветки развития событий хранится в [json][50].
 Использовался для проведения активностей на стенде сообщества [.NetRu][51] на конференциях TechTrain 2019, DotNext 2018 и 2019.
