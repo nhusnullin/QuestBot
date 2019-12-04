@@ -23,7 +23,7 @@ namespace CoreBot.BotCommands
         public async Task<DialogTurnResult> ExecuteAsync(DialogContext dialogContext, UserId userId,
             CancellationToken cancellationToken)
         {
-            await dialogContext.Context.SendActivityAsync("Чат сапорта квеста https://t.me/dotnetruquestsupport", cancellationToken: cancellationToken);
+            await dialogContext.Context.SendActivityAsync("Чат сапорта квеста https://t.me/AlfaHeisenbug", cancellationToken: cancellationToken);
             return new DialogTurnResult(DialogTurnStatus.Waiting);
         }
 
