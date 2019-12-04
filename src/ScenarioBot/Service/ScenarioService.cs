@@ -100,10 +100,12 @@ namespace ScenarioBot.Service
 
         public void LoadAll()
         {
-            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/2019.DotNext.Msk"));
-            dr.GetFiles("*.json").Select(x => Load(x.FullName))
+            var dr = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "raw_data/Heisenbug"));
+            var scs = dr.GetFiles("*.json").Select(x => Load(x.FullName))
                 .Where(x => x != null)
                 .ToList();
+            var join = string.Join(", ",scs.Select(x=>x.ScenarioId));
+            _logger.LogInformation("Loaded scenarios: {@join}", join);
         }
 
         private Scenario Load(string path)
